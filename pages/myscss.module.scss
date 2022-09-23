@@ -1,0 +1,9 @@
+.myred{
+  color:red;
+}
+
+#mybox{
+  .myred{
+    color:blue;
+  }
+}

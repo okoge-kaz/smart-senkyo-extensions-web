@@ -1,0 +1,22 @@
+#container{
+  display: flex;
+}
+
+#button{
+  margin: auto;
+  padding: 23px 70px 0px;
+  background: #0DD2AF;
+  border-radius: 100px;
+  font-family: 'Gujarati MT';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 60px;
+  line-height: 92px;
+  text-align: center;
+  color: #F8FFFE;
+  box-shadow: 0 5px 5px 0 rgb(0 0 0 / 50%);
+}
+
+#button:hover{
+  background: #75D7C5;
+}
