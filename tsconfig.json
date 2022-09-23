@@ -15,6 +15,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/pages/exp/excel_json.jsx", "pages/api/excel_json.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/exp/excel_json.jsx", "pages/api/excel_json.js"],
   "exclude": ["node_modules"]
 }
