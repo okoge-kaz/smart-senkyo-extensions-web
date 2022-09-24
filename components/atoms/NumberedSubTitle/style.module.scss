@@ -1,4 +1,4 @@
-#title_number{
+#title_number {
   font-family: 'Gujarati MT';
   font-style: normal;
   font-weight: 700;
@@ -6,13 +6,13 @@
   line-height: 46px;
   text-align: center;
   color: #F8FFFE;
-  background: #4CAE9C;
+  background: var(--paragraph-header-color);
   width: 35px;
   height: 35px;
   border-radius: 50%;
 }
 
-#title{
+#title {
   line-height: 30px;
   font-family: 'Gujarati MT';
   font-style: normal;
@@ -20,10 +20,10 @@
   font-size: 20px;
   display: flex;
   align-items: center;
-  color: #4F5A55;
+  color: var(--title-color);
   margin: 0 0 0 9px;
 }
 
-#title_container{
+#title_container {
   display: flex;
 }

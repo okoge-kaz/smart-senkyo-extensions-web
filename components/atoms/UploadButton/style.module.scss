@@ -1,6 +1,6 @@
 #upload_label {
   padding: 23px 210px 0px;
-  background: #0DD2AF;
+  background: var(--button-color);
   border-radius: 100px;
   font-family: 'Gujarati MT';
   font-style: normal;
@@ -12,7 +12,7 @@
 }
 
 #upload_label:hover {
-  background: #75D7C5;
+  background: var(--button-hover-color);
 }
 
 .upload_input {

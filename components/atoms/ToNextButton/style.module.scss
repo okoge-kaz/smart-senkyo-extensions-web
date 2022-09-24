@@ -1,11 +1,11 @@
-#container{
+#container {
   display: flex;
 }
 
-#button{
+#button {
   margin: auto;
   padding: 23px 70px 0px;
-  background: #0DD2AF;
+  background: var(--button-color);
   border-radius: 100px;
   font-family: 'Gujarati MT';
   font-style: normal;
@@ -17,6 +17,6 @@
   box-shadow: 0 5px 5px 0 rgb(0 0 0 / 50%);
 }
 
-#button:hover{
-  background: #75D7C5;
+#button:hover {
+  background: var(--button-hover-color);
 }
