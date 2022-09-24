@@ -11,7 +11,7 @@ interface Props{
 
 export const UploadButton: Function = (props: Props): ReactElement =>{
   const handleFileImportChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) props.setFile(e.target.files[0]) // File
+    if (e.target.files) props.setFile(e.target.files) // File
     props.onActed();
   };
   return(

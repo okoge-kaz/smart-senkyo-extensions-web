@@ -1,0 +1,19 @@
+#main_choice_container {
+  width: 780px;
+  height: 716px;
+  background: var(--button-background-color);
+  margin: 85px auto 0;
+}
+
+.choice_container{
+  display: flex;
+  margin: 9px auto;
+  width: 520px;
+  height: 70px;
+  background: var(--choice-background-color);
+  border-radius: 20px;
+}
+
+.margin_div{
+  height: 158px;
+}
