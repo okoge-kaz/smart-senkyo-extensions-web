@@ -1,7 +1,7 @@
 import { ReactElement } from 'react'
-import { UploadButton } from '../../atoms/UploadButton'
-import { Header } from '../../organisms/Hreader'
-import { MainContent } from '../../organisms/MainContent'
+import { UploadButton } from 'components/atoms/UploadButton'
+import { Header } from 'components/organisms/Hreader'
+import { MainContent } from 'components/organisms/MainContent'
 import styles from "./style.module.scss"
 
 interface Props{

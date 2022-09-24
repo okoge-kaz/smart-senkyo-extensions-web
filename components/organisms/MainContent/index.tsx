@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
-import { MainActionArea } from "../../molecules/MainActionArea"
-import { UseGuideArea } from "../../molecules/UseGuideArea"
+import { MainActionArea } from "components/molecules/MainActionArea"
+import { UseGuideArea } from "components/molecules/UseGuideArea"
 import styles from "./styles.module.scss"
 
 interface Props{

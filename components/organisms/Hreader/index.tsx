@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { PageTitleArea } from "../../molecules/PageTitleArea"
+import { PageTitleArea } from "components/molecules/PageTitleArea"
 import styles from "./style.module.css"
 
 interface Props{

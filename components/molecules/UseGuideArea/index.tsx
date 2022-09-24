@@ -1,7 +1,7 @@
 import { ReactElement } from "react"
-import { NumberedSubTitle } from "../../atoms/NumberedSubTitle"
-import { SubText } from "../../atoms/SubText"
-import { TopicTitle } from "../../atoms/TopicTitle"
+import { NumberedSubTitle } from "components/atoms/NumberedSubTitle"
+import { SubText } from "components/atoms/SubText"
+import { TopicTitle } from "components/atoms/TopicTitle"
 import styles from "./style.module.css"
 
 export const UseGuideArea: Function = (): ReactElement => {

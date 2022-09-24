@@ -1,5 +1,5 @@
-import { HeaderTitle } from "../../atoms/HeaderTitle";
-import { SenkyoLogo } from "../../atoms/SenkyoLogo";
+import { HeaderTitle } from "components/atoms/HeaderTitle";
+import { SenkyoLogo } from "components/atoms/SenkyoLogo";
 import styles from "./style.module.scss";
 import {ReactElement} from "react";
 

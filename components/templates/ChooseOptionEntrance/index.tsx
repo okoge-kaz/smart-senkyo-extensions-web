@@ -1,7 +1,7 @@
 import { ReactElement } from 'react'
-import { ToNextButton } from '../../atoms/ToNextButton'
-import { Header } from '../../organisms/Hreader'
-import { MainContent } from '../../organisms/MainContent'
+import { ToNextButton } from 'components/atoms/ToNextButton'
+import { Header } from 'components/organisms/Hreader'
+import { MainContent } from 'components/organisms/MainContent'
 import styles from "./style.module.scss"
 
 interface Props{

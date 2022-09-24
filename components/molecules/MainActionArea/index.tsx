@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { MainDirection } from "../../atoms/MainDirection";
+import { MainDirection } from "components/atoms/MainDirection";
 import styles from "./style.module.scss";
 
 interface Props{
