@@ -7,20 +7,20 @@ import { ReactElement, useState } from 'react';
 
 const Home: NextPage = () => {
   // ファイル管理
-  const [file, setFile] = useState<File|null>(null)
+  const [fileState, setFileState] = useState<File|null>(null)
   
   // ステップ管理
-  const [step, setStep] = useState<number>(1);
+  const [stepState, setStepState] = useState<number>(1);
   const proceedStep = () => {
-    if(step<3){
-      setStep(step+1)
+    if(stepState<3){
+      setStepState(stepState+1)
     }else{
-      setStep(1)
+      setStepState(1)
     }
   }
 
   // 1番目のステップのメインのボタン
-  const add_file_button: ReactElement = <UploadButton label="Add File" onActed={proceedStep} setFile={setFile}/> 
+  const add_file_button: ReactElement = <UploadButton label="Add File" onActed={proceedStep} setFile={setFileState}/> 
   // 2番目のステップのメインのボタン
   const to_option_choice_button: ReactElement = <ToNextButton label="Choose Option" onClick={proceedStep}/>
 
@@ -42,7 +42,7 @@ const Home: NextPage = () => {
     <div>
         {/* {file?.name} */}
         <Header page_title="自動名簿整形ツール"/>
-        {display_content(step)}
+        {display_content(stepState)}
         {/* <button onClick={proceedStep}>ステップをスイッチ</button> */}
     </div>
   )
