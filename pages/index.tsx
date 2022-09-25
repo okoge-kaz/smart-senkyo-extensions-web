@@ -6,6 +6,13 @@ import { saveAs } from 'file-saver';
 import type { NextPage } from 'next';
 import { ReactElement, useState } from 'react';
 
+
+// 用途：ここがsmart-senkyo-extensions-webで表示される画面
+// 役割：ファイル、オプション、ステップ(本プロジェクトでは使用者がどの段階まで作業を進めたかをステップで管理している)
+//      excelファイルのjson化及び処理用APIへのリクエスト発行、返答受信、返答のexcel化
+//      (シングルページアプリだから語弊があるが)ページ遷移
+//      遷移先ページでステップごとに書き換える必要がある要素の作成//todo: この処理はMainContent(organisms)にもあるのでどちらかに集めるべき
+
 const Home: NextPage = () => {
   // オプション管理
   const [addressSeparaterOptionState, setAddressSeparaterOptionState] = useState<Boolean>(false)
@@ -26,14 +33,14 @@ const Home: NextPage = () => {
   const [fileState, setFileState] = useState<File[]>([])
   const [exportBlobState, setExportBlobState] = useState<Blob[]>([])
   const [exportBlobNameState, setExportBlobNameState] = useState<string[]>([])
+  // ダウンロードのステップでメインのボタンに割り当てる関数
   const downloadConvertedFile = () => {
-    exportBlobState.forEach((exportBlob, index)=>{
+    exportBlobState.forEach((exportBlob, index)=>{// todo: exportBlob使わないのならexportBlobState.forEach()でなく[0,1,2,...]的なリストを使えばいい
       if(exportBlobState[index]!=null && exportBlobNameState[index]!=null)
       saveAs(exportBlobState[index], exportBlobNameState[index])
     })
     setStepState(7)
   }
-  const XLSX = require('xlsx')
   // convert時に呼ばれる関数
   const convertFile: React.MouseEventHandler<HTMLButtonElement> = async () => {
     // todo: proceedStep()を使いたい
@@ -53,13 +60,14 @@ const Home: NextPage = () => {
 
     // ファイルをjsonにしてAPIへ
     const XLSX = require('xlsx')
+    // todo: ここのvarを避けたい
     var sheets_names: string[] = ["","","","","","","","","",""]
     const json_formed_sheets = [{},{},{},{},{},{},{},{},{},{}];
     
+    // excelファイルの読み込みが非同期のため、ファイル読み込みが終了したファイル数を保管する変数
     var finishedNumber: number = 0
     const files_list: File[] = Object.values(fileState)
     const fileState_length: number = files_list.length;
-    console.log("map start")
     // excelをjson化するファーストプラン
     // files_list.map((file, index)=>{
     //   console.log("each map start")
@@ -109,10 +117,12 @@ const Home: NextPage = () => {
     // console.log("all map ended")
 
     // excelをjson化するセカンドプラン
+    // todo: for文よりmapとかを使いたい
     for(let index=0; index<fileState_length; index++){
       const file_reader = new FileReader()
       const file = files_list[index]
       file_reader.onload = async (event) => {
+        // file_readerの読み込み結果
         const result = event.target?.result
         const workbook = XLSX.read(result, {type: "array"})
         // todo:ここを各シートごとにすることで複数シートに対応可能
@@ -122,8 +132,10 @@ const Home: NextPage = () => {
         json_formed_sheets[index] = XLSX.utils.sheet_to_json(worksheet)
         console.log(json_formed_sheets[index])
         finishedNumber = finishedNumber+1
+        // file_reader.readAsArrayBuffer()は非同期なので最後に終了したfile_readerにAPI送信処理を任せる
         if(finishedNumber==fileState_length){
           // APIへの送信
+          // todo: 選択したオプション、エラーメッセージ等がjsonに含まれていないので含める
           const json_formed_data = json_formed_sheets.map((json_formed_sheet, index)=>(
             {"file_name": sheets_names[index],
             "input_data": json_formed_sheet})
@@ -136,7 +148,6 @@ const Home: NextPage = () => {
           }
           console.log("request_json")
           console.log(request_json)
-          // my_fetch(convert_url, request_json)
           const res = await fetch(convert_url, {
             method: 'POST',
             headers:{
@@ -150,7 +161,6 @@ const Home: NextPage = () => {
           setStepState(6)
           // todo: 本来はここで帰ってきたjsonをexcelに直す
           const exportBook = XLSX.utils.book_new()
-          // const sexportSheet = XLSX.utils.json_to_sheet({"test":123})
           const worksheet_data = [
             ["ヘッダ１", "ヘッダ２"],
             ["値１", "値２"]
@@ -168,17 +178,14 @@ const Home: NextPage = () => {
           setExportBlobNameState(["tmpTestDownload.xlsx"])
         }
       }
-      console.log("each read start")
-      file_reader.readAsArrayBuffer(file)
-      console.log("map end")
-
+      file_reader.readAsArrayBuffer(file)// file_reader.readAsArrayBuffer()は非同期なので注意
     }
-    console.log("all map ended")
   }
   // テスト用ファイル名一覧
   const names = Object.values(fileState).map((value, index) => {return (<li key={"file"+index}>{value.name}</li>)})
 
 
+  // todo:戻るボタンを作成する
   // 1番目のステップのメインのボタン
   const add_file_button: ReactElement = <UploadButton label="Add File" onActed={proceedStep} setFile={setFileState}/> 
   // 2,3番目のステップのメインのボタン

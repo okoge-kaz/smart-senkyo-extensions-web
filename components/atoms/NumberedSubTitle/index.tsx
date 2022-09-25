@@ -1,6 +1,8 @@
 import { ReactElement } from "react";
 import styles from "./style.module.scss";
 
+// 用途：「使い方」の各手順のタイトルのように数字付きのサブタイトル
+
 interface Props{
   number: number;
   text: string;

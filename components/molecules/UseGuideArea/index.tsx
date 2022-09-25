@@ -1,8 +1,11 @@
-import { ReactElement } from "react"
 import { NumberedSubTitle } from "components/atoms/NumberedSubTitle"
 import { SubText } from "components/atoms/SubText"
 import { TopicTitle } from "components/atoms/TopicTitle"
+import { ReactElement } from "react"
 import styles from "./style.module.css"
+
+// 用途：画面下部の使い方
+// 役割：使い方を構成する要素の配置
 
 export const UseGuideArea: Function = (): ReactElement => {
   return(

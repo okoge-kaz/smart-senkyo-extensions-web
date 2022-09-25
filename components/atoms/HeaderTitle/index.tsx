@@ -1,6 +1,8 @@
 import { ReactElement } from 'react';
 import styles from './style.module.scss';
 
+// 用途：ヘッダーのページタイトル
+
 interface Props{
   text: string;
 }

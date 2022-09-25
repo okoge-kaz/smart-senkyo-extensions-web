@@ -1,6 +1,8 @@
 import { ReactElement } from "react";
 import styles from "./style.module.scss";
 
+//　用途：「使い方」の説明文
+
 interface Props{
   text: string;
 }

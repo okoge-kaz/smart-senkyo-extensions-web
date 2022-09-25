@@ -1,7 +1,10 @@
 import { HeaderTitle } from "components/atoms/HeaderTitle";
 import { SenkyoLogo } from "components/atoms/SenkyoLogo";
+import { ReactElement } from "react";
 import styles from "./style.module.scss";
-import {ReactElement} from "react";
+
+// 用途：ヘッダー部分
+// 役割：ヘッダー構成要素の配置
 
 interface Props{
   page_title: string;

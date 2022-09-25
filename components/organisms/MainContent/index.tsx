@@ -1,16 +1,18 @@
-import { ReactElement } from "react";
-import { MainActionArea } from "components/molecules/MainActionArea"
-import { UseGuideArea } from "components/molecules/UseGuideArea"
-import styles from "./styles.module.scss"
-import { getStaticProps } from "pages/exp/excel_json";
+import { MainActionArea } from "components/molecules/MainActionArea";
 import { MainChoiceArea } from "components/molecules/MainChoiceArea";
+import { UseGuideArea } from "components/molecules/UseGuideArea";
+import { ReactElement } from "react";
 
+
+// 用途：ページ中央にあるメインの表示要素をまとめたもの
+// 役割：引数をほぼそのまま流す
+//      ステップ数により表示内容を変更する// todo: pages/indexとの役割分けが不十分であるためこちらにボタン要素等の作成や引数の割り当ての役割を移すべき
 interface Props{
   main_action_direction: string[];
   main_button_elements: ReactElement;
   stepState: number;
-  onAddressSeparaterActed?: Function;
-  address_separater_selected?: boolean;
+  onAddressSeparaterActed?: Function;// todo: 引数に?はあまり好ましくない
+  address_separater_selected?: boolean;// todo: 引数に?はあまり好ましくない
 }
 
 export const MainContent: Function = (props: Props) => {

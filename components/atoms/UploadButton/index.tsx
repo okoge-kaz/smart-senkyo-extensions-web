@@ -1,6 +1,9 @@
 import type { ReactElement } from "react";
 import styles from "./style.module.scss";
 
+// 用途：ファイルのアップロードボタン
+// 役割：ファイルの保存(setFile)
+//      次の画面への遷移(onActed)
 
 interface Props{
   label: string;
