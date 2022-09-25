@@ -2,10 +2,9 @@ import { ToNextButton } from 'components/atoms/ToNextButton';
 import { UploadButton } from 'components/atoms/UploadButton';
 import { Header } from 'components/organisms/Hreader';
 import { MainContent } from 'components/organisms/MainContent';
+import { saveAs } from 'file-saver';
 import type { NextPage } from 'next';
 import { ReactElement, useState } from 'react';
-import {saveAs} from 'file-saver'
-import { SassColor } from 'sass';
 
 const Home: NextPage = () => {
   // オプション管理
@@ -61,6 +60,7 @@ const Home: NextPage = () => {
     const files_list: File[] = Object.values(fileState)
     const fileState_length: number = files_list.length;
     console.log("map start")
+    // excelをjson化するファーストプラン
     // files_list.map((file, index)=>{
     //   console.log("each map start")
     //   const file_reader: FileReader = file_readers[index]
@@ -108,7 +108,7 @@ const Home: NextPage = () => {
     // })
     // console.log("all map ended")
 
-    // セカンドプラン
+    // excelをjson化するセカンドプラン
     for(let index=0; index<fileState_length; index++){
       const file_reader = new FileReader()
       const file = files_list[index]
@@ -196,20 +196,19 @@ const Home: NextPage = () => {
   const display_content = (step: number): ReactElement => {
     switch (step){
       case 1:
-        return  <MainContent main_action_direction="名簿整形したいファイルを選択してください shiftを押しながらで複数選択できます" main_button_elements={add_file_button} stepState={stepState}/>
+        return  <MainContent main_action_direction={["名簿整形したいファイルを選択してください","shiftを押しながらで複数選択できます"]} main_button_elements={add_file_button} stepState={stepState}/>
       case 2:
-        return <MainContent main_action_direction="オプションを選択してください" main_button_elements={choose_option_button} stepState={stepState}/>
+        return <MainContent main_action_direction={["オプションを選択してください"]} main_button_elements={choose_option_button} stepState={stepState}/>
       case 3:
-        return <MainContent main_action_direction="オプションを選択してください" main_button_elements={choose_option_button} stepState={stepState} onAddressSeparaterActed={switchAddressSeparaterOption} address_separater_selected={addressSeparaterOptionState}/>
+        return <MainContent main_action_direction={["オプションを選択してください"]} main_button_elements={choose_option_button} stepState={stepState} onAddressSeparaterActed={switchAddressSeparaterOption} address_separater_selected={addressSeparaterOptionState}/>
       case 4:
-        return <MainContent main_action_direction="名簿整形を行います" main_button_elements={convert_button} stepState={stepState}/>
+        return <MainContent main_action_direction={["名簿整形を行います"]} main_button_elements={convert_button} stepState={stepState}/>
       case 5:
-        return <MainContent main_action_direction="処理中です..." main_button_elements={no_button} stepState={stepState}/>
+        return <MainContent main_action_direction={["処理中です..."]} main_button_elements={no_button} stepState={stepState}/>
       case 6:
-        return <MainContent main_action_direction="Converted!
-        以下の文章を確認した後にダウンロードしてください" main_button_elements={download_button} stepState={stepState}/>
+        return <MainContent main_action_direction={["Converted!","以下の文章を確認した後にダウンロードしてください"]} main_button_elements={download_button} stepState={stepState}/>
       case 7:
-        return <MainContent main_action_direction="Downloaded! 他のファイルも変換する" main_button_elements={restart_button} stepState={stepState}/>
+        return <MainContent main_action_direction={["Downloaded!","他のファイルも変換する"]} main_button_elements={restart_button} stepState={stepState}/>
       default:
         return <h1>手順遷移時にエラーが発生しました。ブラウザを再リロードし、初めからやり直してください。</h1>
     }
@@ -217,15 +216,8 @@ const Home: NextPage = () => {
   
   return(
     <div>
-        <div>
-          {fileState[0]?.name}
-          {fileState[1]?.name}
-          {fileState[2]?.name}<br/>
-          {names}
-        </div>
         <Header page_title="自動名簿整形ツール"/>
         {display_content(stepState)}
-        <button onClick={proceedStep}>ステップをスイッチ</button>
     </div>
   )
 }

@@ -1,6 +1,11 @@
-#main_direction {
+#main_direction_container{
+  // height: 160px;
+  padding-top: 50px;
+}
+
+.main_direction {
   margin: 0;
-  height: 160px;
+  // height: 160px;
   font-family: 'Inter';
   font-style: normal;
   font-weight: 700;
@@ -9,5 +14,5 @@
   text-align: center;
   color: var(--paragraph-font-color);
   // todo:下揃え方法募集
-  padding-top: 100px;
+  // padding-top: 100px;
 }

@@ -6,7 +6,7 @@ import { getStaticProps } from "pages/exp/excel_json";
 import { MainChoiceArea } from "components/molecules/MainChoiceArea";
 
 interface Props{
-  main_action_direction: string;
+  main_action_direction: string[];
   main_button_elements: ReactElement;
   stepState: number;
   onAddressSeparaterActed?: Function;
@@ -26,7 +26,6 @@ export const MainContent: Function = (props: Props) => {
   return(
 
     <div>
-      <div>{props.stepState}</div>
       {main_area(props.stepState)}
       <UseGuideArea/>
     </div>
