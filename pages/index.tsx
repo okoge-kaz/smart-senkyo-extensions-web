@@ -61,8 +61,8 @@ const Home: NextPage = () => {
     // ファイルをjsonにしてAPIへ
     const XLSX = require('xlsx')
     // todo: ここのvarを避けたい
-    var sheets_names: string[] = ["","","","","","","","","",""]
-    const json_formed_sheets = [{},{},{},{},{},{},{},{},{},{}];
+    var sheets_names: string[] = ["","","","","","","","","",""]// todo: ここのせいで10ファイルまでなので可変長に
+    const json_formed_sheets = [{},{},{},{},{},{},{},{},{},{}];// todo: ここのせいで10ファイルまでなので可変長に
     
     // excelファイルの読み込みが非同期のため、ファイル読み込みが終了したファイル数を保管する変数
     var finishedNumber: number = 0
@@ -203,7 +203,7 @@ const Home: NextPage = () => {
   const display_content = (step: number): ReactElement => {
     switch (step){
       case 1:
-        return  <MainContent main_action_direction={["名簿整形したいファイルを選択してください","shiftを押しながらで複数選択できます"]} main_button_elements={add_file_button} stepState={stepState}/>
+        return  <MainContent main_action_direction={["名簿整形したいファイルを10個まで選択してください","shiftを押しながら選択することで複数選択できます"]} main_button_elements={add_file_button} stepState={stepState}/>
       case 2:
         return <MainContent main_action_direction={["オプションを選択してください"]} main_button_elements={choose_option_button} stepState={stepState}/>
       case 3:
