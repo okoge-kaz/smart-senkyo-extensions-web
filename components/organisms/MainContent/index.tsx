@@ -5,7 +5,7 @@ import { MainActionArea } from "components/molecules/MainActionArea";
 import { MainChoiceArea } from "components/molecules/MainChoiceArea";
 import { UseGuideArea } from "components/molecules/UseGuideArea";
 import type { Dispatch, MouseEventHandler, SetStateAction } from 'react';
-import { ReactElement } from "react";
+import React, { ReactElement } from "react";
 import styles from './style.module.scss';
 
 // 用途：ページ中央にあるメインの表示要素をまとめたもの
@@ -23,7 +23,7 @@ interface Props {
   downloadConvertedFile: MouseEventHandler<HTMLButtonElement>;
 }
 
-export const MainContent: Function = (props: Props): ReactElement => {
+export const MainContent = React.memo((props: Props) => {
   // 1番目のステップのメインのボタン
   const add_file_button: ReactElement = <UploadButton label="Add File" onActed={props.proceedStep} setFile={props.setFileState} />
   // 2,3番目のステップのメインのボタン
@@ -64,4 +64,4 @@ export const MainContent: Function = (props: Props): ReactElement => {
       <UseGuideArea />
     </div>
   )
-}
+})

@@ -1,5 +1,5 @@
 import { MainDirection } from "components/atoms/MainDirection";
-import { ReactElement } from "react";
+import React, { ReactElement } from "react";
 import styles from "./style.module.scss";
 
 // 用途：操作指示やボタンといったメイン部分(オプション選択画面はMainChoiceArea)
@@ -10,9 +10,9 @@ interface Props {
   main_button_elements: ReactElement;
 }
 
-export const MainActionArea: Function = (props: Props): ReactElement => (
+export const MainActionArea = React.memo((props: Props) => (
   <div id={styles.main_action_container}>
     <MainDirection texts={props.main_action_direction} />
     {props.main_button_elements}
   </div>
-)
+))
