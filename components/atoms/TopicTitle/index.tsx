@@ -8,5 +8,7 @@ interface Props {
 }
 
 export const TopicTitle: Function = (props: Props): ReactElement => (
-  <p id={styles.topic_title}>{props.text}</p>
+  <p id={styles.topic_title}>
+    {props.text}
+  </p>
 )
