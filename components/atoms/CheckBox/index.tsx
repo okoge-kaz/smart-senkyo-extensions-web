@@ -4,7 +4,7 @@ import styles from "./style.module.scss";
 // 用途：オプション選択肢のチェックボックス部分
 // 役割：onActedでフラグを立て、checkedで選択されているかを判断し表示変更
 
-interface Props{
+interface Props {
   onClick: React.MouseEventHandler<HTMLButtonElement>;
   checked: boolean;
 }
@@ -21,9 +21,9 @@ export const CheckBox: Function = (props: Props): ReactElement => {
   //     <button className={checkedState ? styles.select_box_checked : styles.select_box_empty} onClick={change}/>
   //   </div>
   // )
-  return(
+  return (
     <div className={styles.select_container}>
-      <button className={props.checked ? styles.select_box_checked : styles.select_box_empty} onClick={props.onClick}/>
+      <button className={props.checked ? styles.select_box_checked : styles.select_box_empty} onClick={props.onClick} />
     </div>
   )
-} 
+}
