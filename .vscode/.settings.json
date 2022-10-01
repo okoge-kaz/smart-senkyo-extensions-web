@@ -3,39 +3,15 @@
 	"editor.tabSize": 2,
 	"files.insertFinalNewline": true,
 
-	// python settings
-	"python.defaultInterpreterPath": "${config:python.defaultInterpreterPath}",
-	"python.envFile": "${workspaceFolder}/.venv",
-	"python.analysis.completeFunctionParens": true,
-	"python.analysis.typeCheckingMode": "basic",
-	"python.analysis.extraPaths": ["./sources", "lib/python"],
-	"[python]": {
-		"editor.tabSize": 4,
-		"editor.formatOnSave": true
-	},
-	"python.linting.enabled": true,
-	"python.linting.lintOnSave": true,
-	"python.linting.mypyEnabled": true,
-	"python.linting.mypyCategorySeverity.note": "Warning",
-	"python.linting.mypyArgs": ["--disallow-untyped-defs"],
-	"python.linting.mypyCategorySeverity.error": "Warning",
-	"python.linting.flake8Enabled": true,
-	"python.linting.flake8Args": [
-		"--max-line-length=240",
-		"--ignore=E402,F841,F401,E302,E305,E203,W503"
-	],
-	"python.linting.flake8CategorySeverity.W": "Error",
-	"python.formatting.provider": "black",
-	"python.formatting.blackArgs": ["--line-length", "119"],
 	// typescript javascript settings
 	"[typescript]": {
-		"editor.defaultFormatter": "dbaeumer.vscode-eslint",
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
 		"editor.formatOnType": true,
 		"editor.formatOnSave": true
 	},
 	"typescript.updateImportsOnFileMove.enabled": "always",
 	"[javascriptreact]": {
-		"editor.defaultFormatter": "dbaeumer.vscode-eslint"
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
 	// docker settings
 	"[dockerfile]": {
