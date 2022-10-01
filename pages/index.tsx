@@ -55,7 +55,7 @@ const Home: NextPage = () => {
 		const month = (date.getMonth() + 1).toString(); //getMonthでは1月が0になる
 		const day = date.getDay().toString();
 		const hour = date.getHours().toString();
-		const munite = date.getMinutes().toString();
+		const minute = date.getMinutes().toString();
 		const second = date.getSeconds().toString();
 		const request_time =
 			year +
@@ -66,7 +66,7 @@ const Home: NextPage = () => {
 			"T" +
 			hour +
 			":" +
-			munite +
+			minute +
 			"." +
 			second +
 			"Z";
