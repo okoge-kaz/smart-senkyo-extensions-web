@@ -14,8 +14,8 @@ import styles from './style.module.scss';
 //      遷移先ページでステップごとに書き換える必要がある要素の作成
 interface Props {
   stepState: number;
-  onAddressSeparatorActed: React.MouseEventHandler<HTMLButtonElement>;
   address_separator_selected_flag: boolean;
+  onAddressSeparatorActed: React.MouseEventHandler<HTMLButtonElement>;
   proceedStep: React.MouseEventHandler<HTMLButtonElement>;
   backStep: React.MouseEventHandler<HTMLButtonElement>;
   setFileState: Dispatch<SetStateAction<File[]>>;
