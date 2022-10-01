@@ -1,9 +1,6 @@
 import type { ReactElement } from "react";
 import styles from "./style.module.scss";
 
-// 用途：ダウンロードボタン
-// 役割：ファイルのダウンロード
-
 interface Props{
   label: string;
   onActed: Function;
