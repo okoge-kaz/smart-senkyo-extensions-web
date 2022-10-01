@@ -8,14 +8,12 @@ interface Props{
   texts: string[];
 }
 
-export const MainDirection = (props: Props): ReactElement  => {
-  return(
-    <div id={styles.main_direction_container}>
-      {props.texts.map((text, index) =>
-      <p key={index} className={styles.main_direction}>
-        {text}
-      </p>
-    )}
-    </div>
-  )
-}
+export const MainDirection = (props: Props): ReactElement  =>  (
+  <div id={styles.main_direction_container}>
+    {props.texts.map((text, index) =>
+    <p key={index} className={styles.main_direction}>
+      {text}
+    </p>
+  )}
+  </div>
+)
