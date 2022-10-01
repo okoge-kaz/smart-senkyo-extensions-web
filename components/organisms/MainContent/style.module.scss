@@ -1,6 +1,4 @@
-#main_action_container {
-  width: 780px;
-  height: 300px;
-  background: var(--button-background-color);
-  margin: 85px auto 0;
+.button_container{
+  display: grid;
+  grid-template-columns: 1fr 2fr;
 }

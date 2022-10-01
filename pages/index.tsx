@@ -1,24 +1,19 @@
-import { ToBackButton } from 'components/atoms/ToBackButton';
-import { ToNextButton } from 'components/atoms/ToNextButton';
-import { UploadButton } from 'components/atoms/UploadButton';
 import { Header } from 'components/organisms/Hreader';
 import { MainContent } from 'components/organisms/MainContent';
 import { saveAs } from 'file-saver';
 import type { NextPage } from 'next';
-import { ReactElement, useState } from 'react';
-import styles from './style.module.scss'
+import { useState } from 'react';
 
 // 用途：ここがsmart-senkyo-extensions-webで表示される画面
 // 役割：ファイル、オプション、ステップ(本プロジェクトでは使用者がどの段階まで作業を進めたかをステップで管理している)
 //      excelファイルのjson化及び処理用APIへのリクエスト発行、返答受信、返答のexcel化
-//      (シングルページアプリだから語弊があるが)ページ遷移
-//      遷移先ページでステップごとに書き換える必要がある要素の作成//todo: この処理はMainContent(organisms)にもあるのでどちらかに集めるべき
 
 const Home: NextPage = () => {
   // オプション管理
-  const [addressSeparaterOptionState, setAddressSeparaterOptionState] = useState<Boolean>(false)
-  const switchAddressSeparaterOption: Function = () => {
+  const [addressSeparaterOptionState, setAddressSeparaterOptionState] = useState<Boolean>(true)
+  const switchAddressSeparaterOption: React.MouseEventHandler<HTMLButtonElement> = () => {
     setAddressSeparaterOptionState(!addressSeparaterOptionState)
+    console.log("lkjlkjljk")
   }
   
   // ステップ管理
@@ -41,6 +36,7 @@ const Home: NextPage = () => {
   const [exportBlobNameState, setExportBlobNameState] = useState<string[]>([])
   // ダウンロードのステップでメインのボタンに割り当てる関数
   const downloadConvertedFile = () => {
+    console.log("download 押された")
     exportBlobState.forEach((exportBlob, index)=>{// todo: exportBlob使わないのならexportBlobState.forEach()でなく[0,1,2,...]的なリストを使えばいい
       if(exportBlobState[index]!=null && exportBlobNameState[index]!=null)
       saveAs(exportBlobState[index], exportBlobNameState[index])
@@ -189,48 +185,12 @@ const Home: NextPage = () => {
   }
   // テスト用ファイル名一覧
   const names = Object.values(fileState).map((value, index) => {return (<li key={"file"+index}>{value.name}</li>)})
-
-
-  // todo:戻るボタンを作成する
-  // 1番目のステップのメインのボタン
-  const add_file_button: ReactElement = <UploadButton label="Add File" onActed={proceedStep} setFile={setFileState}/>
-  // 2,3番目のステップのメインのボタン
-  const choose_option_button: ReactElement = <div className={styles.button_container}><ToBackButton label="戻る" onClick={backStep}/><ToNextButton label="Choose Option" onClick={proceedStep}/></div>
-  // 4番目のステップのメインのボタン
-  const convert_button: ReactElement = <div className={styles.button_container}><ToBackButton label="戻る" onClick={backStep}/><ToNextButton label="Convert" onClick={convertFile}/></div>
-  // 5番目のステップのボタン(convert待ち)
-  const no_button: ReactElement = <div></div>
-  // 6番目のステップのボタン
-  const download_button: ReactElement = <ToNextButton label="Download" onClick={downloadConvertedFile}/>
-  // 7番目のステップのボタン
-  const restart_button: ReactElement = <div className={styles.button_container}><ToBackButton label="戻る" onClick={backStep}/><ToNextButton label="Restart" onClick={proceedStep}/></div>
-
-  // todo:pageで指定していることが多い MainContentにstepを加味した表示情報の判断を委ねるべき
-  const display_content = (step: number): ReactElement => {
-    switch (step){
-      case 1:
-        return  <MainContent main_action_direction={["名簿整形したいファイルを10個まで選択してください","shiftを押しながら選択することで複数選択できます"]} main_button_elements={add_file_button} stepState={stepState}/>
-      case 2:
-        return <MainContent main_action_direction={["オプションを選択してください"]} main_button_elements={choose_option_button} stepState={stepState}/>
-      case 3:
-        return <MainContent main_action_direction={["オプションを選択してください"]} main_button_elements={choose_option_button} stepState={stepState} onAddressSeparaterActed={switchAddressSeparaterOption} address_separater_selected={addressSeparaterOptionState}/>
-      case 4:
-        return <MainContent main_action_direction={["名簿整形を行います"]} main_button_elements={convert_button} stepState={stepState}/>
-      case 5:
-        return <MainContent main_action_direction={["処理中です..."]} main_button_elements={no_button} stepState={stepState}/>
-      case 6:
-        return <MainContent main_action_direction={["Converted!","以下の文章を確認した後にダウンロードしてください"]} main_button_elements={download_button} stepState={stepState}/>
-      case 7:
-        return <MainContent main_action_direction={["Downloaded!","他のファイルも変換する"]} main_button_elements={restart_button} stepState={stepState}/>
-      default:
-        return <h1>手順遷移時にエラーが発生しました。ブラウザを再リロードし、初めからやり直してください。</h1>
-    }
-  }
   
   return(
     <div>
         <Header page_title="自動名簿整形ツール"/>
-        {display_content(stepState)}
+        {/* {display_content(stepState)} */}
+        <MainContent stepState={stepState} onAddressSeparaterActed={switchAddressSeparaterOption} address_separater_selected_flag={addressSeparaterOptionState} proceedStep={proceedStep} backStep={backStep} setFileState={setFileState} convertFile={convertFile} downloadConvertedFile={downloadConvertedFile}/>
     </div>
   )
 }

@@ -10,8 +10,8 @@ import styles from "./style.module.scss";
 interface Props{
   main_action_direction: string[];
   main_button_elements: ReactElement;
-  onAddressSeparaterActed: Function;
-  address_separater_selected: boolean;
+  onAddressSeparaterActed: React.MouseEventHandler<HTMLButtonElement>;
+  address_separater_selected_flag: boolean;
 }
 
 
@@ -27,7 +27,7 @@ export const MainChoiceArea: Function = (props: Props): ReactElement => {
   const AddressSeparaterChoice: Function = ():ReactElement => {
     return(
       <div className={styles.choice_container}>
-        <CheckBox onActed={props.onAddressSeparaterActed} checked={props.address_separater_selected}/>
+        <CheckBox onClick={props.onAddressSeparaterActed} checked={props.address_separater_selected_flag}/>
         <SelectLabel text="住所分割"/>
       </div>
     )
@@ -36,7 +36,7 @@ export const MainChoiceArea: Function = (props: Props): ReactElement => {
     <div id={styles.main_choice_container}>
       <MainDirection texts={props.main_action_direction}/>
       {/* todo:ここの選択要素の指定方法でうまい方法募集　現在の方法では汎用性に欠けるがギリ許容か */}
-      <AddressSeparaterChoice onActed={props.onAddressSeparaterActed}/>
+      <AddressSeparaterChoice/>
       <ComingSoonChoice/>
       <ComingSoonChoice/>
       {props.main_button_elements}
