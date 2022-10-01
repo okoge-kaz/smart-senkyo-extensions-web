@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import React from "react";
 import styles from "./style.module.scss";
 
 // 用途：「使い方」の各手順のタイトルのように数字付きのサブタイトル
@@ -8,9 +8,9 @@ interface Props {
   text: string;
 }
 
-export const NumberedSubTitle: Function = (props: Props): ReactElement => (
+export const NumberedSubTitle = React.memo((props: Props) => (
   <div id={styles.title_container}>
     <p id={styles.title_number}>{props.number}</p>
     <p id={styles.title}>{props.text}</p>
   </div>
-)
+))

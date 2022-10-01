@@ -1,4 +1,4 @@
-import type { ReactElement } from "react"
+import React from "react"
 import styles from "./style.module.scss"
 
 interface Props {
@@ -7,7 +7,7 @@ interface Props {
   setFile: Function
 }
 
-export const DownloadButton: Function = (props: Props): ReactElement => {
+export const DownloadButton = React.memo((props: Props) => {
   const handleFileImportChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) props.setFile(e.target.files) // File
     props.onActed()
@@ -21,4 +21,4 @@ export const DownloadButton: Function = (props: Props): ReactElement => {
       </label>
     </div>
   )
-}
+})

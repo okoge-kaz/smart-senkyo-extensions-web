@@ -1,4 +1,4 @@
-import { ReactElement } from 'react'
+import React from 'react'
 import styles from './style.module.scss'
 
 // 用途：画面中央のメインの指示の文章
@@ -8,7 +8,7 @@ interface Props {
   texts: string[]
 }
 
-export const MainDirection = (props: Props): ReactElement => (
+export const MainDirection = React.memo((props: Props) => (
   <div id={styles.main_direction_container}>
     {props.texts.map((text, index) =>
       <p key={index} className={styles.main_direction}>
@@ -16,4 +16,4 @@ export const MainDirection = (props: Props): ReactElement => (
       </p>
     )}
   </div>
-)
+))

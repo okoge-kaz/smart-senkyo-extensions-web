@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import React from "react";
 import styles from "./style.module.scss";
 
 // 用途：オプション選択肢のチェックボックス部分
@@ -9,7 +9,7 @@ interface Props {
   checked: boolean;
 }
 
-export const CheckBox: Function = (props: Props): ReactElement => {
+export const CheckBox = React.memo((props: Props) => {
   // todo:checkedを渡していくのは不適切なのでボタン側でチェックの状態を管理したいが以下のコメントアウトしたコードが動かないためcheckedを渡す方式にした。
   // const [checkedState, setCheckedState] = useState<boolean>(false)
   // const change = () => {
@@ -26,4 +26,4 @@ export const CheckBox: Function = (props: Props): ReactElement => {
       <button className={props.checked ? styles.select_box_checked : styles.select_box_empty} onClick={props.onClick} />
     </div>
   )
-}
+})

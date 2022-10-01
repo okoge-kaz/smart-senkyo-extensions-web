@@ -1,7 +1,7 @@
 import { CheckBox } from "components/atoms/CheckBox";
 import { MainDirection } from "components/atoms/MainDirection";
 import { SelectLabel } from "components/atoms/SelectLabel";
-import { ReactElement } from "react";
+import React, { ReactElement } from "react";
 import styles from "./style.module.scss";
 
 // 用途：オプション選択部分
@@ -15,7 +15,7 @@ interface Props {
 }
 
 
-export const MainChoiceArea = (props: Props) => {
+export const MainChoiceArea = React.memo((props: Props) => {
   const ComingSoonChoice = () => (
     <div className={styles.choice_container}>
       <SelectLabel text="Coming Soon ..." />
@@ -39,4 +39,4 @@ export const MainChoiceArea = (props: Props) => {
       {props.main_button_elements}
     </div>
   )
-}
+})
