@@ -10,13 +10,13 @@ import { useState } from "react";
 
 const Home: NextPage = () => {
 	// オプション管理
-	const [addressSeparaterOptionState, setAddressSeparaterOptionState] =
+	const [addressSeparatorOptionState, setAddressSeparatorOptionState] =
 		useState<Boolean>(true);
 	// 住所分割チェックボックス用オプションスイッチ関数
 	const switchAddressSeparaterOption: React.MouseEventHandler<
 		HTMLButtonElement
 	> = () => {
-		setAddressSeparaterOptionState(!addressSeparaterOptionState);
+		setAddressSeparatorOptionState(!addressSeparatorOptionState);
 	};
 
 	// ステップ管理
@@ -167,7 +167,7 @@ const Home: NextPage = () => {
 			<MainContent
 				stepState={stepState}
 				onAddressSeparaterActed={switchAddressSeparaterOption}
-				address_separater_selected_flag={addressSeparaterOptionState}
+				address_separater_selected_flag={addressSeparatorOptionState}
 				proceedStep={proceedStep}
 				backStep={backStep}
 				setFileState={setFileState}
