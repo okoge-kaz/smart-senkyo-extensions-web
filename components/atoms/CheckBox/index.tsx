@@ -21,9 +21,6 @@ export const CheckBox: Function = (props: Props): ReactElement => {
   //     <button className={checkedState ? styles.select_box_checked : styles.select_box_empty} onClick={change}/>
   //   </div>
   // )
-  const testActed = () => {
-    console
-  }
   return(
     <div className={styles.select_container}>
       <button className={props.checked ? styles.select_box_checked : styles.select_box_empty} onClick={props.onClick}/>

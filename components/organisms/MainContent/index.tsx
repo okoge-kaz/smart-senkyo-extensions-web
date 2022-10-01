@@ -1,12 +1,12 @@
-import { MainActionArea } from "components/molecules/MainActionArea";
-import { MainChoiceArea } from "components/molecules/MainChoiceArea";
-import { UseGuideArea } from "components/molecules/UseGuideArea";
-import { ReactElement } from "react";
 import { ToBackButton } from 'components/atoms/ToBackButton';
 import { ToNextButton } from 'components/atoms/ToNextButton';
 import { UploadButton } from 'components/atoms/UploadButton';
-import styles from './style.module.scss'
-import type {Dispatch, SetStateAction, MouseEventHandler} from 'react'
+import { MainActionArea } from "components/molecules/MainActionArea";
+import { MainChoiceArea } from "components/molecules/MainChoiceArea";
+import { UseGuideArea } from "components/molecules/UseGuideArea";
+import type { Dispatch, MouseEventHandler, SetStateAction } from 'react';
+import { ReactElement } from "react";
+import styles from './style.module.scss';
 
 // 用途：ページ中央にあるメインの表示要素をまとめたもの
 // 役割：引数をほぼそのまま流す
@@ -23,7 +23,7 @@ interface Props{
   downloadConvertedFile: MouseEventHandler<HTMLButtonElement>;
 }
 
-export const MainContent: Function = (props: Props) => {
+export const MainContent: Function = (props: Props): ReactElement => {
   // 1番目のステップのメインのボタン
   const add_file_button: ReactElement = <UploadButton label="Add File" onActed={props.proceedStep} setFile={props.setFileState}/>
   // 2,3番目のステップのメインのボタン
@@ -58,7 +58,6 @@ export const MainContent: Function = (props: Props) => {
     }
   }
   return(
-
     <div>
       {main_area(props.stepState)}
       <UseGuideArea/>

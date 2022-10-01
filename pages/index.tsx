@@ -11,13 +11,14 @@ import { useState } from 'react';
 const Home: NextPage = () => {
   // オプション管理
   const [addressSeparaterOptionState, setAddressSeparaterOptionState] = useState<Boolean>(true)
+  // 住所分割チェックボックス用オプションスイッチ関数
   const switchAddressSeparaterOption: React.MouseEventHandler<HTMLButtonElement> = () => {
     setAddressSeparaterOptionState(!addressSeparaterOptionState)
-    console.log("lkjlkjljk")
   }
   
   // ステップ管理
   const [stepState, setStepState] = useState<number>(1);
+  // 次へのボタン用ステップ遷移関数
   const proceedStep: React.MouseEventHandler<HTMLButtonElement> = () => {
     if(stepState<7){
       setStepState(stepState+1)
@@ -25,14 +26,18 @@ const Home: NextPage = () => {
       setStepState(1)
     }
   }
+  // 戻るボタン用ステップ遷移関数
   const backStep: React.MouseEventHandler<HTMLButtonElement> = () => {
     if(1<stepState){
       setStepState(stepState-1)
     }
   }
   // ファイル管理
+  // アップロードされたファイル管理
   const [fileState, setFileState] = useState<File[]>([])
+  // ダウンロードしたjsonをファイル化したファイルの管理
   const [exportBlobState, setExportBlobState] = useState<Blob[]>([])
+  // ダウンロードしたjsonをファイル化したファイルのファイル名管理
   const [exportBlobNameState, setExportBlobNameState] = useState<string[]>([])
   // ダウンロードのステップでメインのボタンに割り当てる関数
   const downloadConvertedFile = () => {
@@ -183,13 +188,10 @@ const Home: NextPage = () => {
       file_reader.readAsArrayBuffer(file)// file_reader.readAsArrayBuffer()は非同期なので注意
     }
   }
-  // テスト用ファイル名一覧
-  const names = Object.values(fileState).map((value, index) => {return (<li key={"file"+index}>{value.name}</li>)})
   
   return(
     <div>
         <Header page_title="自動名簿整形ツール"/>
-        {/* {display_content(stepState)} */}
         <MainContent stepState={stepState} onAddressSeparaterActed={switchAddressSeparaterOption} address_separater_selected_flag={addressSeparaterOptionState} proceedStep={proceedStep} backStep={backStep} setFileState={setFileState} convertFile={convertFile} downloadConvertedFile={downloadConvertedFile}/>
     </div>
   )
