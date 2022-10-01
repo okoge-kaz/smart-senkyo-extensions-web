@@ -11,7 +11,7 @@ interface Props {
   main_action_direction: string[];
   main_button_elements: ReactElement;
   onAddressSeparatorActed: React.MouseEventHandler<HTMLButtonElement>;
-  address_separater_selected_flag: boolean;
+  address_separator_selected_flag: boolean;
 }
 
 
@@ -24,7 +24,7 @@ export const MainChoiceArea = (props: Props) => {
 
   const AddressSeparatorChoice = () => (
     <div className={styles.choice_container}>
-      <CheckBox onClick={props.onAddressSeparatorActed} checked={props.address_separater_selected_flag} />
+      <CheckBox onClick={props.onAddressSeparatorActed} checked={props.address_separator_selected_flag} />
       <SelectLabel text="住所分割" />
     </div>
   )
