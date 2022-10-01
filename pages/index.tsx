@@ -75,54 +75,6 @@ const Home: NextPage = () => {
     var finishedNumber: number = 0
     const files_list: File[] = Object.values(fileState)
     const fileState_length: number = files_list.length;
-    // excelをjson化するファーストプラン
-    // files_list.map((file, index)=>{
-    //   console.log("each map start")
-    //   const file_reader: FileReader = file_readers[index]
-    //   file_reader.onload = (event) => {
-    //     console.log("each load start")
-    //     console.log(finishedNumber)
-    //     const result = event.target?.result
-    //     const workbook = XLSX.read(result, {type: "array"})
-    //     // todo:ここを各シートごとにすることで複数シートに対応可能
-    //     const sheets_name: string = workbook.SheetNames[0]
-    //     sheets_names[index] = sheets_name
-    //     const worksheet = workbook.Sheets[sheets_names[index]]
-    //     json_formed_sheets[index] = XLSX.utils.sheet_to_json(worksheet)
-    //     console.log(json_formed_sheets[index])
-    //     finishedNumber = finishedNumber++
-    //     console.log(finishedNumber)
-    //     // APIへの送信は最後に終了した要素に任せる
-    //     if(finishedNumber == fileState_length){
-    //       const json_formed_data = json_formed_sheets.map((json_formed_sheet, index)=>(
-    //         {"file_name": sheets_names[index],
-    //         "input_data": json_formed_sheet})
-    //       )
-    //       console.log(json_formed_data)
-    //       // input_dataの整形
-    //       const request_json = {
-    //         "request_time": request_time,
-    //         "input_data_type": "json",
-    //         "input_data": json_formed_data
-    //       }
-
-    //       my_fetch(convert_url, request_json)
-    //       // const res = await fetch(convert_url, {
-    //       //   method: 'GET',
-    //       //   headers:{
-    //       //     'Content-Type': 'application/json'
-    //       //   },
-    //       //   body: JSON.stringify(request_json)
-    //       // })
-
-    //     }
-    //   }
-  //     console.log("each read start")
-  //     file_reader.readAsArrayBuffer(file)
-  //     console.log("map end")
-    // })
-    // console.log("all map ended")
-
     // excelをjson化するセカンドプラン
     // todo: for文よりmapとかを使いたい
     for(let index=0; index<fileState_length; index++){
