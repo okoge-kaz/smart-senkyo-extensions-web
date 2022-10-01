@@ -8,5 +8,7 @@ interface Props {
 }
 
 export const SelectLabel: Function = (props: Props): ReactElement => (
-  <p className={styles.label}>{props.text}</p>
+  <p className={styles.label}>
+    {props.text}
+  </p>
 )
