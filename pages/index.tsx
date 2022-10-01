@@ -1,3 +1,4 @@
+import { ToBackButton } from 'components/atoms/ToBackButton';
 import { ToNextButton } from 'components/atoms/ToNextButton';
 import { UploadButton } from 'components/atoms/UploadButton';
 import { Header } from 'components/organisms/Hreader';
@@ -5,7 +6,7 @@ import { MainContent } from 'components/organisms/MainContent';
 import { saveAs } from 'file-saver';
 import type { NextPage } from 'next';
 import { ReactElement, useState } from 'react';
-
+import styles from './style.module.scss'
 
 // 用途：ここがsmart-senkyo-extensions-webで表示される画面
 // 役割：ファイル、オプション、ステップ(本プロジェクトでは使用者がどの段階まで作業を進めたかをステップで管理している)
@@ -27,6 +28,11 @@ const Home: NextPage = () => {
       setStepState(stepState+1)
     }else{
       setStepState(1)
+    }
+  }
+  const backStep: React.MouseEventHandler<HTMLButtonElement> = () => {
+    if(1<stepState){
+      setStepState(stepState-1)
     }
   }
   // ファイル管理
@@ -187,17 +193,17 @@ const Home: NextPage = () => {
 
   // todo:戻るボタンを作成する
   // 1番目のステップのメインのボタン
-  const add_file_button: ReactElement = <UploadButton label="Add File" onActed={proceedStep} setFile={setFileState}/> 
+  const add_file_button: ReactElement = <UploadButton label="Add File" onActed={proceedStep} setFile={setFileState}/>
   // 2,3番目のステップのメインのボタン
-  const choose_option_button: ReactElement = <ToNextButton label="Choose Option" onClick={proceedStep}/>
+  const choose_option_button: ReactElement = <div className={styles.button_container}><ToBackButton label="戻る" onClick={backStep}/><ToNextButton label="Choose Option" onClick={proceedStep}/></div>
   // 4番目のステップのメインのボタン
-  const convert_button: ReactElement = <ToNextButton label="Convert" onClick={convertFile}/>
+  const convert_button: ReactElement = <div className={styles.button_container}><ToBackButton label="戻る" onClick={backStep}/><ToNextButton label="Convert" onClick={convertFile}/></div>
   // 5番目のステップのボタン(convert待ち)
   const no_button: ReactElement = <div></div>
   // 6番目のステップのボタン
   const download_button: ReactElement = <ToNextButton label="Download" onClick={downloadConvertedFile}/>
   // 7番目のステップのボタン
-  const restart_button: ReactElement = <ToNextButton label="Restart" onClick={proceedStep}/>
+  const restart_button: ReactElement = <div className={styles.button_container}><ToBackButton label="戻る" onClick={backStep}/><ToNextButton label="Restart" onClick={proceedStep}/></div>
 
   // todo:pageで指定していることが多い MainContentにstepを加味した表示情報の判断を委ねるべき
   const display_content = (step: number): ReactElement => {

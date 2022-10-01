@@ -2,7 +2,7 @@ import { NumberedSubTitle } from "components/atoms/NumberedSubTitle"
 import { SubText } from "components/atoms/SubText"
 import { TopicTitle } from "components/atoms/TopicTitle"
 import { ReactElement } from "react"
-import styles from "./style.module.css"
+import styles from "./style.module.scss"
 
 // 用途：画面下部の使い方
 // 役割：使い方を構成する要素の配置

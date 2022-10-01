@@ -1,5 +1,7 @@
 #upload_label {
-  padding: 23px 210px 0px;
+  // todo: ボタンの幅を決める
+  // padding: 23px 210px 0px;
+  padding: 23px 80px 0px;
   background: var(--button-color);
   border-radius: 100px;
   font-family: 'Gujarati MT';
@@ -28,7 +30,9 @@
   line-height: 92px;
   color: #F8FFFE;
   position: relative;
-  left: 95px;
+  // todo: ボタンの大きさ選択
+  // left: 95px;
+  left: 65px;
 }
 
 #upload_container {
