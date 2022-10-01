@@ -6,5 +6,7 @@ interface Props {
 }
 
 export const SubText: Function = (props: Props): ReactElement => (
-  <p id={styles.text}>{props.text}</p>
+  <p id={styles.text}>
+    {props.text}
+  </p>
 )
