@@ -1,4 +1,4 @@
-import { Header } from "components/organisms/Hreader";
+import { Header } from "components/organisms/Header";
 import { MainContent } from "components/organisms/MainContent";
 import { saveAs } from "file-saver";
 import type { NextPage } from "next";
@@ -9,7 +9,7 @@ import { useState } from "react";
 //      excelファイルのjson化及び処理用APIへのリクエスト発行、返答受信、返答のexcel化
 
 const Home: NextPage = () => {
-	const [addressSeparatorOptionState, setAddressSeparatorOptionState] = useState<Boolean>(true) // option管理
+	const [addressSeparatorOptionState, setAddressSeparatorOptionState] = useState<boolean>(true) // option管理
 	const [stepState, setStepState] = useState<number>(1) // ステップ管理
 	const [fileState, setFileState] = useState<File[]>([]) // アップロードされたファイル管理
 	const [exportBlobState, setExportBlobState] = useState<Blob[]>([]) // ダウンロードしたjsonをファイル化したファイルの管理
@@ -57,28 +57,16 @@ const Home: NextPage = () => {
 		const hour = date.getHours().toString();
 		const minute = date.getMinutes().toString();
 		const second = date.getSeconds().toString();
-		const request_time =
-			year +
-			"-" +
-			month +
-			"-" +
-			day +
-			"T" +
-			hour +
-			":" +
-			minute +
-			"." +
-			second +
-			"Z";
+		const request_time = `${year}-${month}-${day} ${hour}:${minute}.${second}Z`
 
 		// ファイルをjsonにしてAPIへ
 		const XLSX = require("xlsx");
 		// todo: ここのvarを避けたい
-		var sheets_names: string[] = ["", "", "", "", "", "", "", "", "", ""]; // todo: ここのせいで10ファイルまでなので可変長に
+		let sheets_names: string[] = ["", "", "", "", "", "", "", "", "", ""]; // todo: ここのせいで10ファイルまでなので可変長に
 		const json_formed_sheets = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]; // todo: ここのせいで10ファイルまでなので可変長に
 
 		// excelファイルの読み込みが非同期のため、ファイル読み込みが終了したファイル数を保管する変数
-		var finishedNumber: number = 0;
+		let finishedNumber: number = 0;
 		const files_list: File[] = Object.values(fileState);
 		const fileState_length: number = files_list.length;
 		// excelをjson化するセカンドプラン
@@ -156,8 +144,8 @@ const Home: NextPage = () => {
 			<Header page_title="自動名簿整形ツール" />
 			<MainContent
 				stepState={stepState}
-				onAddressSeparaterActed={switchAddressSeparatorOption}
-				address_separater_selected_flag={addressSeparatorOptionState}
+				onAddressSeparatorActed={switchAddressSeparatorOption}
+				address_separator_selected_flag={addressSeparatorOptionState}
 				proceedStep={proceedStep}
 				backStep={backStep}
 				setFileState={setFileState}
