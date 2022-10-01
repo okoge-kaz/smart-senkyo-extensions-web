@@ -7,7 +7,6 @@ interface Props{
   setFile: Function;
 }
 
-
 export const DownloadButton: Function = (props: Props): ReactElement =>{
   const handleFileImportChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) props.setFile(e.target.files) // File
