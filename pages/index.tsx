@@ -9,41 +9,31 @@ import { useState } from "react";
 //      excelファイルのjson化及び処理用APIへのリクエスト発行、返答受信、返答のexcel化
 
 const Home: NextPage = () => {
-	// オプション管理
-	const [addressSeparatorOptionState, setAddressSeparatorOptionState] =
-		useState<Boolean>(true);
-	// 住所分割チェックボックス用オプションスイッチ関数
-	const switchAddressSeparaterOption: React.MouseEventHandler<
-		HTMLButtonElement
-	> = () => {
-		setAddressSeparatorOptionState(!addressSeparatorOptionState);
-	};
+	const [addressSeparatorOptionState, setAddressSeparatorOptionState] = useState<Boolean>(true) // option管理
+	const [stepState, setStepState] = useState<number>(1) // ステップ管理
+	const [fileState, setFileState] = useState<File[]>([]) // アップロードされたファイル管理
+	const [exportBlobState, setExportBlobState] = useState<Blob[]>([]) // ダウンロードしたjsonをファイル化したファイルの管理
+	const [exportBlobNameState, setExportBlobNameState] = useState<string[]>([]) // ダウンロードしたjsonをファイル化したファイルのファイル名管理
 
-	// ステップ管理
-	const [stepState, setStepState] = useState<number>(1);
-	// 次へのボタン用ステップ遷移関数
-	const proceedStep: React.MouseEventHandler<HTMLButtonElement> = () => {
+	const switchAddressSeparatorOption: React.MouseEventHandler<HTMLButtonElement> = () => { // 住所分割チェックボックス用オプションスイッチ関数
+		setAddressSeparatorOptionState(!addressSeparatorOptionState);
+	}
+
+	const proceedStep: React.MouseEventHandler<HTMLButtonElement> = () => { // 次へのボタン用ステップ遷移関数
 		if (stepState < 7) {
 			setStepState(stepState + 1);
 		} else {
 			setStepState(1);
 		}
 	};
-	// 戻るボタン用ステップ遷移関数
-	const backStep: React.MouseEventHandler<HTMLButtonElement> = () => {
+
+	const backStep: React.MouseEventHandler<HTMLButtonElement> = () => { // 戻るボタン用ステップ遷移関数
 		if (1 < stepState) {
 			setStepState(stepState - 1);
 		}
 	};
-	// ファイル管理
-	// アップロードされたファイル管理
-	const [fileState, setFileState] = useState<File[]>([]);
-	// ダウンロードしたjsonをファイル化したファイルの管理
-	const [exportBlobState, setExportBlobState] = useState<Blob[]>([]);
-	// ダウンロードしたjsonをファイル化したファイルのファイル名管理
-	const [exportBlobNameState, setExportBlobNameState] = useState<string[]>([]);
-	// ダウンロードのステップでメインのボタンに割り当てる関数
-	const downloadConvertedFile = () => {
+
+	const downloadConvertedFile = () => { // ダウンロードのステップでメインのボタンに割り当てる関数
 		console.log("download 押された");
 		exportBlobState.forEach((exportBlob, index) => {
 			// todo: exportBlob使わないのならexportBlobState.forEach()でなく[0,1,2,...]的なリストを使えばいい
@@ -166,7 +156,7 @@ const Home: NextPage = () => {
 			<Header page_title="自動名簿整形ツール" />
 			<MainContent
 				stepState={stepState}
-				onAddressSeparaterActed={switchAddressSeparaterOption}
+				onAddressSeparaterActed={switchAddressSeparatorOption}
 				address_separater_selected_flag={addressSeparatorOptionState}
 				proceedStep={proceedStep}
 				backStep={backStep}
