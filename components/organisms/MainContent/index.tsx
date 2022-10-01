@@ -14,8 +14,8 @@ import styles from './style.module.scss';
 //      遷移先ページでステップごとに書き換える必要がある要素の作成
 interface Props {
   stepState: number;
-  onAddressSeparaterActed: React.MouseEventHandler<HTMLButtonElement>;
-  address_separater_selected_flag: boolean;
+  onAddressSeparatorActed: React.MouseEventHandler<HTMLButtonElement>;
+  address_separator_selected_flag: boolean;
   proceedStep: React.MouseEventHandler<HTMLButtonElement>;
   backStep: React.MouseEventHandler<HTMLButtonElement>;
   setFileState: Dispatch<SetStateAction<File[]>>;
@@ -44,7 +44,7 @@ export const MainContent: Function = (props: Props): ReactElement => {
       case 2:
         return <MainActionArea main_action_direction={["オプションを選択してください"]} main_button_elements={choose_option_button} />
       case 3:
-        return <MainChoiceArea main_action_direction={["オプションを選択してください"]} main_button_elements={choose_option_button} onAddressSeparatorActed={props.onAddressSeparaterActed} address_separater_selected_flag={props.address_separater_selected_flag} />
+        return <MainChoiceArea main_action_direction={["オプションを選択してください"]} main_button_elements={choose_option_button} onAddressSeparatorActed={props.onAddressSeparatorActed} address_separator_selected_flag={props.address_separator_selected_flag} />
       case 4:
         return <MainActionArea main_action_direction={["名簿整形を行います"]} main_button_elements={convert_button} />
       case 5:
