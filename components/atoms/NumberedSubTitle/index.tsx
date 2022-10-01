@@ -14,4 +14,3 @@ export const NumberedSubTitle: Function = (props: Props): ReactElement => (
     <p id={styles.title}>{props.text}</p>
   </div>
 )
-
