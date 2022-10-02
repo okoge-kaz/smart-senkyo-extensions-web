@@ -4,7 +4,7 @@
   padding: 23px 80px 0px;
   background: var(--button-color);
   border-radius: 100px;
-  font-family: 'Gujarati MT';
+  font-family: var(--main-font);
   font-style: normal;
   font-weight: 700;
   font-size: 60px;
@@ -23,7 +23,7 @@
 
 #upload_container::before {
   content: "+";
-  font-family: 'Gujarati MT';
+  font-family: var(--main-font);
   font-style: normal;
   font-weight: 700;
   font-size: 60px;

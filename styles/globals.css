@@ -12,6 +12,8 @@
   --checkbox-background-color: #E4E3E3;
   --checkbox-background-color-checked: #50CAFF;
   --choice-background-color: #EEFFFC;
+  --title-font: 'Inter';
+  --main-font: 'Gujarati MT';
 }
 
 html,

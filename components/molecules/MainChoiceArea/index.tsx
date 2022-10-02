@@ -30,7 +30,7 @@ export const MainChoiceArea = React.memo((props: Props) => {
   )
 
   return (
-    <div id={styles.main_choice_container}>
+    <div>
       <MainDirection texts={props.main_action_direction} />
       {/* todo:ここの選択要素の指定方法でうまい方法募集　現在の方法では汎用性に欠けるがギリ許容か */}
       <AddressSeparatorChoice />

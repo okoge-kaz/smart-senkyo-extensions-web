@@ -60,8 +60,12 @@ export const MainContent = React.memo((props: Props) => {
 
   return (
     <div>
-      {main_area(props.stepState)}
-      <UseGuideArea />
+      <div className={styles.main_action_container}>
+        {main_area(props.stepState)}
+      </div>
+      <div>
+        <UseGuideArea />
+      </div>
     </div>
   )
 })

@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const MainActionArea = React.memo((props: Props) => (
-  <div id={styles.main_action_container}>
+  <div>
     <MainDirection texts={props.main_action_direction} />
     {props.main_button_elements}
   </div>
