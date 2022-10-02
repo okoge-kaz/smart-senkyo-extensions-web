@@ -5,7 +5,7 @@ import { MainActionArea } from "components/molecules/MainActionArea";
 import { MainChoiceArea } from "components/molecules/MainChoiceArea";
 import { UseGuideArea } from "components/molecules/UseGuideArea";
 import type { Dispatch, MouseEventHandler, SetStateAction } from 'react';
-import React, { ReactElement } from "react";
+import React from "react";
 import styles from './style.module.scss';
 
 // 用途：ページ中央にあるメインの表示要素をまとめたもの
@@ -25,19 +25,19 @@ interface Props {
 
 export const MainContent = React.memo((props: Props) => {
   // 1番目のステップのメインのボタン
-  const add_file_button: ReactElement = <UploadButton label="Add File" onActed={props.proceedStep} setFile={props.setFileState} />
+  const add_file_button = <UploadButton label="Add File" onActed={props.proceedStep} setFile={props.setFileState} />
   // 2,3番目のステップのメインのボタン
-  const choose_option_button: ReactElement = <div className={styles.button_container}><ToBackButton label="戻る" onClick={props.backStep} /><ToNextButton label="Choose Option" onClick={props.proceedStep} /></div>
+  const choose_option_button = <div className={styles.button_container}><ToBackButton label="戻る" onClick={props.backStep} /><ToNextButton label="Choose Option" onClick={props.proceedStep} /></div>
   // 4番目のステップのメインのボタン
-  const convert_button: ReactElement = <div className={styles.button_container}><ToBackButton label="戻る" onClick={props.backStep} /><ToNextButton label="Convert" onClick={props.convertFile} /></div>
+  const convert_button = <div className={styles.button_container}><ToBackButton label="戻る" onClick={props.backStep} /><ToNextButton label="Convert" onClick={props.convertFile} /></div>
   // 5番目のステップのボタン(convert待ち)
-  const no_button: ReactElement = <div></div>
+  const no_button = <div></div>
   // 6番目のステップのボタン
-  const download_button: ReactElement = <ToNextButton label="Download" onClick={props.downloadConvertedFile} />
+  const download_button = <ToNextButton label="Download" onClick={props.downloadConvertedFile} />
   // 7番目のステップのボタン
-  const restart_button: ReactElement = <div className={styles.button_container}><ToBackButton label="戻る" onClick={props.backStep} /><ToNextButton label="Restart" onClick={props.proceedStep} /></div>
+  const restart_button = <div className={styles.button_container}><ToBackButton label="戻る" onClick={props.backStep} /><ToNextButton label="Restart" onClick={props.proceedStep} /></div>
 
-  const main_area: Function = (step: number): ReactElement => {
+  const main_area = (step: number) => {
     switch (step) {
       case 1:
         return <MainActionArea main_action_direction={["名簿整形したいファイルを10個まで選択してください", "shiftを押しながら選択することで複数選択できます"]} main_button_elements={add_file_button} />
