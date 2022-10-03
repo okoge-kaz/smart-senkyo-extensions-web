@@ -10,17 +10,6 @@ interface Props {
 }
 
 export const CheckBox = React.memo((props: Props) => {
-  // todo:checkedを渡していくのは不適切なのでボタン側でチェックの状態を管理したいが以下のコメントアウトしたコードが動かないためcheckedを渡す方式にした。
-  // const [checkedState, setCheckedState] = useState<boolean>(false)
-  // const change = () => {
-  //   setCheckedState(!checkedState)
-  //   props.onActed()
-  // }
-  // return(
-  //   <div className={styles.select_container}>
-  //     <button className={checkedState ? styles.select_box_checked : styles.select_box_empty} onClick={change}/>
-  //   </div>
-  // )
   return (
     <div className={styles.select_container}>
       <button className={props.checked ? styles.select_box_checked : styles.select_box_empty} onClick={props.onClick} />
