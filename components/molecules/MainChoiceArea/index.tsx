@@ -4,9 +4,6 @@ import { SelectLabel } from "components/atoms/SelectLabel";
 import React, { ReactElement } from "react";
 import styles from "./style.module.scss";
 
-// 用途：オプション選択部分
-// 役割：チェックボックス選択画面の構成要素の配置
-
 interface Props {
   main_action_direction: string[];
   main_button_elements: ReactElement;

@@ -1,8 +1,6 @@
 import { PageTitleArea } from "components/molecules/PageTitleArea";
 import React from "react";
-
-// 用途：ヘッダー部分
-// 役割：引数をそのまま流すだけ// todo:このorganismsいる？
+// todo:このorganismsいる？
 
 interface Props {
   page_title: string;
