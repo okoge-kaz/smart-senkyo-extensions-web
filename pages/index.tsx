@@ -9,43 +9,43 @@ import { useState } from "react";
 //      excelファイルのjson化及び処理用APIへのリクエスト発行、返答受信、返答のexcel化
 
 const Home: NextPage = () => {
-	const [addressSeparatorOptionState, setAddressSeparatorOptionState] = useState<boolean>(true) // option管理
-	const [stepState, setStepState] = useState<number>(1) // ステップ管理
-	const [fileState, setFileState] = useState<File[]>([]) // アップロードされたファイル管理
-	const [exportBlobState, setExportBlobState] = useState<Blob[]>([]) // ダウンロードしたjsonをファイル化したファイルの管理
-	const [exportBlobNameState, setExportBlobNameState] = useState<string[]>([]) // ダウンロードしたjsonをファイル化したファイルのファイル名管理
+	const [address_separator_option_state, set_address_separator_option_state] = useState<boolean>(true) // option管理
+	const [step_state, set_step_state] = useState<number>(1) // ステップ管理
+	const [file_state, set_file_state] = useState<File[]>([]) // アップロードされたファイル管理
+	const [export_blob_state, set_export_blob_state] = useState<Blob[]>([]) // ダウンロードしたjsonをファイル化したファイルの管理
+	const [export_blob_name_state, set_export_blob_name_state] = useState<string[]>([]) // ダウンロードしたjsonをファイル化したファイルのファイル名管理
 
 	const switch_address_separator_option: React.MouseEventHandler<HTMLButtonElement> = () => { // 住所分割チェックボックス用オプションスイッチ関数
-		setAddressSeparatorOptionState(!addressSeparatorOptionState);
+		set_address_separator_option_state(!address_separator_option_state);
 	}
 
 	const proceed_step: React.MouseEventHandler<HTMLButtonElement> = () => { // 次へのボタン用ステップ遷移関数
-		if (stepState < 7) {
-			setStepState(stepState + 1);
+		if (step_state < 7) {
+			set_step_state(step_state + 1);
 		} else {
-			setStepState(1);
+			set_step_state(1);
 		}
 	};
 
 	const back_step: React.MouseEventHandler<HTMLButtonElement> = () => { // 戻るボタン用ステップ遷移関数
-		if (1 < stepState) {
-			setStepState(stepState - 1);
+		if (1 < step_state) {
+			set_step_state(step_state - 1);
 		}
 	};
 
 	const download_converted_file = () => { // ダウンロードのステップでメインのボタンに割り当てる関数
 		console.log("download 押された");
-		exportBlobState.forEach((exportBlob, index) => {
-			// todo: exportBlob使わないのならexportBlobState.forEach()でなく[0,1,2,...]的なリストを使えばいい
-			if (exportBlobState[index] != null && exportBlobNameState[index] != null)
-				saveAs(exportBlobState[index], exportBlobNameState[index]);
+		export_blob_state.forEach((exportBlob, index) => {
+			// todo: exportBlob使わないのならexport_blob_state.forEach()でなく[0,1,2,...]的なリストを使えばいい
+			if (export_blob_state[index] != null && export_blob_name_state[index] != null)
+				saveAs(export_blob_state[index], export_blob_name_state[index]);
 		});
-		setStepState(7);
+		set_step_state(7);
 	};
 	// convert時に呼ばれる関数
 	const convert_file: React.MouseEventHandler<HTMLButtonElement> = async () => {
 		// todo: proceed_step()を使いたい
-		setStepState(stepState + 1);
+		set_step_state(step_state + 1);
 		// todo: 一時的なもの　要修正
 		const convert_url = "http://localhost:3000/api/excel_json";
 
@@ -67,11 +67,11 @@ const Home: NextPage = () => {
 
 		// excelファイルの読み込みが非同期のため、ファイル読み込みが終了したファイル数を保管する変数
 		let finishedNumber: number = 0;
-		const files_list: File[] = Object.values(fileState);
-		const fileState_length: number = files_list.length;
+		const files_list: File[] = Object.values(file_state);
+		const file_state_length: number = files_list.length;
 		// excelをjson化するセカンドプラン
 		// todo: for文よりmapとかを使いたい
-		for (let index = 0; index < fileState_length; index++) {
+		for (let index = 0; index < file_state_length; index++) {
 			const file_reader = new FileReader();
 			const file = files_list[index];
 			file_reader.onload = async (event) => {
@@ -86,7 +86,7 @@ const Home: NextPage = () => {
 				console.log(json_formed_sheets[index]);
 				finishedNumber = finishedNumber + 1;
 				// file_reader.readAsArrayBuffer()は非同期なので最後に終了したfile_readerにAPI送信処理を任せる
-				if (finishedNumber == fileState_length) {
+				if (finishedNumber == file_state_length) {
 					// APIへの送信
 					// todo: 選択したオプション、エラーメッセージ等がjsonに含まれていないので含める
 					const json_formed_data = json_formed_sheets.map(
@@ -112,8 +112,8 @@ const Home: NextPage = () => {
 					});
 					console.log("処理終了");
 					// todo: proceed_step()を使いたい
-					// todo: setStepState(stepState+1)ではダメだった
-					setStepState(6);
+					// todo: set_step_state(step_state+1)ではダメだった
+					set_step_state(6);
 					// todo: 本来はここで帰ってきたjsonをexcelに直す
 					const exportBook = XLSX.utils.book_new();
 					const worksheet_data = [
@@ -131,8 +131,8 @@ const Home: NextPage = () => {
 					const export_blob = new Blob([export_file], {
 						type: "application/octet-stream",
 					});
-					setExportBlobState([export_blob]);
-					setExportBlobNameState(["tmpTestDownload.xlsx"]);
+					set_export_blob_state([export_blob]);
+					set_export_blob_name_state(["tmpTestDownload.xlsx"]);
 				}
 			};
 			file_reader.readAsArrayBuffer(file); // file_reader.readAsArrayBuffer()は非同期なので注意
@@ -143,12 +143,12 @@ const Home: NextPage = () => {
 		<div>
 			<Header page_title="自動名簿整形ツール" />
 			<MainContent
-				stepState={stepState}
+				step_state={step_state}
 				on_address_separator_acted={switch_address_separator_option}
-				address_separator_selected_flag={addressSeparatorOptionState}
+				address_separator_selected_flag={address_separator_option_state}
 				proceed_step={proceed_step}
 				back_step={back_step}
-				setFileState={setFileState}
+				set_file_state={set_file_state}
 				convert_file={convert_file}
 				download_converted_file={download_converted_file}
 			/>

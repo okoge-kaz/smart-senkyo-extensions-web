@@ -13,19 +13,19 @@ import styles from './style.module.scss';
 //      ステップ数により表示内容を変更する
 //      遷移先ページでステップごとに書き換える必要がある要素の作成
 interface Props {
-  stepState: number;
+  step_state: number;
   address_separator_selected_flag: boolean;
   on_address_separator_acted: React.MouseEventHandler<HTMLButtonElement>;
   proceed_step: React.MouseEventHandler<HTMLButtonElement>;
   back_step: React.MouseEventHandler<HTMLButtonElement>;
-  setFileState: Dispatch<SetStateAction<File[]>>;
+  set_file_state: Dispatch<SetStateAction<File[]>>;
   convert_file: React.MouseEventHandler<HTMLButtonElement>;
   download_converted_file: MouseEventHandler<HTMLButtonElement>;
 }
 
 export const MainContent = React.memo((props: Props) => {
   // 1番目のステップのメインのボタン
-  const add_file_button = <UploadButton label="Add File" onActed={props.proceed_step} setFile={props.setFileState} />
+  const add_file_button = <UploadButton label="Add File" onActed={props.proceed_step} setFile={props.set_file_state} />
   // 2,3番目のステップのメインのボタン
   const choose_option_button = <div className={styles.button_container}><ToBackButton label="戻る" onClick={props.back_step} /><ToNextButton label="Choose Option" onClick={props.proceed_step} /></div>
   // 4番目のステップのメインのボタン
@@ -61,7 +61,7 @@ export const MainContent = React.memo((props: Props) => {
   return (
     <div>
       <div className={styles.main_action_container}>
-        {main_area(props.stepState)}
+        {main_area(props.step_state)}
       </div>
       <div>
         <UseGuideArea />
