@@ -15,27 +15,27 @@ import styles from './style.module.scss';
 interface Props {
   stepState: number;
   address_separator_selected_flag: boolean;
-  onAddressSeparatorActed: React.MouseEventHandler<HTMLButtonElement>;
-  proceedStep: React.MouseEventHandler<HTMLButtonElement>;
-  backStep: React.MouseEventHandler<HTMLButtonElement>;
+  on_address_separator_acted: React.MouseEventHandler<HTMLButtonElement>;
+  proceed_step: React.MouseEventHandler<HTMLButtonElement>;
+  back_step: React.MouseEventHandler<HTMLButtonElement>;
   setFileState: Dispatch<SetStateAction<File[]>>;
-  convertFile: React.MouseEventHandler<HTMLButtonElement>;
-  downloadConvertedFile: MouseEventHandler<HTMLButtonElement>;
+  convert_file: React.MouseEventHandler<HTMLButtonElement>;
+  download_converted_file: MouseEventHandler<HTMLButtonElement>;
 }
 
 export const MainContent = React.memo((props: Props) => {
   // 1番目のステップのメインのボタン
-  const add_file_button = <UploadButton label="Add File" onActed={props.proceedStep} setFile={props.setFileState} />
+  const add_file_button = <UploadButton label="Add File" onActed={props.proceed_step} setFile={props.setFileState} />
   // 2,3番目のステップのメインのボタン
-  const choose_option_button = <div className={styles.button_container}><ToBackButton label="戻る" onClick={props.backStep} /><ToNextButton label="Choose Option" onClick={props.proceedStep} /></div>
+  const choose_option_button = <div className={styles.button_container}><ToBackButton label="戻る" onClick={props.back_step} /><ToNextButton label="Choose Option" onClick={props.proceed_step} /></div>
   // 4番目のステップのメインのボタン
-  const convert_button = <div className={styles.button_container}><ToBackButton label="戻る" onClick={props.backStep} /><ToNextButton label="Convert" onClick={props.convertFile} /></div>
+  const convert_button = <div className={styles.button_container}><ToBackButton label="戻る" onClick={props.back_step} /><ToNextButton label="Convert" onClick={props.convert_file} /></div>
   // 5番目のステップのボタン(convert待ち)
   const no_button = <div></div>
   // 6番目のステップのボタン
-  const download_button = <ToNextButton label="Download" onClick={props.downloadConvertedFile} />
+  const download_button = <ToNextButton label="Download" onClick={props.download_converted_file} />
   // 7番目のステップのボタン
-  const restart_button = <div className={styles.button_container}><ToBackButton label="戻る" onClick={props.backStep} /><ToNextButton label="Restart" onClick={props.proceedStep} /></div>
+  const restart_button = <div className={styles.button_container}><ToBackButton label="戻る" onClick={props.back_step} /><ToNextButton label="Restart" onClick={props.proceed_step} /></div>
 
   const main_area = (step: number) => {
     switch (step) {
@@ -44,7 +44,7 @@ export const MainContent = React.memo((props: Props) => {
       case 2:
         return <MainActionArea main_action_direction={["オプションを選択してください"]} main_button_elements={choose_option_button} />
       case 3:
-        return <MainChoiceArea main_action_direction={["オプションを選択してください"]} main_button_elements={choose_option_button} onAddressSeparatorActed={props.onAddressSeparatorActed} address_separator_selected_flag={props.address_separator_selected_flag} />
+        return <MainChoiceArea main_action_direction={["オプションを選択してください"]} main_button_elements={choose_option_button} on_address_separator_acted={props.on_address_separator_acted} address_separator_selected_flag={props.address_separator_selected_flag} />
       case 4:
         return <MainActionArea main_action_direction={["名簿整形を行います"]} main_button_elements={convert_button} />
       case 5:

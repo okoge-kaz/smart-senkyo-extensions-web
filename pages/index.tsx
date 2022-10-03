@@ -15,11 +15,11 @@ const Home: NextPage = () => {
 	const [exportBlobState, setExportBlobState] = useState<Blob[]>([]) // ダウンロードしたjsonをファイル化したファイルの管理
 	const [exportBlobNameState, setExportBlobNameState] = useState<string[]>([]) // ダウンロードしたjsonをファイル化したファイルのファイル名管理
 
-	const switchAddressSeparatorOption: React.MouseEventHandler<HTMLButtonElement> = () => { // 住所分割チェックボックス用オプションスイッチ関数
+	const switch_address_separator_option: React.MouseEventHandler<HTMLButtonElement> = () => { // 住所分割チェックボックス用オプションスイッチ関数
 		setAddressSeparatorOptionState(!addressSeparatorOptionState);
 	}
 
-	const proceedStep: React.MouseEventHandler<HTMLButtonElement> = () => { // 次へのボタン用ステップ遷移関数
+	const proceed_step: React.MouseEventHandler<HTMLButtonElement> = () => { // 次へのボタン用ステップ遷移関数
 		if (stepState < 7) {
 			setStepState(stepState + 1);
 		} else {
@@ -27,13 +27,13 @@ const Home: NextPage = () => {
 		}
 	};
 
-	const backStep: React.MouseEventHandler<HTMLButtonElement> = () => { // 戻るボタン用ステップ遷移関数
+	const back_step: React.MouseEventHandler<HTMLButtonElement> = () => { // 戻るボタン用ステップ遷移関数
 		if (1 < stepState) {
 			setStepState(stepState - 1);
 		}
 	};
 
-	const downloadConvertedFile = () => { // ダウンロードのステップでメインのボタンに割り当てる関数
+	const download_converted_file = () => { // ダウンロードのステップでメインのボタンに割り当てる関数
 		console.log("download 押された");
 		exportBlobState.forEach((exportBlob, index) => {
 			// todo: exportBlob使わないのならexportBlobState.forEach()でなく[0,1,2,...]的なリストを使えばいい
@@ -43,8 +43,8 @@ const Home: NextPage = () => {
 		setStepState(7);
 	};
 	// convert時に呼ばれる関数
-	const convertFile: React.MouseEventHandler<HTMLButtonElement> = async () => {
-		// todo: proceedStep()を使いたい
+	const convert_file: React.MouseEventHandler<HTMLButtonElement> = async () => {
+		// todo: proceed_step()を使いたい
 		setStepState(stepState + 1);
 		// todo: 一時的なもの　要修正
 		const convert_url = "http://localhost:3000/api/excel_json";
@@ -111,7 +111,7 @@ const Home: NextPage = () => {
 						body: JSON.stringify(request_json),
 					});
 					console.log("処理終了");
-					// todo: proceedStep()を使いたい
+					// todo: proceed_step()を使いたい
 					// todo: setStepState(stepState+1)ではダメだった
 					setStepState(6);
 					// todo: 本来はここで帰ってきたjsonをexcelに直す
@@ -144,13 +144,13 @@ const Home: NextPage = () => {
 			<Header page_title="自動名簿整形ツール" />
 			<MainContent
 				stepState={stepState}
-				onAddressSeparatorActed={switchAddressSeparatorOption}
+				on_address_separator_acted={switch_address_separator_option}
 				address_separator_selected_flag={addressSeparatorOptionState}
-				proceedStep={proceedStep}
-				backStep={backStep}
+				proceed_step={proceed_step}
+				back_step={back_step}
 				setFileState={setFileState}
-				convertFile={convertFile}
-				downloadConvertedFile={downloadConvertedFile}
+				convert_file={convert_file}
+				download_converted_file={download_converted_file}
 			/>
 		</div>
 	);

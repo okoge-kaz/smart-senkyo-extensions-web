@@ -10,7 +10,7 @@ import styles from "./style.module.scss";
 interface Props {
   main_action_direction: string[];
   main_button_elements: ReactElement;
-  onAddressSeparatorActed: React.MouseEventHandler<HTMLButtonElement>;
+  on_address_separator_acted: React.MouseEventHandler<HTMLButtonElement>;
   address_separator_selected_flag: boolean;
 }
 
@@ -24,7 +24,7 @@ export const MainChoiceArea = React.memo((props: Props) => {
 
   const AddressSeparatorChoice = () => (
     <div className={styles.choice_container}>
-      <CheckBox onClick={props.onAddressSeparatorActed} checked={props.address_separator_selected_flag} />
+      <CheckBox onClick={props.on_address_separator_acted} checked={props.address_separator_selected_flag} />
       <SelectLabel text="住所分割" />
     </div>
   )
