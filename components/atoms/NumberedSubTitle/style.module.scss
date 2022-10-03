@@ -13,7 +13,6 @@
 }
 
 #title {
-  line-height: 30px;
   font-family: var(--main-font);
   font-style: normal;
   font-weight: 700;
@@ -21,7 +20,7 @@
   display: flex;
   align-items: center;
   color: var(--title-color);
-  margin: 0 0 0 9px;
+  margin-left: 9px;
 }
 
 #title_container {
