@@ -8,6 +8,378 @@ import { useState } from "react";
 // 役割：ファイル、オプション、ステップ(本プロジェクトでは使用者がどの段階まで作業を進めたかをステップで管理している)
 //      excelファイルのjson化及び処理用APIへのリクエスト発行、返答受信、返答のexcel化
 
+type APIFileColData = {
+	[key: string]: string;
+}
+
+type APIFileData = {
+	delete: APIFileColData;
+}
+
+type APIResponseFileData = {
+	file_name: string;
+	file_data: string;
+}
+
+type APIResponse = {
+	file_number: number;
+	response_data: APIResponseFileData[]
+}
+
+// todo: ローカルでの実験が終わったら消す
+const res_json = {
+	"file_number": 1,
+	"response_data": [
+			{
+					"file_name": "file_name_1",
+					"file_data": {
+							"delete": {
+									"0": "",
+									"1": "delete",
+									"2": "",
+									"3": "削除",
+									"4": ""
+							},
+							"update": {
+									"0": "",
+									"1": "update",
+									"2": "",
+									"3": "変更",
+									"4": ""
+							},
+							"duplicated": {
+									"0": "",
+									"1": "duplicated",
+									"2": "",
+									"3": "重複無視",
+									"4": ""
+							},
+							"import_number": {
+									"0": "",
+									"1": "import_number",
+									"2": "",
+									"3": "No.",
+									"4": ""
+							},
+							"last_name": {
+									"0": "氏名",
+									"1": "last_name",
+									"2": "",
+									"3": "姓",
+									"4": "山田太郎"
+							},
+							"first_name": {
+									"0": "",
+									"1": "first_name",
+									"2": "",
+									"3": "名",
+									"4": ""
+							},
+							"shop_name": {
+									"0": "",
+									"1": "shop_name",
+									"2": "",
+									"3": "法人名",
+									"4": ""
+							},
+							"last_kana": {
+									"0": "",
+									"1": "last_kana",
+									"2": "",
+									"3": "姓（カナ）",
+									"4": ""
+							},
+							"first_kana": {
+									"0": "",
+									"1": "first_kana",
+									"2": "",
+									"3": "名（カナ）",
+									"4": ""
+							},
+							"title": {
+									"0": "",
+									"1": "title",
+									"2": "",
+									"3": "敬称",
+									"4": ""
+							},
+							"family_id": {
+									"0": "",
+									"1": "family_id",
+									"2": "",
+									"3": "家主NO.",
+									"4": ""
+							},
+							"relation_name": {
+									"0": "",
+									"1": "relation_name",
+									"2": "",
+									"3": "続柄",
+									"4": ""
+							},
+							"birthday": {
+									"0": "",
+									"1": "birthday",
+									"2": "",
+									"3": "生年月日",
+									"4": ""
+							},
+							"age": {
+									"0": "",
+									"1": "age",
+									"2": "",
+									"3": "年齢",
+									"4": ""
+							},
+							"gender": {
+									"0": "",
+									"1": "gender",
+									"2": "",
+									"3": "性別",
+									"4": ""
+							},
+							"zipcode": {
+									"0": "現住所",
+									"1": "zipcode",
+									"2": "",
+									"3": "郵便番号",
+									"4": "123-4567"
+							},
+							"prefecture": {
+									"0": "",
+									"1": "prefecture",
+									"2": "",
+									"3": "都道府県",
+									"4": "東京都"
+							},
+							"address1": {
+									"0": "",
+									"1": "address1",
+									"2": "",
+									"3": "市区町村",
+									"4": "港区"
+							},
+							"address2": {
+									"0": "",
+									"1": "address2",
+									"2": "",
+									"3": "町域",
+									"4": ""
+							},
+							"address3": {
+									"0": "",
+									"1": "address3",
+									"2": "",
+									"3": "丁目・番地",
+									"4": ""
+							},
+							"address4": {
+									"0": "",
+									"1": "address4",
+									"2": "",
+									"3": "建物名",
+									"4": ""
+							},
+							"address5": {
+									"0": "",
+									"1": "address5",
+									"2": "",
+									"3": "部屋番号",
+									"4": ""
+							},
+							"tel1": {
+									"0": "",
+									"1": "tel1",
+									"2": "",
+									"3": "電話番号1",
+									"4": "090-1234-5678"
+							},
+							"tel2": {
+									"0": "",
+									"1": "tel2",
+									"2": "",
+									"3": "電話番号2",
+									"4": ""
+							},
+							"fax": {
+									"0": "",
+									"1": "fax",
+									"2": "",
+									"3": "FAX番号",
+									"4": ""
+							},
+							"email": {
+									"0": "",
+									"1": "email",
+									"2": "",
+									"3": "メールアドレス",
+									"4": ""
+							},
+							"company_name": {
+									"0": "勤務先",
+									"1": "company_name",
+									"2": "",
+									"3": "会社名",
+									"4": ""
+							},
+							"company_kana": {
+									"0": "",
+									"1": "company_kana",
+									"2": "",
+									"3": "会社名（カナ）",
+									"4": ""
+							},
+							"post": {
+									"0": "",
+									"1": "post",
+									"2": "",
+									"3": "肩書",
+									"4": ""
+							},
+							"company_zipcode": {
+									"0": "",
+									"1": "company_zipcode",
+									"2": "",
+									"3": "郵便番号",
+									"4": ""
+							},
+							"company_prefecture": {
+									"0": "",
+									"1": "company_prefecture",
+									"2": "",
+									"3": "都道府県",
+									"4": ""
+							},
+							"company_address1": {
+									"0": "",
+									"1": "company_address1",
+									"2": "",
+									"3": "市区町村",
+									"4": ""
+							},
+							"company_address2": {
+									"0": "",
+									"1": "company_address2",
+									"2": "",
+									"3": "町域",
+									"4": ""
+							},
+							"company_address3": {
+									"0": "",
+									"1": "company_address3",
+									"2": "",
+									"3": "丁目・番地",
+									"4": ""
+							},
+							"company_address4": {
+									"0": "",
+									"1": "company_address4",
+									"2": "",
+									"3": "建物名",
+									"4": ""
+							},
+							"company_tel": {
+									"0": "",
+									"1": "company_tel",
+									"2": "",
+									"3": "電話番号",
+									"4": ""
+							},
+							"company_fax": {
+									"0": "",
+									"1": "company_fax",
+									"2": "",
+									"3": "FAX番号",
+									"4": ""
+							},
+							"company_url": {
+									"0": "",
+									"1": "company_url",
+									"2": "",
+									"3": "URL",
+									"4": ""
+							},
+							"send_type": {
+									"0": "",
+									"1": "send_type",
+									"2": "",
+									"3": "送付先",
+									"4": ""
+							},
+							"place": {
+									"0": "",
+									"1": "place",
+									"2": "",
+									"3": "出会った場所",
+									"4": ""
+							},
+							"began_at": {
+									"0": "",
+									"1": "began_at",
+									"2": "",
+									"3": "出会った日付",
+									"4": ""
+							},
+							"rank": {
+									"0": "",
+									"1": "rank",
+									"2": "",
+									"3": "ランク",
+									"4": ""
+							},
+							"died_at": {
+									"0": "",
+									"1": "died_at",
+									"2": "",
+									"3": "物故日",
+									"4": ""
+							},
+							"memo": {
+									"0": "",
+									"1": "memo",
+									"2": "",
+									"3": "メモ欄",
+									"4": "二区"
+							},
+							"tag1": {
+									"0": "",
+									"1": "tag1",
+									"2": "1",
+									"3": "紹介者",
+									"4": ""
+							},
+							"tag2": {
+									"0": "",
+									"1": "tag2",
+									"2": "1",
+									"3": "物故日",
+									"4": ""
+							},
+							"tag3": {
+									"0": "",
+									"1": "tag3",
+									"2": "1",
+									"3": "誕生日",
+									"4": ""
+							},
+							"tag4": {
+									"0": "",
+									"1": "tag4",
+									"2": "1",
+									"3": "タグ1",
+									"4": "タグ1"
+							}
+					}
+			}
+	],
+	"not_converted_data": [
+			{
+					"file_name": "file_name_1",
+					"file_data": {}
+			}
+	]
+}
+
 const Home: NextPage = () => {
 	const [address_separator_option_state, set_address_separator_option_state] = useState<boolean>(true) // option管理
 	const [step_state, set_step_state] = useState<number>(1) // ステップ管理
@@ -47,7 +419,8 @@ const Home: NextPage = () => {
 		// todo: proceed_step()を使いたい
 		set_step_state(step_state + 1);
 		// todo: 一時的なもの　要修正
-		const convert_url = "http://localhost:3000/api/excel_json";
+		const convert_url = "https://601cdzfw2l.execute-api.ap-northeast-1.amazonaws.com/default/smart-senkyo-extensions-lambda";
+		// const convert_url = "https://test";
 
 		// 時刻
 		const date = new Date();
@@ -89,50 +462,67 @@ const Home: NextPage = () => {
 				if (finishedNumber == file_state_length) {
 					// APIへの送信
 					// todo: 選択したオプション、エラーメッセージ等がjsonに含まれていないので含める
-					const json_formed_data = json_formed_sheets.map(
-						(json_formed_sheet, index) => ({
-							file_name: sheets_names[index],
-							input_data: json_formed_sheet,
-						})
-					);
-					// input_dataの整形
-					const request_json = {
-						request_time: request_time,
-						input_data_type: "json",
-						input_data: json_formed_data,
-					};
-					console.log("request_json");
-					console.log(request_json);
-					const res = await fetch(convert_url, {
-						method: "POST",
-						headers: {
-							"Content-Type": "application/json; charset=utf-8",
-						},
-						body: JSON.stringify(request_json),
-					});
+					// const json_formed_data = json_formed_sheets.map(
+					// 	(json_formed_sheet, index) => ({
+					// 		file_name: sheets_names[index],
+					// 		input_data: json_formed_sheet,
+					// 	})
+					// );
+					// // input_dataの整形
+					// const request_json = {
+					// 	request_time: request_time,
+					// 	input_data_type: "json",
+					// 	input_data: json_formed_data,
+					// };
+					// console.log("request_json");
+					// console.log(request_json);
+					// const res = await fetch(convert_url, {
+					// 	method: "POST",
+					// 	headers: {
+					// 		"Content-Type": "application/json; charset=utf-8",
+					// 	},
+					// 	body: JSON.stringify(request_json),
+					// 	// mode: 'no-cors',//todo:ここ分からない
+					// });
+					// // ここで帰ってきたjsonをexcelに直す
+					// const res_json = await res.json() as APIResponse;
+					console.log("res_json")
+					console.log(res_json)
+					const file_number = res_json.file_number;
+					const response_data = res_json.response_data;
+					for(let file_no = 0; file_no < file_number; file_no++){
+						const file_name = response_data[file_no].file_name;
+						const file_data = response_data[file_no].file_data;
+						// todo: 出力順を固定するかjsonのデータの由来するか決める
+						const col_based_data: string[][]  = new Array<Array<string>>(0);
+						const col_name_list = ['delete', 'first_name', 'last_name']
+						for(let col_name of col_name_list){
+							// todo: ここの警告を消したい
+							col_based_data.push(Object.values(file_data[col_name]))
+						}
+						console.log("original_excel_data_array")
+						console.log(Array.of(col_based_data));
+						const transpose_func = (a: string[][]) => a[0].map((_, c) => a.map(r => r[c]));
+						const worksheet_data = transpose_func(col_based_data)
+						const exportBook = XLSX.utils.book_new();
+						const newSheet = XLSX.utils.aoa_to_sheet(worksheet_data);
+						XLSX.utils.book_append_sheet(exportBook, newSheet, "Sheet1");
+						const excel_opt = {
+							bookType: "xlsx",
+							bookSST: true,
+							type: "array",
+						};
+						const export_file = XLSX.write(exportBook, excel_opt);
+						const export_blob = new Blob([export_file], {
+							type: "application/octet-stream",
+						});
+						set_export_blob_state([export_blob]);
+						set_export_blob_name_state([`${file_name}.xlsx`]);
+					}
 					console.log("処理終了");
 					// todo: proceed_step()を使いたい
 					// todo: set_step_state(step_state+1)ではダメだった
 					set_step_state(6);
-					// todo: 本来はここで帰ってきたjsonをexcelに直す
-					const exportBook = XLSX.utils.book_new();
-					const worksheet_data = [
-						["ヘッダ１", "ヘッダ２"],
-						["値１", "値２"],
-					];
-					const newSheet = XLSX.utils.aoa_to_sheet(worksheet_data);
-					XLSX.utils.book_append_sheet(exportBook, newSheet, "testSheet");
-					const excel_opt = {
-						bookType: "xlsx",
-						bookSST: true,
-						type: "array",
-					};
-					const export_file = XLSX.write(exportBook, excel_opt);
-					const export_blob = new Blob([export_file], {
-						type: "application/octet-stream",
-					});
-					set_export_blob_state([export_blob]);
-					set_export_blob_name_state(["tmpTestDownload.xlsx"]);
 				}
 			};
 			file_reader.readAsArrayBuffer(file); // file_reader.readAsArrayBuffer()は非同期なので注意
