@@ -111,7 +111,7 @@ const Home: NextPage = () => {
 					const json_formed_data = json_formed_sheets.map(
 						(json_formed_sheet, index) => ({
 							file_name: sheets_names[index],
-							input_data: json_formed_sheet,
+							file_data: json_formed_sheet,
 						})
 					);
 					// input_dataの整形
