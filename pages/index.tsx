@@ -188,7 +188,7 @@ const Home: NextPage = () => {
 	}
 	
 	// 自身を再起的に呼び出し非同期であるFileReader.readAsArrayBuffer()でファイルを順に読み込むための関数
-	async function readFileList(index: number, files_list: File[], file_reader: FileReader, file_names: string[], json_formed_sheets: Array<JSON>, file_state_length: number){
+	async function read_file_list(index: number, files_list: File[], file_reader: FileReader, file_names: string[], json_formed_sheets: Array<JSON>, file_state_length: number){
 		const file = files_list[index];
 		file_reader.onload = (event) =>{
 			// file_readerの読み込み結果
@@ -200,7 +200,7 @@ const Home: NextPage = () => {
 			json_formed_sheets[index] = XLSX.utils.sheet_to_json(worksheet);
 			// まだ読み取るファイルがあるなら再帰的に呼び出す
 			if(index < file_state_length - 1){
-				readFileList(index+1, files_list, file_reader, file_names, json_formed_sheets, file_state_length);
+				read_file_list(index+1, files_list, file_reader, file_names, json_formed_sheets, file_state_length);
 			}else if(index == file_state_length - 1){
 				post_to_convert(json_formed_sheets, file_names);
 			}else{
@@ -222,7 +222,7 @@ const Home: NextPage = () => {
 		let file_names: string[] = new Array(file_state_length);
 		const json_formed_sheets = new Array(file_state_length);
 		const file_reader = new FileReader();
-		await readFileList(0, files_list, file_reader, file_names, json_formed_sheets, file_state_length);
+		await read_file_list(0, files_list, file_reader, file_names, json_formed_sheets, file_state_length);
 	};
 
 	return (
