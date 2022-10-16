@@ -125,10 +125,69 @@ const Home: NextPage = () => {
 						const file_data = response_data[file_no].file_data;
 						// todo: 出力順を固定するかjsonのデータの由来するか決める
 						const col_based_data: string[][]  = new Array<Array<string>>(0);
-						const col_name_list = ['delete', 'address1', 'last_name']
+						const col_name_list: Array<string> = [
+							"delete",
+							"update",
+							"duplicated",
+							"import_number",
+							"last_name",
+							"first_name",
+							"shop_name",
+							"last_kana",
+							"first_kana",
+							"title",
+							"family_id",
+							"relation_name",
+							"birthday",
+							"age",
+							"gender",
+							"zipcode",
+							"prefecture",
+							"address1",
+							"address2",
+							"address3",
+							"address4",
+							"address5",
+							"tel1",
+							"tel2",
+							"fax",
+							"email",
+							"company_name",
+							"company_kana",
+							"post",
+							"company_zipcode",
+							"company_prefecture",
+							"company_address1",
+							"company_address2",
+							"company_address3",
+							"company_address4",
+							"company_tel",
+							"company_fax",
+							"company_url",
+							"send_type",
+							"place",
+							"began_at",
+							"rank",
+							"died_at",
+							"memo",
+							// tags
+							"tag1",
+							"tag2",
+							"tag3",
+							"tag4",
+							"tag5",
+							"tag6",
+							"tag7",
+							"tag8",
+							"tag9",
+							"tag10",
+						]
+						const file_data_keys = Object.keys(file_data);
 						for(let col_name of col_name_list){
 							// todo: ここの警告を消したい
-							col_based_data.push(Object.values(file_data[col_name]))
+							if(file_data_keys.includes(col_name)){
+								col_based_data.push(Object.values(file_data[col_name]))
+							}
 						}
 						console.log("original_excel_data_array")
 						console.log(Array.of(col_based_data));
