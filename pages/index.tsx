@@ -1,6 +1,7 @@
 import { Header } from "components/organisms/Header";
 import { MainContent } from "components/organisms/MainContent";
 import { saveAs } from "file-saver";
+// import AsyncFileReader from "functions/AsyncFileReader";
 import type { NextPage } from "next";
 import { useState } from "react";
 
@@ -80,32 +81,14 @@ const Home: NextPage = () => {
 
 		// ファイルをjsonにしてAPIへ
 		const XLSX = require("xlsx");
-		// todo: ここのvarを避けたい
-		let sheets_names: string[] = ["", "", "", "", "", "", "", "", "", ""]; // todo: ここのせいで10ファイルまでなので可変長に
-		const json_formed_sheets = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]; // todo: ここのせいで10ファイルまでなので可変長に
-
-		// excelファイルの読み込みが非同期のため、ファイル読み込みが終了したファイル数を保管する変数
-		let finishedNumber: number = 0;
 		const files_list: File[] = Object.values(file_state);
 		const file_state_length: number = files_list.length;
-		// excelをjson化するセカンドプラン
-		// todo: for文よりmapとかを使いたい
-		for (let index = 0; index < file_state_length; index++) {
-			const file_reader = new FileReader();
-			const file = files_list[index];
-			file_reader.onload = async (event) => {
-				// file_readerの読み込み結果
-				const result = event.target?.result;
-				const workbook = XLSX.read(result, { type: "array" });
-				// todo:ここを各シートごとにすることで複数シートに対応可能
-				const sheets_name: string = workbook.SheetNames[0];
-				sheets_names[index] = sheets_name;
-				const worksheet = workbook.Sheets[sheets_names[index]];
-				json_formed_sheets[index] = XLSX.utils.sheet_to_json(worksheet);
-				console.log(json_formed_sheets[index]);
-				finishedNumber = finishedNumber + 1;
-				// file_reader.readAsArrayBuffer()は非同期なので最後に終了したfile_readerにAPI送信処理を任せる
-				if (finishedNumber == file_state_length) {
+		// todo: ここのvarを避けたい
+		let sheets_names: string[] = new Array(file_state_length); // todo: ここのせいで10ファイルまでなので可変長に
+		const json_formed_sheets = new Array(file_state_length); // todo: ここのせいで10ファイルまでなので可変長に
+		const file_reader = new FileReader();
+		// todo:ここでの関数定義はやめた方がいい
+		async function post_to_convert(){
 					// APIへの送信
 					// todo: 選択したオプション、エラーメッセージ等がjsonに含まれていないので含める
 					const json_formed_data = json_formed_sheets.map(
@@ -128,51 +111,79 @@ const Home: NextPage = () => {
 							"Content-Type": "application/json; charset=utf-8",
 						},
 						body: JSON.stringify(request_json),
-						// mode: 'no-cors',//todo:ここ分からない
 					});
 					// // ここで帰ってきたjsonをexcelに直す
 					const res_json = await res.json() as APIResponse;
 					console.log("res_json")
 					console.log(res_json)
-					// const file_number = res_json.file_number;
-					// const response_data = res_json.response_data;
-					// for(let file_no = 0; file_no < file_number; file_no++){
-					// 	const file_name = response_data[file_no].file_name;
-					// 	const file_data = response_data[file_no].file_data;
-					// 	// todo: 出力順を固定するかjsonのデータの由来するか決める
-					// 	const col_based_data: string[][]  = new Array<Array<string>>(0);
-					// 	const col_name_list = ['delete', 'first_name', 'last_name']
-					// 	for(let col_name of col_name_list){
-					// 		// todo: ここの警告を消したい
-					// 		col_based_data.push(Object.values(file_data[col_name]))
-					// 	}
-					// 	console.log("original_excel_data_array")
-					// 	console.log(Array.of(col_based_data));
-					// 	const transpose_func = (a: string[][]) => a[0].map((_, c) => a.map(r => r[c]));
-					// 	const worksheet_data = transpose_func(col_based_data)
-					// 	const exportBook = XLSX.utils.book_new();
-					// 	const newSheet = XLSX.utils.aoa_to_sheet(worksheet_data);
-					// 	XLSX.utils.book_append_sheet(exportBook, newSheet, "Sheet1");
-					// 	const excel_opt = {
-					// 		bookType: "xlsx",
-					// 		bookSST: true,
-					// 		type: "array",
-					// 	};
-					// 	const export_file = XLSX.write(exportBook, excel_opt);
-					// 	const export_blob = new Blob([export_file], {
-					// 		type: "application/octet-stream",
-					// 	});
-					// 	set_export_blob_state([export_blob]);
-					// 	set_export_blob_name_state([`${file_name}.xlsx`]);
-					// }
+					const file_number = res_json.file_number;
+					const response_data = res_json.response_data;
+					const export_blobs = new Array(file_number);
+					const export_blob_names = new Array(file_number);
+					for(let file_no = 0; file_no < file_number; file_no++){
+						const file_name = response_data[file_no].file_name;
+						const file_data = response_data[file_no].file_data;
+						// todo: 出力順を固定するかjsonのデータの由来するか決める
+						const col_based_data: string[][]  = new Array<Array<string>>(0);
+						const col_name_list = ['delete', 'address1', 'last_name']
+						for(let col_name of col_name_list){
+							// todo: ここの警告を消したい
+							col_based_data.push(Object.values(file_data[col_name]))
+						}
+						console.log("original_excel_data_array")
+						console.log(Array.of(col_based_data));
+						// 転置を取る
+						const transpose_func = (a: string[][]) => a[0].map((_, c) => a.map(r => r[c]));
+						const worksheet_data = transpose_func(col_based_data)
+						const exportBook = XLSX.utils.book_new();
+						const newSheet = XLSX.utils.aoa_to_sheet(worksheet_data);
+						XLSX.utils.book_append_sheet(exportBook, newSheet, sheets_names[file_no]);
+						const excel_opt = {
+							bookType: "xlsx",
+							bookSST: true,
+							type: "array",
+						};
+						const export_file = XLSX.write(exportBook, excel_opt);
+						const export_blob = new Blob([export_file], {
+							type: "application/octet-stream",
+						});
+						export_blobs[file_no] = export_blob;
+						export_blob_names[file_no] = `${file_name}.xlsx`;
+					}
+					set_export_blob_state(export_blobs);
+					set_export_blob_name_state(export_blob_names);
 					console.log("処理終了");
 					// todo: proceed_step()を使いたい
 					// todo: set_step_state(step_state+1)ではダメだった
 					set_step_state(6);
+		}
+		// todo:ここでの関数定義はやめた方がいい
+		async function readFileList(index: number){
+			const file = files_list[index];
+			file_reader.onload = (event) =>{
+				// file_readerの読み込み結果
+				const result = event.target?.result;
+				const XLSX = require("xlsx");
+				const workbook = XLSX.read(result, { type: "array" });
+				// todo:ここを各シートごとにすることで複数シートに対応可能
+				const sheets_name: string = workbook.SheetNames[0];
+				sheets_names[index] = sheets_name;
+				const worksheet = workbook.Sheets[sheets_names[index]];
+				json_formed_sheets[index] = XLSX.utils.sheet_to_json(worksheet);
+				console.log(json_formed_sheets[index]);
+				// まだ読み取るファイルがあるなら再帰的に呼び出す
+				if(index < file_state_length - 1){
+					readFileList(index+1);
+				}else if(index == file_state_length - 1){
+					post_to_convert();
+				}else{
+					console.log("ファイルの読み込み時に異常が発生しました。");
+					set_step_state(-1);
 				}
-			};
+			}
 			file_reader.readAsArrayBuffer(file); // file_reader.readAsArrayBuffer()は非同期なので注意
 		}
+		await readFileList(0);
 	};
 
 	return (
