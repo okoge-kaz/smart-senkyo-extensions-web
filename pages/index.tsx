@@ -9,14 +9,6 @@ import { useState } from "react";
 // 役割：ファイル、オプション、ステップ(本プロジェクトでは使用者がどの段階まで作業を進めたかをステップで管理している)
 //      excelファイルのjson化及び処理用APIへのリクエスト発行、返答受信、返答のexcel化
 
-type APIFileColData = {
-	[key: string]: string;
-}
-
-type APIFileData = {
-	delete: APIFileColData;
-}
-
 type APIResponseFileData = {
 	file_name: string;
 	file_data: string;
@@ -61,188 +53,190 @@ const Home: NextPage = () => {
 		});
 		set_step_state(7);
 	};
+
+
+		// todo: 一時的なもの　要修正
+	const convert_url = "https://601cdzfw2l.execute-api.ap-northeast-1.amazonaws.com/default/smart-senkyo-extensions-lambda";
+	// const convert_url = "https://test";
+	const XLSX = require("xlsx");
+
+	async function post_to_convert(json_formed_sheets: Array<JSON>, sheets_names: string[], request_time: string){
+		// APIへの送信
+		// todo: 選択したオプション、エラーメッセージ等がjsonに含まれていないので含める
+		const json_formed_data = json_formed_sheets.map(
+			(json_formed_sheet, index) => ({
+				file_name: sheets_names[index],
+				file_data: json_formed_sheet,
+			})
+		);
+		// input_dataの整形
+		const request_json = {
+			request_time: request_time,
+			input_data_type: "json",
+			input_data: json_formed_data,
+		};
+		console.log("request_json");
+		console.log(request_json);
+		const res = await fetch(convert_url, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json; charset=utf-8",
+			},
+			body: JSON.stringify(request_json),
+		});
+		// // ここで帰ってきたjsonをexcelに直す
+		const res_json = await res.json() as APIResponse;
+		console.log("res_json")
+		console.log(res_json)
+		const file_number = res_json.file_number;
+		const response_data = res_json.response_data;
+		const export_blobs = new Array(file_number);
+		const export_blob_names = new Array(file_number);
+		for(let file_no = 0; file_no < file_number; file_no++){
+			const file_name = response_data[file_no].file_name;
+			const file_data = response_data[file_no].file_data;
+			// todo: 出力順を固定するかjsonのデータの由来するか決める
+			const col_based_data: string[][]  = new Array<Array<string>>(0);
+			const col_name_list: Array<string> = [
+				"delete",
+				"update",
+				"duplicated",
+				"import_number",
+				"last_name",
+				"first_name",
+				"shop_name",
+				"last_kana",
+				"first_kana",
+				"title",
+				"family_id",
+				"relation_name",
+				"birthday",
+				"age",
+				"gender",
+				"zipcode",
+				"prefecture",
+				"address1",
+				"address2",
+				"address3",
+				"address4",
+				"address5",
+				"tel1",
+				"tel2",
+				"fax",
+				"email",
+				"company_name",
+				"company_kana",
+				"post",
+				"company_zipcode",
+				"company_prefecture",
+				"company_address1",
+				"company_address2",
+				"company_address3",
+				"company_address4",
+				"company_tel",
+				"company_fax",
+				"company_url",
+				"send_type",
+				"place",
+				"began_at",
+				"rank",
+				"died_at",
+				"memo",
+				// tags
+				"tag1",
+				"tag2",
+				"tag3",
+				"tag4",
+				"tag5",
+				"tag6",
+				"tag7",
+				"tag8",
+				"tag9",
+				"tag10",
+			]
+			const file_data_keys = Object.keys(file_data);
+			for(let col_name of col_name_list){
+				// todo: ここの警告を消したい
+				if(file_data_keys.includes(col_name)){
+					col_based_data.push(Object.values(file_data[col_name]))
+				}
+			}
+			console.log("original_excel_data_array")
+			console.log(Array.of(col_based_data));
+			// 転置を取る
+			const transpose_func = (a: string[][]) => a[0].map((_, c) => a.map(r => r[c]));
+			const worksheet_data = transpose_func(col_based_data)
+			const exportBook = XLSX.utils.book_new();
+			const newSheet = XLSX.utils.aoa_to_sheet(worksheet_data);
+			XLSX.utils.book_append_sheet(exportBook, newSheet, sheets_names[file_no]);
+			const excel_opt = {
+				bookType: "xlsx",
+				bookSST: true,
+				type: "array",
+			};
+			const export_file = XLSX.write(exportBook, excel_opt);
+			const export_blob = new Blob([export_file], {
+				type: "application/octet-stream",
+			});
+			export_blobs[file_no] = export_blob;
+			export_blob_names[file_no] = `${file_name}.xlsx`;
+		}
+		set_export_blob_state(export_blobs);
+		set_export_blob_name_state(export_blob_names);
+		console.log("処理終了");
+		// todo: proceed_step()を使いたい
+		// todo: set_step_state(step_state+1)ではダメだった
+		set_step_state(6);
+	}
+
+	async function readFileList(index: number, files_list: File[], file_reader: FileReader, sheets_names: string[], json_formed_sheets: Array<JSON>, file_state_length: number){
+		// 時刻
+		const date = new Date();
+		const year: string = date.getFullYear().toString();
+		const month: string = (date.getMonth() + 1).toString(); //getMonthでは1月が0になる
+		const day: string = date.getDay().toString();
+		const hour: string = date.getHours().toString();
+		const minute: string = date.getMinutes().toString();
+		const second: string = date.getSeconds().toString();
+		const request_time: string = `${year}-${month}-${day} ${hour}:${minute}.${second}Z`
+		const file = files_list[index];
+		file_reader.onload = (event) =>{
+			// file_readerの読み込み結果
+			const result = event.target?.result;
+			const XLSX = require("xlsx");
+			const workbook = XLSX.read(result, { type: "array" });
+			// todo:ここを各シートごとにすることで複数シートに対応可能
+			const sheets_name: string = workbook.SheetNames[0];
+			sheets_names[index] = sheets_name;
+			const worksheet = workbook.Sheets[sheets_names[index]];
+			json_formed_sheets[index] = XLSX.utils.sheet_to_json(worksheet);
+			console.log(json_formed_sheets[index]);
+			// まだ読み取るファイルがあるなら再帰的に呼び出す
+			if(index < file_state_length - 1){
+				readFileList(index+1, files_list, file_reader, sheets_names, json_formed_sheets, file_state_length);
+			}else if(index == file_state_length - 1){
+				post_to_convert(json_formed_sheets, sheets_names, request_time);
+			}else{
+				console.log("ファイルの読み込み時に異常が発生しました。");
+				set_step_state(-1);
+			}
+		}
+		file_reader.readAsArrayBuffer(file); // file_reader.readAsArrayBuffer()は非同期なので注意
+	}
+
 	// convert時に呼ばれる関数
 	const convert_file: React.MouseEventHandler<HTMLButtonElement> = async () => {
 		// todo: proceed_step()を使いたい
 		set_step_state(step_state + 1);
-		// todo: 一時的なもの　要修正
-		const convert_url = "https://601cdzfw2l.execute-api.ap-northeast-1.amazonaws.com/default/smart-senkyo-extensions-lambda";
-		// const convert_url = "https://test";
-
-		// 時刻
-		const date = new Date();
-		const year = date.getFullYear().toString();
-		const month = (date.getMonth() + 1).toString(); //getMonthでは1月が0になる
-		const day = date.getDay().toString();
-		const hour = date.getHours().toString();
-		const minute = date.getMinutes().toString();
-		const second = date.getSeconds().toString();
-		const request_time = `${year}-${month}-${day} ${hour}:${minute}.${second}Z`
 
 		// ファイルをjsonにしてAPIへ
-		const XLSX = require("xlsx");
 		const files_list: File[] = Object.values(file_state);
 		const file_state_length: number = files_list.length;
 		// todo: ここのvarを避けたい
-		let sheets_names: string[] = new Array(file_state_length); // todo: ここのせいで10ファイルまでなので可変長に
-		const json_formed_sheets = new Array(file_state_length); // todo: ここのせいで10ファイルまでなので可変長に
+		let sheets_names: string[] = new Array(file_state_length);
+		const json_formed_sheets = new Array(file_state_length);
 		const file_reader = new FileReader();
-		// todo:ここでの関数定義はやめた方がいい
-		async function post_to_convert(){
-					// APIへの送信
-					// todo: 選択したオプション、エラーメッセージ等がjsonに含まれていないので含める
-					const json_formed_data = json_formed_sheets.map(
-						(json_formed_sheet, index) => ({
-							file_name: sheets_names[index],
-							file_data: json_formed_sheet,
-						})
-					);
-					// input_dataの整形
-					const request_json = {
-						request_time: request_time,
-						input_data_type: "json",
-						input_data: json_formed_data,
-					};
-					console.log("request_json");
-					console.log(request_json);
-					const res = await fetch(convert_url, {
-						method: "POST",
-						headers: {
-							"Content-Type": "application/json; charset=utf-8",
-						},
-						body: JSON.stringify(request_json),
-					});
-					// // ここで帰ってきたjsonをexcelに直す
-					const res_json = await res.json() as APIResponse;
-					console.log("res_json")
-					console.log(res_json)
-					const file_number = res_json.file_number;
-					const response_data = res_json.response_data;
-					const export_blobs = new Array(file_number);
-					const export_blob_names = new Array(file_number);
-					for(let file_no = 0; file_no < file_number; file_no++){
-						const file_name = response_data[file_no].file_name;
-						const file_data = response_data[file_no].file_data;
-						// todo: 出力順を固定するかjsonのデータの由来するか決める
-						const col_based_data: string[][]  = new Array<Array<string>>(0);
-						const col_name_list: Array<string> = [
-							"delete",
-							"update",
-							"duplicated",
-							"import_number",
-							"last_name",
-							"first_name",
-							"shop_name",
-							"last_kana",
-							"first_kana",
-							"title",
-							"family_id",
-							"relation_name",
-							"birthday",
-							"age",
-							"gender",
-							"zipcode",
-							"prefecture",
-							"address1",
-							"address2",
-							"address3",
-							"address4",
-							"address5",
-							"tel1",
-							"tel2",
-							"fax",
-							"email",
-							"company_name",
-							"company_kana",
-							"post",
-							"company_zipcode",
-							"company_prefecture",
-							"company_address1",
-							"company_address2",
-							"company_address3",
-							"company_address4",
-							"company_tel",
-							"company_fax",
-							"company_url",
-							"send_type",
-							"place",
-							"began_at",
-							"rank",
-							"died_at",
-							"memo",
-							// tags
-							"tag1",
-							"tag2",
-							"tag3",
-							"tag4",
-							"tag5",
-							"tag6",
-							"tag7",
-							"tag8",
-							"tag9",
-							"tag10",
-						]
-						const file_data_keys = Object.keys(file_data);
-						for(let col_name of col_name_list){
-							// todo: ここの警告を消したい
-							if(file_data_keys.includes(col_name)){
-								col_based_data.push(Object.values(file_data[col_name]))
-							}
-						}
-						console.log("original_excel_data_array")
-						console.log(Array.of(col_based_data));
-						// 転置を取る
-						const transpose_func = (a: string[][]) => a[0].map((_, c) => a.map(r => r[c]));
-						const worksheet_data = transpose_func(col_based_data)
-						const exportBook = XLSX.utils.book_new();
-						const newSheet = XLSX.utils.aoa_to_sheet(worksheet_data);
-						XLSX.utils.book_append_sheet(exportBook, newSheet, sheets_names[file_no]);
-						const excel_opt = {
-							bookType: "xlsx",
-							bookSST: true,
-							type: "array",
-						};
-						const export_file = XLSX.write(exportBook, excel_opt);
-						const export_blob = new Blob([export_file], {
-							type: "application/octet-stream",
-						});
-						export_blobs[file_no] = export_blob;
-						export_blob_names[file_no] = `${file_name}.xlsx`;
-					}
-					set_export_blob_state(export_blobs);
-					set_export_blob_name_state(export_blob_names);
-					console.log("処理終了");
-					// todo: proceed_step()を使いたい
-					// todo: set_step_state(step_state+1)ではダメだった
-					set_step_state(6);
-		}
-		// todo:ここでの関数定義はやめた方がいい
-		async function readFileList(index: number){
-			const file = files_list[index];
-			file_reader.onload = (event) =>{
-				// file_readerの読み込み結果
-				const result = event.target?.result;
-				const XLSX = require("xlsx");
-				const workbook = XLSX.read(result, { type: "array" });
-				// todo:ここを各シートごとにすることで複数シートに対応可能
-				const sheets_name: string = workbook.SheetNames[0];
-				sheets_names[index] = sheets_name;
-				const worksheet = workbook.Sheets[sheets_names[index]];
-				json_formed_sheets[index] = XLSX.utils.sheet_to_json(worksheet);
-				console.log(json_formed_sheets[index]);
-				// まだ読み取るファイルがあるなら再帰的に呼び出す
-				if(index < file_state_length - 1){
-					readFileList(index+1);
-				}else if(index == file_state_length - 1){
-					post_to_convert();
-				}else{
-					console.log("ファイルの読み込み時に異常が発生しました。");
-					set_step_state(-1);
-				}
-			}
-			file_reader.readAsArrayBuffer(file); // file_reader.readAsArrayBuffer()は非同期なので注意
-		}
-		await readFileList(0);
+		await readFileList(0, files_list, file_reader, sheets_names, json_formed_sheets, file_state_length);
 	};
 
 	return (
