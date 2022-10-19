@@ -114,7 +114,7 @@ const Home: NextPage = () => {
 	const convert_url = "https://601cdzfw2l.execute-api.ap-northeast-1.amazonaws.com/default/smart-senkyo-extensions-lambda";
 	const XLSX = require("xlsx");
 
-	async function post_to_convert(json_formed_sheets: Array<JSON>, file_names: string[]){
+	async function post_to_convert(json_formed_sheets: Array<JSON>, file_names: string[], sheet_names: string[]){
 		// 時刻
 		const date = new Date();
 		const year: string = date.getFullYear().toString();
@@ -167,7 +167,7 @@ const Home: NextPage = () => {
 			const worksheet_data = transpose_func(col_based_data)
 			const exportBook = XLSX.utils.book_new();
 			const newSheet = XLSX.utils.aoa_to_sheet(worksheet_data);
-			XLSX.utils.book_append_sheet(exportBook, newSheet, file_names[file_no]);
+			XLSX.utils.book_append_sheet(exportBook, newSheet, sheet_names[file_no]);
 			const excel_opt = {
 				bookType: "xlsx",
 				bookSST: true,
@@ -186,7 +186,7 @@ const Home: NextPage = () => {
 	}
 	
 	// 自身を再起的に呼び出し非同期であるFileReader.readAsArrayBuffer()でファイルを順に読み込むための関数
-	async function read_file_list(index: number, files_list: File[], file_reader: FileReader, file_names: string[], json_formed_sheets: Array<JSON>, file_state_length: number){
+	async function read_file_list(index: number, files_list: File[], file_reader: FileReader, file_names: string[], sheet_names: string[], json_formed_sheets: Array<JSON>, file_state_length: number){
 		const file = files_list[index];
 		file_reader.onload = (event) =>{
 			// file_readerの読み込み結果
@@ -194,13 +194,14 @@ const Home: NextPage = () => {
 			const workbook = XLSX.read(result, { type: "array" });
 			file_names[index] = file.name;
 			// todo:ここを各シートごとにすることで複数シートに対応可能
+			sheet_names[index] = workbook.SheetNames[0];
 			const worksheet = workbook.Sheets[workbook.SheetNames[0]];
 			json_formed_sheets[index] = XLSX.utils.sheet_to_json(worksheet);
 			// まだ読み取るファイルがあるなら再帰的に呼び出す
 			if(index < file_state_length - 1){
-				read_file_list(index+1, files_list, file_reader, file_names, json_formed_sheets, file_state_length);
+				read_file_list(index+1, files_list, file_reader, file_names, sheet_names, json_formed_sheets, file_state_length);
 			}else if(index == file_state_length - 1){
-				post_to_convert(json_formed_sheets, file_names);
+				post_to_convert(json_formed_sheets, file_names, sheet_names);
 			}else{
 				console.log("ファイルの読み込み時に異常が発生しました。");
 				set_step_state(-1);
@@ -218,9 +219,10 @@ const Home: NextPage = () => {
 		const files_list: File[] = Object.values(file_state);
 		const file_state_length: number = files_list.length;
 		let file_names: string[] = new Array(file_state_length);
+		let sheet_names: string[] = new Array(file_state_length);
 		const json_formed_sheets = new Array(file_state_length);
 		const file_reader = new FileReader();
-		await read_file_list(0, files_list, file_reader, file_names, json_formed_sheets, file_state_length);
+		await read_file_list(0, files_list, file_reader, file_names, sheet_names, json_formed_sheets, file_state_length);
 	};
 
 	return (
