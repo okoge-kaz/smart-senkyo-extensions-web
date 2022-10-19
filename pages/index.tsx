@@ -19,6 +19,64 @@ type APIResponse = {
 	response_data: APIResponseFileData[]
 }
 
+const col_names: Array<string> = [
+	"delete",
+	"update",
+	"duplicated",
+	"import_number",
+	"last_name",
+	"first_name",
+	"shop_name",
+	"last_kana",
+	"first_kana",
+	"title",
+	"family_id",
+	"relation_name",
+	"birthday",
+	"age",
+	"gender",
+	"zipcode",
+	"prefecture",
+	"address1",
+	"address2",
+	"address3",
+	"address4",
+	"address5",
+	"tel1",
+	"tel2",
+	"fax",
+	"email",
+	"company_name",
+	"company_kana",
+	"post",
+	"company_zipcode",
+	"company_prefecture",
+	"company_address1",
+	"company_address2",
+	"company_address3",
+	"company_address4",
+	"company_tel",
+	"company_fax",
+	"company_url",
+	"send_type",
+	"place",
+	"began_at",
+	"rank",
+	"died_at",
+	"memo",
+	// todo:tag1~10までしか受け取れないのでここをtag*で判定できるようにしたい
+	"tag1",
+	"tag2",
+	"tag3",
+	"tag4",
+	"tag5",
+	"tag6",
+	"tag7",
+	"tag8",
+	"tag9",
+	"tag10",
+]
+
 const Home: NextPage = () => {
 	const [address_separator_option_state, set_address_separator_option_state] = useState<boolean>(true) // option管理
 	const [step_state, set_step_state] = useState<number>(1) // ステップ管理
@@ -93,69 +151,12 @@ const Home: NextPage = () => {
 		const response_data: APIResponseFileData[] = convertAPI_response_json.response_data;
 		const export_blobs = new Array(file_number);
 		const export_blob_names = new Array(file_number);
-		const col_name_list: Array<string> = [
-			"delete",
-			"update",
-			"duplicated",
-			"import_number",
-			"last_name",
-			"first_name",
-			"shop_name",
-			"last_kana",
-			"first_kana",
-			"title",
-			"family_id",
-			"relation_name",
-			"birthday",
-			"age",
-			"gender",
-			"zipcode",
-			"prefecture",
-			"address1",
-			"address2",
-			"address3",
-			"address4",
-			"address5",
-			"tel1",
-			"tel2",
-			"fax",
-			"email",
-			"company_name",
-			"company_kana",
-			"post",
-			"company_zipcode",
-			"company_prefecture",
-			"company_address1",
-			"company_address2",
-			"company_address3",
-			"company_address4",
-			"company_tel",
-			"company_fax",
-			"company_url",
-			"send_type",
-			"place",
-			"began_at",
-			"rank",
-			"died_at",
-			"memo",
-			// todo:tag1~10までしか受け取れないのでここをtag*で判定できるようにしたい
-			"tag1",
-			"tag2",
-			"tag3",
-			"tag4",
-			"tag5",
-			"tag6",
-			"tag7",
-			"tag8",
-			"tag9",
-			"tag10",
-		]
 		for(let file_no = 0; file_no < file_number; file_no++){
 			const file_name: string = response_data[file_no].file_name;
 			const file_data: string = response_data[file_no].file_data;
 			const col_based_data: string[][]  = new Array<Array<string>>(0);
 			const file_data_keys = Object.keys(file_data);
-			for(let col_name of col_name_list){
+			for(let col_name of col_names){
 				if(file_data_keys.includes(col_name)){
 					// todo: ここの警告を消したい
 					col_based_data.push(Object.values(file_data[col_name]))
