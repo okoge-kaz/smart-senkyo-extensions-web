@@ -57,7 +57,6 @@ const Home: NextPage = () => {
 	const XLSX = require("xlsx");
 
 	async function post_to_convert(json_formed_sheets: Array<JSON>, file_names: string[]){
-		// APIへの送信
 		// 時刻
 		const date = new Date();
 		const year: string = date.getFullYear().toString();
