@@ -53,8 +53,6 @@ const Home: NextPage = () => {
 		set_step_state(7);
 	};
 
-
-		// todo: 一時的なもの　要修正
 	const convert_url = "https://601cdzfw2l.execute-api.ap-northeast-1.amazonaws.com/default/smart-senkyo-extensions-lambda";
 	const XLSX = require("xlsx");
 
