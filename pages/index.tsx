@@ -11,7 +11,7 @@ import { useState } from "react";
 
 type APIResponseFileData = {
 	file_name: string;
-	file_data: string;
+	file_data: JSON;
 }
 
 type APIResponse = {
@@ -153,7 +153,7 @@ const Home: NextPage = () => {
 		const export_blob_names = new Array(file_number);
 		for(let file_no = 0; file_no < file_number; file_no++){
 			const file_name: string = response_data[file_no].file_name;
-			const file_data: string = response_data[file_no].file_data;
+			const file_data: JSON = response_data[file_no].file_data;
 			const col_based_data: string[][]  = new Array<Array<string>>(0);
 			const file_data_keys = Object.keys(file_data);
 			for(let col_name of col_names){
