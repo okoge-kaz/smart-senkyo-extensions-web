@@ -112,7 +112,6 @@ const Home: NextPage = () => {
 		set_step_state(7);
 	};
 
-	const convert_url = "https://601cdzfw2l.execute-api.ap-northeast-1.amazonaws.com/default/smart-senkyo-extensions-lambda";
 	const XLSX = require("xlsx");
 
 	const get_formatted_date = (date: Date) => {
@@ -174,7 +173,7 @@ const Home: NextPage = () => {
 			input_data_type: "json",
 			input_data: json_formed_data,
 		};
-		const convertAPI_response = await fetch(convert_url, {
+		const convertAPI_response = await fetch("https://601cdzfw2l.execute-api.ap-northeast-1.amazonaws.com/default/smart-senkyo-extensions-lambda", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json; charset=utf-8",
