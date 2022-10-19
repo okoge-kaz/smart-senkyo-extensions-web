@@ -4,6 +4,7 @@ import { saveAs } from "file-saver";
 // import AsyncFileReader from "functions/AsyncFileReader";
 import type { NextPage } from "next";
 import { useState } from "react";
+import React from "react";
 
 // 用途：ここがsmart-senkyo-extensions-webで表示される画面
 // 役割：ファイル、オプション、ステップ(本プロジェクトでは使用者がどの段階まで作業を進めたかをステップで管理している)
@@ -103,6 +104,7 @@ const Home: NextPage = () => {
 	};
 
 	const download_converted_file = () => { // ダウンロードのステップでメインのボタンに割り当てる関数
+		console.log("download関数 acted");
 		export_blob_state.forEach((exportBlob, index) => {
 			// todo: exportBlob使わないのならexport_blob_state.forEach()でなく[0,1,2,...]的なリストを使えばいい
 			if (export_blob_state[index] != null && export_blob_name_state[index] != null)
@@ -114,37 +116,12 @@ const Home: NextPage = () => {
 	const convert_url = "https://601cdzfw2l.execute-api.ap-northeast-1.amazonaws.com/default/smart-senkyo-extensions-lambda";
 	const XLSX = require("xlsx");
 
-	function column_based_format(file_number: number, sheet_name: string, file_name: string, file_data: JSON, export_blobs: Blob[], export_blob_names: string[]){
-		const col_based_data: string[][]  = new Array<Array<string>>(0);
-		const file_data_keys = Object.keys(file_data);
-		for(let col_name of col_names){
-			if(file_data_keys.includes(col_name)){
-				// todo: ここの警告を消したい
-				col_based_data.push(Object.values(file_data[col_name]))
-			}
-		}
-		// 転置を取る
-		const transpose_func = (a: string[][]) => a[0].map((_, c) => a.map(r => r[c]));
-		const worksheet_data = transpose_func(col_based_data)
-		const exportBook = XLSX.utils.book_new();
-		const newSheet = XLSX.utils.aoa_to_sheet(worksheet_data);
-		XLSX.utils.book_append_sheet(exportBook, newSheet, sheet_name);
-		const excel_opt = {
-			bookType: "xlsx",
-			bookSST: true,
-			type: "array",
-		};
-		const export_file = XLSX.write(exportBook, excel_opt);
-		const export_blob = new Blob([export_file], {
-			type: "application/octet-stream",
-		});
-		export_blobs[file_number] = export_blob;
-		export_blob_names[file_number] = `${file_name}.xlsx`;
-	}
+	// let export_blobs: Blob[] = new Array<Blob>(0);
+	// let export_blob_names: string[] = new Array<string>(0);
 
-	async function post_to_convert(json_formed_sheets: Array<JSON>, file_names: string[], sheet_names: string[]){
-		// 時刻
-		const date = new Date();
+	// 時刻
+	const date = new Date();
+	const get_formatted_date = React.useMemo(() => {
 		const year: string = date.getFullYear().toString();
 		const month: string = (date.getMonth() + 1).toString(); //getMonthでは1月が0になる
 		const day: string = date.getDay().toString();
@@ -152,6 +129,41 @@ const Home: NextPage = () => {
 		const minute: string = date.getMinutes().toString();
 		const second: string = date.getSeconds().toString();
 		const request_time: string = `${year}-${month}-${day} ${hour}:${minute}.${second}Z`
+		return request_time;
+	},[date])
+
+	// function column_based_format(file_number: number, sheet_name: string, file_name: string, file_data: JSON, export_blobs: Blob[], export_blob_names: string[]){
+	// 	const col_based_data: string[][]  = new Array<Array<string>>(0);
+	// 	const file_data_keys = Object.keys(file_data);
+	// 	for(let col_name of col_names){
+	// 		if(file_data_keys.includes(col_name)){
+	// 			// todo: ここの警告を消したい
+	// 			col_based_data.push(Object.values(file_data[col_name]))
+	// 		}
+	// 	}
+	// 	// 転置を取る
+	// 	const transpose_func = (a: string[][]) => a[0].map((_, c) => a.map(r => r[c]));
+	// 	const worksheet_data = transpose_func(col_based_data)
+	// 	const exportBook = XLSX.utils.book_new();
+	// 	const newSheet = XLSX.utils.aoa_to_sheet(worksheet_data);
+	// 	XLSX.utils.book_append_sheet(exportBook, newSheet, sheet_name);
+	// 	const excel_opt = {
+	// 		bookType: "xlsx",
+	// 		bookSST: true,
+	// 		type: "array",
+	// 	};
+	// 	const export_file = XLSX.write(exportBook, excel_opt);
+	// 	const export_blob = new Blob([export_file], {
+	// 		type: "application/octet-stream",
+	// 	});
+	// 	export_blobs[file_number] = export_blob;
+	// 	export_blob_names[file_number] = `${file_name}.xlsx`;
+	// }
+
+	async function post_to_convert(json_formed_sheets: Array<JSON>, file_names: string[], sheet_names: string[]){
+
+		const request_time = get_formatted_date;
+		console.log(request_time);
 		// todo: 選択したオプション、エラーメッセージ等がjsonに含まれていないので含める
 		const json_formed_data = json_formed_sheets.map(
 			(json_formed_sheet, index) => ({
@@ -179,11 +191,37 @@ const Home: NextPage = () => {
 		const response_data: APIResponseFileData[] = convertAPI_response_json.response_data;
 		const export_blobs: Blob[] = new Array<Blob>(file_number);
 		const export_blob_names: string[] = new Array<string>(file_number);
-		for(let file_number = 0; file_number < file_number; file_number++){
-			const file_name: string = response_data[file_number].file_name;
-			const file_data: JSON = response_data[file_number].file_data;
-			const sheet_name: string = sheet_names[file_number];
-			column_based_format(file_number, sheet_name, file_name, file_data, export_blobs, export_blob_names)
+
+		for(let focused_file_number = 0; focused_file_number < file_number; focused_file_number++){
+			const file_name: string = response_data[focused_file_number].file_name;
+			const file_data: JSON = response_data[focused_file_number].file_data;
+			const sheet_name: string = sheet_names[focused_file_number];
+			// column_based_format(focused_file_number, sheet_name, file_name, file_data, export_blobs, export_blob_names)
+			const col_based_data: string[][]  = new Array<Array<string>>(0);
+			const file_data_keys = Object.keys(file_data);
+			for(let col_name of col_names){
+				if(file_data_keys.includes(col_name)){
+					// todo: ここの警告を消したい
+					col_based_data.push(Object.values(file_data[col_name]))
+				}
+			}
+			// 転置を取る
+			const transpose_func = (a: string[][]) => a[0].map((_, c) => a.map(r => r[c]));
+			const worksheet_data = transpose_func(col_based_data)
+			const exportBook = XLSX.utils.book_new();
+			const newSheet = XLSX.utils.aoa_to_sheet(worksheet_data);
+			XLSX.utils.book_append_sheet(exportBook, newSheet, sheet_name);
+			const excel_opt = {
+				bookType: "xlsx",
+				bookSST: true,
+				type: "array",
+			};
+			const export_file = XLSX.write(exportBook, excel_opt);
+			const export_blob = new Blob([export_file], {
+				type: "application/octet-stream",
+			});
+			export_blobs[focused_file_number] = export_blob;
+			export_blob_names[focused_file_number] = `${file_name}.xlsx`;
 		}
 		set_export_blob_state(export_blobs);
 		set_export_blob_name_state(export_blob_names);
