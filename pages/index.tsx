@@ -23,7 +23,6 @@ const Home: NextPage = () => {
 	const [address_separator_option_state, set_address_separator_option_state] = useState<boolean>(true) // option管理
 	const [step_state, set_step_state] = useState<number>(1) // ステップ管理
 	const [file_state, set_file_state] = useState<File[]>([]) // アップロードされたファイル管理
-	const [file_name_state, set_file_name_state] = useState<string[]>([])// アップロードされたファイルのファイル名
 	const [export_blob_state, set_export_blob_state] = useState<Blob[]>([]) // ダウンロードしたjsonをファイル化したファイルの管理
 	const [export_blob_name_state, set_export_blob_name_state] = useState<string[]>([]) // ダウンロードしたjsonをファイル化したファイルのファイル名管理
 
