@@ -79,7 +79,7 @@ const Home: NextPage = () => {
 			input_data_type: "json",
 			input_data: json_formed_data,
 		};
-		const convert_API_response = await fetch(convert_url, {
+		const convertAPI_response = await fetch(convert_url, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json; charset=utf-8",
@@ -88,7 +88,7 @@ const Home: NextPage = () => {
 		});
 		
 		// ここで帰ってきたjsonをexcelに直す
-		const res_json = await convert_API_response.json() as APIResponse;
+		const res_json = await convertAPI_response.json() as APIResponse;
 		const file_number: number = res_json.file_number;
 		const response_data: APIResponseFileData[] = res_json.response_data;
 		const export_blobs = new Array(file_number);
