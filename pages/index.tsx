@@ -88,9 +88,9 @@ const Home: NextPage = () => {
 		});
 		
 		// ここで帰ってきたjsonをexcelに直す
-		const res_json = await convertAPI_response.json() as APIResponse;
-		const file_number: number = res_json.file_number;
-		const response_data: APIResponseFileData[] = res_json.response_data;
+		const convertAPI_response_json = await convertAPI_response.json() as APIResponse;
+		const file_number: number = convertAPI_response_json.file_number;
+		const response_data: APIResponseFileData[] = convertAPI_response_json.response_data;
 		const export_blobs = new Array(file_number);
 		const export_blob_names = new Array(file_number);
 		const col_name_list: Array<string> = [
