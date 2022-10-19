@@ -115,12 +115,8 @@ const Home: NextPage = () => {
 	const convert_url = "https://601cdzfw2l.execute-api.ap-northeast-1.amazonaws.com/default/smart-senkyo-extensions-lambda";
 	const XLSX = require("xlsx");
 
-	// let export_blobs: Blob[] = new Array<Blob>(0);
-	// let export_blob_names: string[] = new Array<string>(0);
-
-	// 時刻
-	const date = new Date();
-	const get_formatted_date = React.useMemo(() => {
+	const get_formatted_date = (date: Date) => {
+		console.log("Memo update")
 		const year: string = date.getFullYear().toString();
 		const month: string = (date.getMonth() + 1).toString(); //getMonthでは1月が0になる
 		const day: string = date.getDay().toString();
@@ -129,7 +125,7 @@ const Home: NextPage = () => {
 		const second: string = date.getSeconds().toString();
 		const request_time: string = `${year}-${month}-${day} ${hour}:${minute}.${second}Z`
 		return request_time;
-	},[date])
+	}
 
 	let export_blobs: Blob[] = new Array<Blob>(0);
 	let export_blob_names: string[] = new Array<string>(0);
@@ -164,7 +160,7 @@ const Home: NextPage = () => {
 
 	async function post_to_convert(json_formed_sheets: Array<JSON>, file_names: string[], sheet_names: string[]){
 
-		const request_time = get_formatted_date;
+		const request_time = get_formatted_date(new Date);
 		// todo: 選択したオプション、エラーメッセージ等がjsonに含まれていないので含める
 		const json_formed_data = json_formed_sheets.map(
 			(json_formed_sheet, index) => ({
