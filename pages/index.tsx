@@ -179,11 +179,11 @@ const Home: NextPage = () => {
 		const response_data: APIResponseFileData[] = convertAPI_response_json.response_data;
 		const export_blobs: Blob[] = new Array<Blob>(file_number);
 		const export_blob_names: string[] = new Array<string>(file_number);
-		for(let file_no = 0; file_no < file_number; file_no++){
-			const file_name: string = response_data[file_no].file_name;
-			const file_data: JSON = response_data[file_no].file_data;
-			const sheet_name: string = sheet_names[file_no];
-			column_based_format(file_no, sheet_name, file_name, file_data, export_blobs, export_blob_names)
+		for(let file_number = 0; file_number < file_number; file_number++){
+			const file_name: string = response_data[file_number].file_name;
+			const file_data: JSON = response_data[file_number].file_data;
+			const sheet_name: string = sheet_names[file_number];
+			column_based_format(file_number, sheet_name, file_name, file_data, export_blobs, export_blob_names)
 		}
 		set_export_blob_state(export_blobs);
 		set_export_blob_name_state(export_blob_names);
