@@ -2,26 +2,19 @@
   display: flex;
   position: relative;
   top: 30px;
-  // todo: ボタンの大きさ選択
   margin: auto;
-  // todo: ボタンの大きさ選択
   width: 500px;
 }
 
 #button {
   margin: auto;
-  // todo: ボタンの大きさ選択
   width: 100%;
-  // todo: ボタンの大きさ選択
-  // padding: 23px 70px 0px;
   padding: 23px 40px 0px;
   background: var(--button-color);
   border-radius: 100px;
   font-family: var(--main-font);
   font-style: normal;
   font-weight: 700;
-  // todo: ボタンの大きさ選択
-  // font-size: 60px;
   font-size: 50px;
   line-height: 92px;
   text-align: center;
