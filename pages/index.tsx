@@ -1,10 +1,8 @@
 import { Header } from "components/organisms/Header";
 import { MainContent } from "components/organisms/MainContent";
 import { saveAs } from "file-saver";
-// import AsyncFileReader from "functions/AsyncFileReader";
 import type { NextPage } from "next";
-import { useState } from "react";
-import React from "react";
+import React, { useState } from "react";
 
 // 用途：ここがsmart-senkyo-extensions-webで表示される画面
 // 役割：ファイル、オプション、ステップ(本プロジェクトでは使用者がどの段階まで作業を進めたかをステップで管理している)
