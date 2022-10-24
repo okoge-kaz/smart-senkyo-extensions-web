@@ -1,6 +1,5 @@
 import { PageTitleArea } from "components/molecules/PageTitleArea";
 import React from "react";
-// todo:このorganismsいる？
 
 interface Props {
   page_title: string;
