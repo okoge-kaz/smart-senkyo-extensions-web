@@ -2,6 +2,7 @@ import { Header } from "components/organisms/Header";
 import { MainContent } from "components/organisms/MainContent";
 import { column_names } from "const/column_names";
 import { saveAs } from "file-saver";
+import { get_formatted_date } from "functions/get_formatted_date";
 import type { NextPage } from "next";
 import React, { useState } from "react";
 
@@ -54,18 +55,6 @@ const Home: NextPage = () => {
 	};
 
 	const XLSX = require("xlsx");
-
-	const get_formatted_date = (date: Date) => {
-		console.log("Memo update")
-		const year: string = date.getFullYear().toString();
-		const month: string = (date.getMonth() + 1).toString(); //getMonthでは1月が0になる
-		const day: string = date.getDay().toString();
-		const hour: string = date.getHours().toString();
-		const minute: string = date.getMinutes().toString();
-		const second: string = date.getSeconds().toString();
-		const request_time: string = `${year}-${month}-${day} ${hour}:${minute}.${second}Z`
-		return request_time;
-	}
 
 	let export_blobs: Blob[] = new Array<Blob>(0);
 	let export_blob_names: string[] = new Array<string>(0);
@@ -138,7 +127,7 @@ const Home: NextPage = () => {
 		set_export_blob_name_state(export_blob_names);
 		set_step_state(6);
 	}
-	
+
 	// 自身を再起的に呼び出し非同期であるFileReader.readAsArrayBuffer()でファイルを順に読み込むための関数
 	async function read_file_list(index: number, files_list: File[], file_reader: FileReader, file_names: string[], sheet_names: string[], json_formed_sheets: Array<JSON>, file_state_length: number){
 		const file = files_list[index];
