@@ -18,7 +18,7 @@ type APIResponse = {
 	response_data: APIResponseFileData[]
 }
 
-const col_names: Array<string> = [
+const column_names: Array<string> = [
 	"delete",
 	"update",
 	"duplicated",
@@ -130,10 +130,10 @@ const Home: NextPage = () => {
 	function column_based_format(file_number: number, sheet_name: string, file_name: string, file_data: JSON, export_blobs: Blob[], export_blob_names: string[]){
 		const col_based_data: string[][]  = new Array<Array<string>>(0);
 		const file_data_keys = Object.keys(file_data);
-		for(let col_name of col_names){
-			if(file_data_keys.includes(col_name)){
+		for(let column_name of column_names){
+			if(file_data_keys.includes(column_name)){
 				// todo: ここの警告を消したい
-				col_based_data.push(Object.values(file_data[col_name]))
+				col_based_data.push(Object.values(file_data[column_name]))
 			}
 		}
 		// 転置を取る
