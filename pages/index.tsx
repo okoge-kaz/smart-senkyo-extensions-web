@@ -63,7 +63,7 @@ const column_names: Array<string> = [
 	"rank",
 	"died_at",
 	"memo",
-	// todo:tag1~10までしか受け取れないのでここをtag*で判定できるようにしたい
+	// TODO:現状、tag1~10を列名として以下に定義し、受け取ったレスポンスデータからcolmun_namesに含まれる列名があった時に読み取っているために、tag1~10までしか受け取れないのでここをtag*で判定できるようにしたい。詳細はissue#2を参照。
 	"tag1",
 	"tag2",
 	"tag3",
