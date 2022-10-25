@@ -55,8 +55,6 @@ const Home: NextPage = () => {
 		set_step_state(7);
 	};
 
-	const XLSX = require("xlsx");
-
 	let export_blobs: Blob[] = new Array<Blob>(0);
 	let export_blob_names: string[] = new Array<string>(0);
 
