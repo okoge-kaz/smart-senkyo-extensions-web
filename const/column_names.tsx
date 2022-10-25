@@ -1,3 +1,5 @@
+// スマセン形式の列名を左から順に並べた配列
+
 export const column_names: Array<string> = [
 	"delete",
 	"update",

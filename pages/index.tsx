@@ -1,8 +1,9 @@
 import { Header } from "components/organisms/Header";
 import { MainContent } from "components/organisms/MainContent";
-import { column_names } from "const/column_names";
 import { saveAs } from "file-saver";
-import { get_formatted_date } from "functions/get_formatted_date";
+import column_based_format from "functions/column_based_format";
+import get_formatted_date from "functions/get_formatted_date";
+import read_file_list from "functions/read_file_list";
 import type { NextPage } from "next";
 import React, { useState } from "react";
 
@@ -59,33 +60,6 @@ const Home: NextPage = () => {
 	let export_blobs: Blob[] = new Array<Blob>(0);
 	let export_blob_names: string[] = new Array<string>(0);
 
-	function column_based_format(file_number: number, sheet_name: string, file_name: string, file_data: JSON, export_blobs: Blob[], export_blob_names: string[]){
-		const col_based_data: string[][]  = new Array<Array<string>>(0);
-		const file_data_keys = Object.keys(file_data);
-		for(let column_name of column_names){
-			if(file_data_keys.includes(column_name)){
-				// todo: ここの警告を消したい
-				col_based_data.push(Object.values(file_data[column_name]))
-			}
-		}
-		// 転置を取る
-		const transpose_func = (a: string[][]) => a[0].map((_, c) => a.map(r => r[c]));
-		const worksheet_data = transpose_func(col_based_data)
-		const exportBook = XLSX.utils.book_new();
-		const newSheet = XLSX.utils.aoa_to_sheet(worksheet_data);
-		XLSX.utils.book_append_sheet(exportBook, newSheet, sheet_name);
-		const excel_opt = {
-			bookType: "xlsx",
-			bookSST: true,
-			type: "array",
-		};
-		const export_file = XLSX.write(exportBook, excel_opt);
-		const export_blob = new Blob([export_file], {
-			type: "application/octet-stream",
-		});
-		export_blobs[file_number] = export_blob;
-		export_blob_names[file_number] = `${file_name}.xlsx`;
-	}
 
 	async function post_to_convert(json_formed_sheets: Array<JSON>, file_names: string[], sheet_names: string[]){
 
@@ -128,30 +102,6 @@ const Home: NextPage = () => {
 		set_step_state(6);
 	}
 
-	// 自身を再起的に呼び出し非同期であるFileReader.readAsArrayBuffer()でファイルを順に読み込むための関数
-	async function read_file_list(index: number, files_list: File[], file_reader: FileReader, file_names: string[], sheet_names: string[], json_formed_sheets: Array<JSON>, file_state_length: number){
-		const file = files_list[index];
-		file_reader.onload = (event) =>{
-			// file_readerの読み込み結果
-			const result = event.target?.result;
-			const workbook = XLSX.read(result, { type: "array" });
-			file_names[index] = file.name;
-			// todo:ここを各シートごとにすることで複数シートに対応可能
-			sheet_names[index] = workbook.SheetNames[0];
-			const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-			json_formed_sheets[index] = XLSX.utils.sheet_to_json(worksheet);
-			// まだ読み取るファイルがあるなら再帰的に呼び出す
-			if(index < file_state_length - 1){
-				read_file_list(index+1, files_list, file_reader, file_names, sheet_names, json_formed_sheets, file_state_length);
-			}else if(index == file_state_length - 1){
-				post_to_convert(json_formed_sheets, file_names, sheet_names);
-			}else{
-				console.log("ファイルの読み込み時に異常が発生しました。");
-				set_step_state(-1);
-			}
-		}
-		file_reader.readAsArrayBuffer(file);// file_reader.readAsArrayBuffer()は非同期なので注意
-	}
 
 	// convert時に呼ばれる関数
 	const convert_file: React.MouseEventHandler<HTMLButtonElement> = async () => {
@@ -165,7 +115,12 @@ const Home: NextPage = () => {
 		let sheet_names: string[] = new Array(file_state_length);
 		const json_formed_sheets = new Array(file_state_length);
 		const file_reader = new FileReader();
-		await read_file_list(0, files_list, file_reader, file_names, sheet_names, json_formed_sheets, file_state_length);
+		const after_roop_function = () => post_to_convert(json_formed_sheets, file_names, sheet_names);
+		const error_handle_function = () => {
+      console.log("ファイルの読み込み時に異常が発生しました。");
+			set_step_state(-1);
+		};
+		await read_file_list(0, files_list, file_reader, file_names, sheet_names, json_formed_sheets, file_state_length, after_roop_function, error_handle_function);
 	};
 
 	return (
