@@ -14,7 +14,6 @@ export const DownloadButton = React.memo((props: Props) => {
   };
   return (
     <div id={styles.upload_container}>
-      {/* todo:idにまとめて書きたいが{styles.~}と"~"の併用方法がわからない */}
       <input className={styles.upload_input} id="upload_input" type='file' onChange={handle_file_import_change} multiple />
       <label htmlFor="upload_input" id={styles.upload_label}>
         {props.label}
