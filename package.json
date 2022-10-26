@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@types/file-saver": "^2.0.5",
+    "@typescript-eslint/eslint-plugin": "^5.41.0",
     "file-saver": "^2.0.5",
     "next": "12.3.0",
     "prettier-eslint": "^15.0.1",
