@@ -59,7 +59,7 @@ const Home: NextPage = () => {
 	let export_blob_names: string[] = new Array<string>(0);
 
 
-	async function post_to_convert(json_formed_sheets: Array<JSON>, file_names: string[], sheet_names: string[]){
+	async function post_to_convert(json_formed_sheets: Array<JSON>, file_names: string[], sheet_names: string[]) {
 
 		const request_time = get_formatted_date(new Date);
 		// todo: 選択したオプション、エラーメッセージ等がjsonに含まれていないので含める
@@ -89,7 +89,7 @@ const Home: NextPage = () => {
 		export_blobs = new Array<Blob>(file_number);
 		export_blob_names = new Array<string>(file_number);
 
-		for(let focused_file_number = 0; focused_file_number < file_number; focused_file_number++){
+		for (let focused_file_number = 0; focused_file_number < file_number; focused_file_number++) {
 			const file_name: string = response_data[focused_file_number].file_name;
 			const file_data: JSON = response_data[focused_file_number].file_data;
 			const sheet_name: string = sheet_names[focused_file_number];
@@ -115,7 +115,7 @@ const Home: NextPage = () => {
 		const file_reader = new FileReader();
 		const after_loop_function = () => post_to_convert(json_formed_sheets, file_names, sheet_names);
 		const error_handle_function = () => {
-      console.log("ファイルの読み込み時に異常が発生しました。");
+			console.log("ファイルの読み込み時に異常が発生しました。");
 			set_step_state(-1);
 		};
 		await read_file_list(0, files_list, file_reader, file_names, sheet_names, json_formed_sheets, file_state_length, after_loop_function, error_handle_function);
