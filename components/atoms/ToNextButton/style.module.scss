@@ -1,0 +1,27 @@
+#container {
+  display: flex;
+  position: relative;
+  top: 30px;
+  margin: auto;
+  width: 500px;
+}
+
+#button {
+  margin: auto;
+  width: 100%;
+  padding: 23px 40px 0px;
+  background: var(--button-color);
+  border-radius: 100px;
+  font-family: var(--main-font);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 50px;
+  line-height: 92px;
+  text-align: center;
+  color: #F8FFFE;
+  box-shadow: 0 5px 5px 0 rgb(0 0 0 / 50%);
+}
+
+#button:hover {
+  background: var(--button-hover-color);
+}

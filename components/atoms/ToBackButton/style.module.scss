@@ -1,0 +1,24 @@
+#container {
+  display: flex;
+  position: relative;
+  top: 30px;
+}
+
+#button {
+  margin: auto 30px;
+  padding: 23px 50px 0px;
+  background: var(--back-button-color);
+  border-radius: 100px;
+  font-family: var(--main-font);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 92px;
+  text-align: center;
+  color: #F8FFFE;
+  box-shadow: 0 5px 5px 0 rgb(0 0 0 / 50%);
+}
+
+#button:hover {
+  background: var(--back-button-hover-color);
+}

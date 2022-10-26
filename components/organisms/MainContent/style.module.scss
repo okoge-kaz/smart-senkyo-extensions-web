@@ -1,0 +1,11 @@
+.button_container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+}
+
+.main_action_container {
+  width: 780px;
+  background: var(--button-background-color);
+  margin: 85px auto 0;
+  padding-bottom: 80px;
+}

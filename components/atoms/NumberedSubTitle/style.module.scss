@@ -1,0 +1,28 @@
+#title_number {
+  font-family: var(--main-font);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 46px;
+  text-align: center;
+  color: var(--numbered-sub-title-number-color);
+  background: var(--paragraph-header-color);
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+}
+
+#title {
+  font-family: var(--main-font);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  color: var(--title-color);
+  margin-left: 9px;
+}
+
+#title_container {
+  display: flex;
+}

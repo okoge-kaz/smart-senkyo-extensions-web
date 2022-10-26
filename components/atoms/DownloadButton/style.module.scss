@@ -1,0 +1,38 @@
+#upload_label {
+  padding: 23px 210px 0px;
+  background: var(--button-color);
+  border-radius: 100px;
+  font-family: var(--main-font);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 60px;
+  line-height: 92px;
+  color: #F8FFFE;
+  box-shadow: 0 5px 5px 0 rgb(0 0 0 / 50%);
+}
+
+#upload_label:hover {
+  background: var(--button-hover-color);
+}
+
+.upload_input {
+  display: none;
+}
+
+#upload_container::before {
+  content: "+";
+  font-family: var(--main-font);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 60px;
+  line-height: 92px;
+  color: #F8FFFE;
+  position: relative;
+  left: 95px;
+}
+
+#upload_container {
+  text-align: center;
+  position: relative;
+  top: 30px;
+}

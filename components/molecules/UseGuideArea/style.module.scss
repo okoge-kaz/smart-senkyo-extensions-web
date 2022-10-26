@@ -1,0 +1,11 @@
+#use_guide_container {
+  width: 800px;
+  height: 450px;
+  margin: 124px auto 0;
+}
+
+#step_container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 27px;
+}

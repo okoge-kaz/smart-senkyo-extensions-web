@@ -1,3 +1,22 @@
+:root {
+  --title-color: #4F5A55;
+  --button-color: #0DD2AF;
+  --button-hover-color: #75D7C5;
+  --back-button-color: #d28e0d7d;
+  --back-button-hover-color: #d5af677d;
+  --header-background-color: #F7FFFE;
+  --button-background-color: #C6FFF5;
+  --paragraph-header-color: #4CAE9C;
+  --title-font-color: #4F5A55;
+  --paragraph-font-color: #8B8989;
+  --numbered-sub-title-number-color: #F8FFFE;
+  --checkbox-background-color: #E4E3E3;
+  --checkbox-background-color-checked: #50CAFF;
+  --choice-background-color: #EEFFFC;
+  --title-font: 'Inter';
+  --main-font: 'Gujarati MT';
+}
+
 html,
 body {
   padding: 0;
@@ -19,6 +38,7 @@ a {
   html {
     color-scheme: dark;
   }
+
   body {
     color: white;
     background: black;
