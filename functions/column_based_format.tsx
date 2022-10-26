@@ -1,5 +1,6 @@
-import { column_names } from "const/column_names";
-import { utils, write, WritingOptions } from "xlsx";
+import { column_names } from "const/column_names"
+import { SmartSenkyoColumn } from "interfaces/column_names"
+import { utils, write, WritingOptions } from "xlsx"
 
 const column_based_format = (file_number: number, sheet_name: string, file_name: string, file_data: JSON, export_blobs: Blob[], export_blob_names: string[]) => {
   /*
@@ -17,31 +18,32 @@ const column_based_format = (file_number: number, sheet_name: string, file_name:
     JSONで与えられたデータをスマセン形式の列名順に整え、EXCELファイルとして生成、生成したファイルをexport_blobsにファイル名をexport_blob_namesに保存する
   */
 
-  const col_based_data: string[][] = new Array<Array<string>>(0);
-  const file_data_keys = Object.keys(file_data);
-  for (let column_name of column_names) {
+  const col_based_data: string[][] = new Array<Array<string>>(0)
+  const file_data_keys = Object.keys(file_data)
+  for (const column_name in column_names) {
     if (file_data_keys.includes(column_name)) {
       // todo: ここの警告を消したい
-      col_based_data.push(Object.values(file_data[column_name]))
+      // @ts-ignore
+      col_based_data.push(Object.values(file_data[column_name] as SmartSenkyoColumn))
     }
   }
   // 転置を取る
-  const transpose_func = (a: string[][]) => a[0].map((_, c) => a.map(r => r[c]));
+  const transpose_func = (a: string[][]) => a[0].map((_, c) => a.map(r => r[c]))
   const worksheet_data = transpose_func(col_based_data)
-  const exportBook = utils.book_new();
-  const newSheet = utils.aoa_to_sheet(worksheet_data);
-  utils.book_append_sheet(exportBook, newSheet, sheet_name);
+  const exportBook = utils.book_new()
+  const newSheet = utils.aoa_to_sheet(worksheet_data)
+  utils.book_append_sheet(exportBook, newSheet, sheet_name)
   const excel_opt: WritingOptions = {
     bookType: "xlsx",
     bookSST: true,
     type: "array",
-  };
-  const export_file = write(exportBook, excel_opt);
+  }
+  const export_file = write(exportBook, excel_opt)
   const export_blob = new Blob([export_file], {
     type: "application/octet-stream",
-  });
-  export_blobs[file_number] = export_blob;
-  export_blob_names[file_number] = `${file_name}.xlsx`;
+  })
+  export_blobs[file_number] = export_blob
+  export_blob_names[file_number] = `${file_name}.xlsx`
 }
 
 export default column_based_format

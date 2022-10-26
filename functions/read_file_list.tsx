@@ -1,4 +1,4 @@
-import { read, utils } from "xlsx";
+import { read, utils } from "xlsx"
 
 const read_file_list = async (
   index: number,
@@ -23,28 +23,29 @@ const read_file_list = async (
   Description:
     自身を再起的に呼び出し非同期であるFileReader.readAsArrayBuffer()でファイルを順に読み込むための関数
   */
-  const file = files_list[index];
+  const file = files_list[index]
   file_reader.onload = (event) => {
     // まだ読み取るファイルがあるなら再帰的に呼び出す
     if (index < file_state_length) {
       // file_readerの読み込み結果
-      const result = event.target?.result;
-      const workbook = read(result, { type: "array" });
-      file_names[index] = file.name;
+      const result = event.target?.result
+      const workbook = read(result, { type: "array" })
+      file_names[index] = file.name
       // todo:ここを各シートごとにすることで複数シートに対応可能
-      sheet_names[index] = workbook.SheetNames[0];
-      const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-      json_formed_sheets[index] = utils.sheet_to_json(worksheet);
+      sheet_names[index] = workbook.SheetNames[0]
+      const worksheet = workbook.Sheets[workbook.SheetNames[0]]
+      // @ts-ignore
+      json_formed_sheets[index] = utils.sheet_to_json(worksheet)
       if (index == file_state_length - 1) {
-        after_loop_function();
+        after_loop_function()
       } else {
-        read_file_list(index + 1, files_list, file_reader, file_names, sheet_names, json_formed_sheets, file_state_length, after_loop_function, error_handle_function);
+        read_file_list(index + 1, files_list, file_reader, file_names, sheet_names, json_formed_sheets, file_state_length, after_loop_function, error_handle_function)
       }
     } else {
-      error_handle_function();
+      error_handle_function()
     }
   }
-  file_reader.readAsArrayBuffer(file);// file_reader.readAsArrayBuffer()は非同期なので注意
+  file_reader.readAsArrayBuffer(file)// file_reader.readAsArrayBuffer()は非同期なので注意
 }
 
 export default read_file_list
