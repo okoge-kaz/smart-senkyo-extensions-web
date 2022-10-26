@@ -1,5 +1,4 @@
 import { column_names } from "const/column_names"
-import { SmartSenkyoColumn } from "interfaces/column_names"
 import { utils, write, WritingOptions } from "xlsx"
 
 const column_based_format = (file_number: number, sheet_name: string, file_name: string, file_data: JSON, export_blobs: Blob[], export_blob_names: string[]) => {
@@ -24,7 +23,7 @@ const column_based_format = (file_number: number, sheet_name: string, file_name:
     if (file_data_keys.includes(column_name)) {
       // todo: ここの警告を消したい
       // @ts-ignore
-      col_based_data.push(Object.values(file_data[column_name] as SmartSenkyoColumn))
+      col_based_data.push(Object.values(file_data[column_name]))
     }
   }
   // 転置を取る
