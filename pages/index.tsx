@@ -82,7 +82,7 @@ const Home: NextPage = () => {
 			},
 			body: JSON.stringify(request_json),
 		});
-		
+
 		const convertAPI_response_json = await convertAPI_response.json() as APIResponse;// ここで帰ってきたjsonをexcelに直す
 		const file_number: number = convertAPI_response_json.file_number;
 		const response_data: APIResponseFileData[] = convertAPI_response_json.response_data;
