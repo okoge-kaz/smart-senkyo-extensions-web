@@ -1,8 +1,16 @@
-export default function get_formatted_date(date_data: Date): string{
-  // args: date_data
-  // return: request_time: 2022-10-25 23:56.14Zのような形式になる
-  // 
-  // APIに付属させるリクエスト日時の情報の生成
+const get_formatted_date = (date_data: Date): string => {
+  /*
+  Argument:
+    date_data: Date
+  Return:
+    formatted_time: string
+
+  Example:
+    get_formatted_date(date) -> "2022-10-25 23:56.14Z"
+
+  Description:
+    APIに付属させるリクエスト日時の情報の生成
+  */
 
   const year: string = date_data.getFullYear().toString();
   const month: string = (date_data.getMonth() + 1).toString(); //getMonthでは1月が0になる
@@ -13,3 +21,5 @@ export default function get_formatted_date(date_data: Date): string{
   const request_time: string = `${year}-${month}-${date} ${hour}:${minute}.${second}Z`
   return request_time;
 }
+
+export default get_formatted_date
