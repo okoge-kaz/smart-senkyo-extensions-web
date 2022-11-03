@@ -19,7 +19,7 @@ const column_based_format = (file_number: number, sheet_name: string, file_name:
 
   const col_based_data: string[][] = new Array<Array<string>>(0)
   const file_data_keys = Object.keys(file_data)
-  for (const column_name in column_names) {
+  for (let column_name of column_names) {
     if (file_data_keys.includes(column_name)) {
       // todo: ここの警告を消したい
       // @ts-ignore
