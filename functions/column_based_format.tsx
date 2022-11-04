@@ -1,15 +1,13 @@
 import { column_names } from "const/column_names"
 import { utils, write, WritingOptions } from "xlsx"
 
-const column_based_format = (file_number: number, sheet_name: string, file_name: string, file_data: JSON, export_blobs: Blob[], export_blob_names: string[]) => {
+const column_based_format = (file_number: number, sheet_name: string, file_data: JSON, export_blobs: Blob[]) => {
   /*
   Arguments:
     file_number: int              ファイルナンバー（APIでは1シート1ファイルとしてJSONに処理されるため、総シート数の中で何番目かということになる）
     sheet_name: string
-    file_name: string
     file_data: JSON
     export_blobs: Blob[]          スマートセンキョ形式の列名として成形したEXCELファイルの格納先となるBlob[]
-    export_blob_names: string[]   スマートセンキョ形式として成形したEXCELファイルのファイル名の格納先となるstring[]
   Returns:
     void
 
@@ -28,7 +26,10 @@ const column_based_format = (file_number: number, sheet_name: string, file_name:
   }
   // 転置を取る
   const transpose_func = (a: string[][]) => a[0].map((_, c) => a.map(r => r[c]))
-  const worksheet_data = transpose_func(col_based_data)
+  let worksheet_data:string[][] = [[""]];// 空ファイルを出力するときには転置を取れないため初期化が必要
+  if(col_based_data.length!=0){
+    worksheet_data = transpose_func(col_based_data)
+  }
   const exportBook = utils.book_new()
   const newSheet = utils.aoa_to_sheet(worksheet_data)
   utils.book_append_sheet(exportBook, newSheet, sheet_name)
@@ -42,7 +43,6 @@ const column_based_format = (file_number: number, sheet_name: string, file_name:
     type: "application/octet-stream",
   })
   export_blobs[file_number] = export_blob
-  export_blob_names[file_number] = `formatted_${file_name}`
 }
 
 export default column_based_format

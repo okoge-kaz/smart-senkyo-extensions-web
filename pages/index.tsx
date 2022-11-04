@@ -18,7 +18,8 @@ type APIResponseFileData = {
 
 type APIResponse = {
 	file_number: number;
-	response_data: APIResponseFileData[]
+	response_data: APIResponseFileData[];
+	not_converted_data: APIResponseFileData[];
 }
 
 const Home: NextPage = () => {
@@ -55,10 +56,6 @@ const Home: NextPage = () => {
 		set_step_state(7);
 	};
 
-	let export_blobs: Blob[] = new Array<Blob>(0);
-	let export_blob_names: string[] = new Array<string>(0);
-
-
 	async function post_to_convert(json_formed_sheets: Array<JSON>, file_names: string[], sheet_names: string[]) {
 
 		const request_time = get_formatted_date(new Date);
@@ -84,16 +81,26 @@ const Home: NextPage = () => {
 		});
 
 		const convertAPI_response_json = await convertAPI_response.json() as APIResponse;// ここで帰ってきたjsonをexcelに直す
+		console.log(convertAPI_response_json)
 		const file_number: number = convertAPI_response_json.file_number;
 		const response_data: APIResponseFileData[] = convertAPI_response_json.response_data;
-		export_blobs = new Array<Blob>(file_number);
-		export_blob_names = new Array<string>(file_number);
+		const not_converted_data: APIResponseFileData[] = convertAPI_response_json.not_converted_data;
+
+		const export_blobs = new Array<Blob>(file_number*2);
+		const export_blob_names = new Array<string>(file_number*2);
 
 		for (let focused_file_number = 0; focused_file_number < file_number; focused_file_number++) {
-			const file_name: string = response_data[focused_file_number].file_name;
-			const file_data: JSON = response_data[focused_file_number].file_data;
 			const sheet_name: string = sheet_names[focused_file_number];
-			column_based_format(focused_file_number, sheet_name, file_name, file_data, export_blobs, export_blob_names)
+
+			const converted_file_name: string = response_data[focused_file_number].file_name;
+			export_blob_names[focused_file_number*2] = `formatted_${converted_file_name}`;
+			const converted_file_data: JSON = response_data[focused_file_number].file_data;
+			column_based_format(focused_file_number*2, sheet_name, converted_file_data, export_blobs);
+
+			const not_converted_file_name: string = not_converted_data[focused_file_number].file_name;
+			export_blob_names[focused_file_number*2+1] = `not_formatted_${not_converted_file_name}`;
+			const not_converted_file_data: JSON = not_converted_data[focused_file_number].file_data;
+			column_based_format(focused_file_number*2+1, sheet_name, not_converted_file_data, export_blobs);
 		}
 		set_export_blob_state(export_blobs);
 		set_export_blob_name_state(export_blob_names);
