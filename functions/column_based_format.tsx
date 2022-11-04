@@ -42,7 +42,7 @@ const column_based_format = (file_number: number, sheet_name: string, file_name:
     type: "application/octet-stream",
   })
   export_blobs[file_number] = export_blob
-  export_blob_names[file_number] = `${file_name}`
+  export_blob_names[file_number] = `formatted_${file_name}`
 }
 
 export default column_based_format
