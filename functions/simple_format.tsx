@@ -1,7 +1,6 @@
-import { column_names } from "const/column_names"
 import { utils, write, WritingOptions } from "xlsx"
 
-const column_based_format = (file_number: number, sheet_name: string, file_data: JSON, export_blobs: Blob[], file_extension: string) => {
+const simple_format = (file_number: number, sheet_name: string, file_data: JSON, export_blobs: Blob[], file_extension: string) => {
   /*
   Arguments:
     file_number: int              ファイルナンバー（APIでは1シート1ファイルとしてJSONに処理されるため、総シート数の中で何番目かということになる）
@@ -17,12 +16,10 @@ const column_based_format = (file_number: number, sheet_name: string, file_data:
 
   const col_based_data: string[][] = new Array<Array<string>>(0)
   const file_data_keys = Object.keys(file_data)
-  for (let column_name of column_names) {
-    if (file_data_keys.includes(column_name)) {
-      // todo: ここの警告を消したい
-      // @ts-ignore
-      col_based_data.push(Object.values(file_data[column_name]))
-    }
+  for (let attribute_name of file_data_keys) {
+    // todo: ここの警告を消したい
+    // @ts-ignore
+    col_based_data.push(Object.values(file_data[attribute_name]))
   }
   // 転置を取る
   const transpose_func = (a: string[][]) => a[0].map((_, c) => a.map(r => r[c]))
@@ -50,6 +47,7 @@ const column_based_format = (file_number: number, sheet_name: string, file_data:
         };
     }
   })(file_extension);
+
   const export_file = write(exportBook, excel_opt)
   const export_blob = new Blob([export_file], {
     type: "application/octet-stream",
@@ -57,4 +55,4 @@ const column_based_format = (file_number: number, sheet_name: string, file_data:
   export_blobs[file_number] = export_blob
 }
 
-export default column_based_format
+export default simple_format

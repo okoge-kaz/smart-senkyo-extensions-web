@@ -4,6 +4,7 @@ import { saveAs } from "file-saver";
 import column_based_format from "functions/column_based_format";
 import get_formatted_date from "functions/get_formatted_date";
 import read_file_list from "functions/read_file_list";
+import simple_format from "functions/simple_format";
 import type { NextPage } from "next";
 import React, { useState } from "react";
 
@@ -93,14 +94,16 @@ const Home: NextPage = () => {
 			const sheet_name: string = sheet_names[focused_file_number];
 
 			const converted_file_name: string = response_data[focused_file_number].file_name;
+			const converted_file_extenstion: string = converted_file_name.split('.').pop() ?? "";
 			export_blob_names[focused_file_number*2] = `formatted_${converted_file_name}`;
 			const converted_file_data: JSON = response_data[focused_file_number].file_data;
-			column_based_format(focused_file_number*2, sheet_name, converted_file_data, export_blobs);
+			column_based_format(focused_file_number*2, sheet_name, converted_file_data, export_blobs, converted_file_extenstion);
 
 			const not_converted_file_name: string = not_converted_data[focused_file_number].file_name;
+			const not_converted_file_extensions: string = not_converted_file_name.split('.').pop() ?? "";
 			export_blob_names[focused_file_number*2+1] = `not_formatted_${not_converted_file_name}`;
 			const not_converted_file_data: JSON = not_converted_data[focused_file_number].file_data;
-			column_based_format(focused_file_number*2+1, sheet_name, not_converted_file_data, export_blobs);
+			simple_format(focused_file_number*2+1, sheet_name, not_converted_file_data, export_blobs, not_converted_file_extensions);
 		}
 		set_export_blob_state(export_blobs);
 		set_export_blob_name_state(export_blob_names);
