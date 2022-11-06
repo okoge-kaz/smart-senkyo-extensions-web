@@ -7,6 +7,7 @@ const simple_format = (file_number: number, sheet_name: string, file_data: JSON,
     sheet_name: string
     file_data: JSON
     export_blobs: Blob[]          スマートセンキョ形式の列名として成形したEXCELファイルの格納先となるBlob[]
+    file_extension: stirng
   Returns:
     void
 

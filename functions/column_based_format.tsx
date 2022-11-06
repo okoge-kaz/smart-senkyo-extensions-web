@@ -8,6 +8,7 @@ const column_based_format = (file_number: number, sheet_name: string, file_data:
     sheet_name: string
     file_data: JSON
     export_blobs: Blob[]          スマートセンキョ形式の列名として成形したEXCELファイルの格納先となるBlob[]
+    file_extension: string
   Returns:
     void
 
