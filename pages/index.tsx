@@ -26,9 +26,9 @@ type APIResponse = {
 const Home: NextPage = () => {
 	const [address_separator_option_state, set_address_separator_option_state] = useState<boolean>(true) // option管理
 	const [stepState, setStepState] = useState<number>(1) // ステップ管理
-	const [file_state, set_file_state] = useState<File[]>([]) // アップロードされたファイル管理
-	const [export_blob_state, set_export_blob_state] = useState<Blob[]>([]) // ダウンロードしたjsonをファイル化したファイルの管理
-	const [export_blob_name_state, set_export_blob_name_state] = useState<string[]>([]) // ダウンロードしたjsonをファイル化したファイルのファイル名管理
+	const [fileState, setFileState] = useState<File[]>([]) // アップロードされたファイル管理
+	const [exportBlobState, setExportBlobState] = useState<Blob[]>([]) // ダウンロードしたjsonをファイル化したファイルの管理
+	const [exportBlobNameState, setExportBlobNameState] = useState<string[]>([]) // ダウンロードしたjsonをファイル化したファイルのファイル名管理
 
 	const switch_address_separator_option: React.MouseEventHandler<HTMLButtonElement> = () => { // 住所分割チェックボックス用オプションスイッチ関数
 		set_address_separator_option_state(!address_separator_option_state)
@@ -48,11 +48,11 @@ const Home: NextPage = () => {
 		}
 	}
 
-	const download_converted_file = () => { // ダウンロードのステップでメインのボタンに割り当てる関数
-		export_blob_state.forEach((exportBlob, index) => {
+	const downloadConvertedFile = () => { // ダウンロードのステップでメインのボタンに割り当てる関数
+		exportBlobState.forEach((exportBlob, index) => {
 			// todo: exportBlob使わないのならexport_blob_state.forEach()でなく[0,1,2,...]的なリストを使えばいい
-			if (export_blob_state[index] != null && export_blob_name_state[index] != null)
-				saveAs(export_blob_state[index], export_blob_name_state[index])
+			if (exportBlobState[index] != null && exportBlobNameState[index] != null)
+				saveAs(exportBlobState[index], exportBlobNameState[index])
 		})
 		setStepState(7)
 	}
@@ -104,19 +104,19 @@ const Home: NextPage = () => {
 			simple_format(index * 2 + 1, sheetName, notConvertedFileData, ExportBlobs, notConvertedFileExtension)
 		})
 
-		set_export_blob_state(ExportBlobs)
-		set_export_blob_name_state(ExportBlobNames)
+		setExportBlobState(ExportBlobs)
+		setExportBlobNameState(ExportBlobNames)
 		setStepState(6)
 	}
 
 
 	// convert時に呼ばれる関数
-	const convert_file: React.MouseEventHandler<HTMLButtonElement> = async () => {
+	const convertFile: React.MouseEventHandler<HTMLButtonElement> = async () => {
 		// todo: proceedStep()を使いたい
 		setStepState(stepState + 1)
 
 		// ファイルをjsonにしてAPIへ
-		const inputExcelFiles: File[] = Object.values(file_state)
+		const inputExcelFiles: File[] = Object.values(fileState)
 
 		const InputExcelFileLength: number = inputExcelFiles.length
 		const fileReader = new FileReader()
@@ -146,9 +146,9 @@ const Home: NextPage = () => {
 				address_separator_selected_flag={address_separator_option_state}
 				proceed_step={proceedStep}
 				back_step={backStep}
-				set_file_state={set_file_state}
-				convert_file={convert_file}
-				download_converted_file={download_converted_file}
+				set_file_state={setFileState}
+				convert_file={convertFile}
+				download_converted_file={downloadConvertedFile}
 			/>
 		</div>
 	)
