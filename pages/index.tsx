@@ -89,21 +89,21 @@ const Home: NextPage = () => {
 		const export_blobs = new Array<Blob>(file_number * 2)
 		const export_blob_names = new Array<string>(file_number * 2)
 
-		for (let focused_file_number = 0; focused_file_number < file_number; focused_file_number++) {
-			const sheet_name: string = sheetNames[focused_file_number]
+		sheetNames.forEach((sheetName, index) => {
+			const convertedFileName: string = response_data[index].file_name
+			const convertedFileExtension: string = convertedFileName.split('.').pop() ?? ""
+			const notConvertedFileName: string = not_converted_data[index].file_name
+			const notConvertedFileExtension: string = notConvertedFileName.split('.').pop() ?? ""
 
-			const converted_file_name: string = response_data[focused_file_number].file_name
-			const converted_file_extenstion: string = converted_file_name.split('.').pop() ?? ""
-			export_blob_names[focused_file_number * 2] = `formatted_${converted_file_name}`
-			const converted_file_data: JSON = response_data[focused_file_number].file_data
-			column_based_format(focused_file_number * 2, sheet_name, converted_file_data, export_blobs, converted_file_extenstion)
+			export_blob_names[index * 2] = `formatted_${convertedFileName}`
+			const convertedFileData: JSON = response_data[index].file_data
+			column_based_format(index * 2, sheetName, convertedFileData, export_blobs, convertedFileExtension)
 
-			const not_converted_file_name: string = not_converted_data[focused_file_number].file_name
-			const not_converted_file_extensions: string = not_converted_file_name.split('.').pop() ?? ""
-			export_blob_names[focused_file_number * 2 + 1] = `not_formatted_${not_converted_file_name}`
-			const not_converted_file_data: JSON = not_converted_data[focused_file_number].file_data
-			simple_format(focused_file_number * 2 + 1, sheet_name, not_converted_file_data, export_blobs, not_converted_file_extensions)
-		}
+			export_blob_names[index * 2 + 1] = `not_formatted_${notConvertedFileName}`
+			const notConvertedFileData: JSON = not_converted_data[index].file_data
+			simple_format(index * 2 + 1, sheetName, notConvertedFileData, export_blobs, notConvertedFileExtension)
+		})
+
 		set_export_blob_state(export_blobs)
 		set_export_blob_name_state(export_blob_names)
 		set_step_state(6)
