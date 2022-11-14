@@ -25,7 +25,7 @@ type APIResponse = {
 
 const Home: NextPage = () => {
 	const [address_separator_option_state, set_address_separator_option_state] = useState<boolean>(true) // option管理
-	const [step_state, set_step_state] = useState<number>(1) // ステップ管理
+	const [stepState, setStepState] = useState<number>(1) // ステップ管理
 	const [file_state, set_file_state] = useState<File[]>([]) // アップロードされたファイル管理
 	const [export_blob_state, set_export_blob_state] = useState<Blob[]>([]) // ダウンロードしたjsonをファイル化したファイルの管理
 	const [export_blob_name_state, set_export_blob_name_state] = useState<string[]>([]) // ダウンロードしたjsonをファイル化したファイルのファイル名管理
@@ -34,17 +34,17 @@ const Home: NextPage = () => {
 		set_address_separator_option_state(!address_separator_option_state)
 	}
 
-	const proceed_step: React.MouseEventHandler<HTMLButtonElement> = () => { // 次へのボタン用ステップ遷移関数
-		if (step_state < 7) {
-			set_step_state(step_state + 1)
+	const proceedStep = () => { // 次へのボタン用ステップ遷移関数
+		if (stepState < 7) {
+			setStepState(stepState + 1)
 		} else {
-			set_step_state(1)
+			setStepState(1)
 		}
 	}
 
-	const back_step: React.MouseEventHandler<HTMLButtonElement> = () => { // 戻るボタン用ステップ遷移関数
-		if (1 < step_state) {
-			set_step_state(step_state - 1)
+	const backStep = () => { // 戻るボタン用ステップ遷移関数
+		if (1 < stepState) {
+			setStepState(stepState - 1)
 		}
 	}
 
@@ -54,7 +54,7 @@ const Home: NextPage = () => {
 			if (export_blob_state[index] != null && export_blob_name_state[index] != null)
 				saveAs(export_blob_state[index], export_blob_name_state[index])
 		})
-		set_step_state(7)
+		setStepState(7)
 	}
 
 	async function post_to_convert(JSONFormedSheets: Array<JSON>, fileNames: string[], sheetNames: string[]) {
@@ -106,14 +106,14 @@ const Home: NextPage = () => {
 
 		set_export_blob_state(ExportBlobs)
 		set_export_blob_name_state(ExportBlobNames)
-		set_step_state(6)
+		setStepState(6)
 	}
 
 
 	// convert時に呼ばれる関数
 	const convert_file: React.MouseEventHandler<HTMLButtonElement> = async () => {
-		// todo: proceed_step()を使いたい
-		set_step_state(step_state + 1)
+		// todo: proceedStep()を使いたい
+		setStepState(stepState + 1)
 
 		// ファイルをjsonにしてAPIへ
 		const inputExcelFiles: File[] = Object.values(file_state)
@@ -131,7 +131,7 @@ const Home: NextPage = () => {
 		}
 		const errorHandle = () => {
 			console.log("ファイルの読み込み時に異常が発生しました。")
-			set_step_state(-1)
+			setStepState(-1)
 		}
 
 		await read_file_list(0, inputExcelFiles, fileReader, fileNames, sheetNames, JSONFormedSheets, InputExcelFileLength, after_loop_function, errorHandle)
@@ -141,11 +141,11 @@ const Home: NextPage = () => {
 		<div>
 			<Header page_title="自動名簿整形ツール" />
 			<MainContent
-				step_state={step_state}
+				step_state={stepState}
 				on_address_separator_acted={switch_address_separator_option}
 				address_separator_selected_flag={address_separator_option_state}
-				proceed_step={proceed_step}
-				back_step={back_step}
+				proceed_step={proceedStep}
+				back_step={backStep}
 				set_file_state={set_file_state}
 				convert_file={convert_file}
 				download_converted_file={download_converted_file}
