@@ -73,7 +73,7 @@ const Home: NextPage = () => {
 			input_data_type: "json",
 			input_data: json_formed_data,
 		};
-		const convertAPI_response = await fetch("https://601cdzfw2l.execute-api.ap-northeast-1.amazonaws.com/default/smart-senkyo-extensions-lambda", {
+		const convertAPI_response = await fetch("https://bczm5aw2fkuevavyh7ievzdqje0sxhlg.lambda-url.ap-northeast-1.on.aws/", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json; charset=utf-8",
