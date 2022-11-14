@@ -57,11 +57,11 @@ const Home: NextPage = () => {
 		set_step_state(7)
 	}
 
-	async function post_to_convert(json_formed_sheets: Array<JSON>, fileNames: string[], sheetNames: string[]) {
+	async function post_to_convert(JSONFormedSheets: Array<JSON>, fileNames: string[], sheetNames: string[]) {
 
 		const RequestTime = get_formatted_date(new Date)
 		// todo: 選択したオプション、エラーメッセージ等がjsonに含まれていないので含める
-		const JSONFormedData = json_formed_sheets.map(
+		const JSONFormedData = JSONFormedSheets.map(
 			(json_formed_sheet, index) => ({
 				file_name: fileNames[index],
 				file_data: json_formed_sheet,
@@ -81,13 +81,13 @@ const Home: NextPage = () => {
 			body: JSON.stringify(RequestJSON),
 		})
 
-		const convertAPI_response_json = await convertAPI_response.json() as APIResponse// ここで帰ってきたjsonをexcelに直す
-		const file_number: number = convertAPI_response_json.file_number
-		const response_data: APIResponseFileData[] = convertAPI_response_json.response_data
-		const not_converted_data: APIResponseFileData[] = convertAPI_response_json.not_converted_data
+		const convertAPI_ResponseJSON = await convertAPI_response.json() as APIResponse// ここで帰ってきたjsonをexcelに直す
+		const file_number: number = convertAPI_ResponseJSON.file_number
+		const response_data: APIResponseFileData[] = convertAPI_ResponseJSON.response_data
+		const not_converted_data: APIResponseFileData[] = convertAPI_ResponseJSON.not_converted_data
 
-		const export_blobs = new Array<Blob>(file_number * 2)
-		const export_blob_names = new Array<string>(file_number * 2)
+		const ExportBlobs = new Array<Blob>(file_number * 2)
+		const ExportBlobNames = new Array<string>(file_number * 2)
 
 		sheetNames.forEach((sheetName, index) => {
 			const convertedFileName: string = response_data[index].file_name
@@ -95,17 +95,17 @@ const Home: NextPage = () => {
 			const notConvertedFileName: string = not_converted_data[index].file_name
 			const notConvertedFileExtension: string = notConvertedFileName.split('.').pop() ?? ""
 
-			export_blob_names[index * 2] = `formatted_${convertedFileName}`
+			ExportBlobNames[index * 2] = `formatted_${convertedFileName}`
 			const convertedFileData: JSON = response_data[index].file_data
-			column_based_format(index * 2, sheetName, convertedFileData, export_blobs, convertedFileExtension)
+			column_based_format(index * 2, sheetName, convertedFileData, ExportBlobs, convertedFileExtension)
 
-			export_blob_names[index * 2 + 1] = `not_formatted_${notConvertedFileName}`
+			ExportBlobNames[index * 2 + 1] = `not_formatted_${notConvertedFileName}`
 			const notConvertedFileData: JSON = not_converted_data[index].file_data
-			simple_format(index * 2 + 1, sheetName, notConvertedFileData, export_blobs, notConvertedFileExtension)
+			simple_format(index * 2 + 1, sheetName, notConvertedFileData, ExportBlobs, notConvertedFileExtension)
 		})
 
-		set_export_blob_state(export_blobs)
-		set_export_blob_name_state(export_blob_names)
+		set_export_blob_state(ExportBlobs)
+		set_export_blob_name_state(ExportBlobNames)
 		set_step_state(6)
 	}
 
@@ -123,18 +123,18 @@ const Home: NextPage = () => {
 
 		const fileNames: string[] = new Array(InputExcelFileLength)
 		const sheetNames: string[] = new Array(InputExcelFileLength)
-		const json_formed_sheets = new Array(InputExcelFileLength)
+		const JSONFormedSheets = new Array(InputExcelFileLength)
 
 
 		const after_loop_function = () => {
-			post_to_convert(json_formed_sheets, fileNames, sheetNames)
+			post_to_convert(JSONFormedSheets, fileNames, sheetNames)
 		}
 		const errorHandle = () => {
 			console.log("ファイルの読み込み時に異常が発生しました。")
 			set_step_state(-1)
 		}
 
-		await read_file_list(0, inputExcelFiles, fileReader, fileNames, sheetNames, json_formed_sheets, InputExcelFileLength, after_loop_function, errorHandle)
+		await read_file_list(0, inputExcelFiles, fileReader, fileNames, sheetNames, JSONFormedSheets, InputExcelFileLength, after_loop_function, errorHandle)
 	}
 
 	return (
