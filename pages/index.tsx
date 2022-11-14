@@ -126,7 +126,9 @@ const Home: NextPage = () => {
 		const json_formed_sheets = new Array(InputExcelFileLength)
 
 
-		const after_loop_function = () => post_to_convert(json_formed_sheets, fileNames, sheetNames)
+		const after_loop_function = () => {
+			post_to_convert(json_formed_sheets, fileNames, sheetNames)
+		}
 		const errorHandle = () => {
 			console.log("ファイルの読み込み時に異常が発生しました。")
 			set_step_state(-1)
