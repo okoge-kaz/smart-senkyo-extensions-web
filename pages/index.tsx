@@ -1,7 +1,7 @@
 import { Header } from "components/organisms/Header"
 import { MainContent } from "components/organisms/MainContent"
 import { saveAs } from "file-saver"
-import columnBasedFormat from "functions/columnBasedFormat"
+import formatByColumnName from "functions/formatByColumnName"
 import getFormattedDate from "functions/getFormattedDate"
 import readFileList from "functions/readFileList"
 import type { NextPage } from "next"
@@ -97,7 +97,7 @@ const Home: NextPage = () => {
 
 			ExportBlobNames[index * 2] = `formatted_${convertedFileName}`
 			const convertedFileData: JSON = response_data[index].file_data
-			columnBasedFormat(index * 2, sheetName, convertedFileData, ExportBlobs, convertedFileExtension)
+			formatByColumnName(index * 2, sheetName, convertedFileData, ExportBlobs, convertedFileExtension)
 
 			ExportBlobNames[index * 2 + 1] = `not_formatted_${notConvertedFileName}`
 			const notConvertedFileData: JSON = not_converted_data[index].file_data

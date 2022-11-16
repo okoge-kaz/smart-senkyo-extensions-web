@@ -1,7 +1,7 @@
 import { columnNames } from "const/columnNames"
 import { utils, write, WritingOptions } from "xlsx"
 
-const columnBasedFormat = (fileNumber: number, sheetName: string, fileData: JSON, exportBlobs: Blob[], fileExtension: string) => {
+const formatByColumnName = (fileNumber: number, sheetName: string, fileData: JSON, exportBlobs: Blob[], fileExtension: string) => {
   /*
   Arguments:
     fileNumber: int              ファイルナンバー（APIでは1シート1ファイルとしてJSONに処理されるため、総シート数の中で何番目かということになる）
@@ -58,4 +58,4 @@ const columnBasedFormat = (fileNumber: number, sheetName: string, fileData: JSON
   exportBlobs[fileNumber] = exportBlob
 }
 
-export default columnBasedFormat
+export default formatByColumnName
