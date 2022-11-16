@@ -3,10 +3,10 @@ import { MainContent } from "components/organisms/MainContent"
 import { saveAs } from "file-saver"
 import columnBasedFormat from "functions/columnBasedFormat"
 import getFormattedDate from "functions/getFormattedDate"
-import simple_format from "functions/simple_format"
+import readFileList from "functions/readFileList"
 import type { NextPage } from "next"
 import React, { useState } from "react"
-import readFileList from "functions/readFileList"
+import simpleFormat from "functions/simpleFormat"
 
 // 用途：ここがsmart-senkyo-extensions-webで表示される画面
 // 役割：ファイル、オプション、ステップ(本プロジェクトでは使用者がどの段階まで作業を進めたかをステップで管理している)
@@ -101,7 +101,7 @@ const Home: NextPage = () => {
 
 			ExportBlobNames[index * 2 + 1] = `not_formatted_${notConvertedFileName}`
 			const notConvertedFileData: JSON = not_converted_data[index].file_data
-			simple_format(index * 2 + 1, sheetName, notConvertedFileData, ExportBlobs, notConvertedFileExtension)
+			simpleFormat(index * 2 + 1, sheetName, notConvertedFileData, ExportBlobs, notConvertedFileExtension)
 		})
 
 		setExportBlobState(ExportBlobs)
