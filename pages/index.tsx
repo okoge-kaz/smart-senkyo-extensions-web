@@ -1,12 +1,12 @@
 import { Header } from "components/organisms/Header"
 import { MainContent } from "components/organisms/MainContent"
 import { saveAs } from "file-saver"
-import get_formatted_date from "functions/get_formatted_date"
+import columnBasedFormat from "functions/columnBasedFormat"
 import read_file_list from "functions/read_file_list"
 import simple_format from "functions/simple_format"
 import type { NextPage } from "next"
 import React, { useState } from "react"
-import columnBasedFormat from "functions/columnBasedFormat"
+import getFormattedDate from "functions/getFormattedDate"
 
 // 用途：ここがsmart-senkyo-extensions-webで表示される画面
 // 役割：ファイル、オプション、ステップ(本プロジェクトでは使用者がどの段階まで作業を進めたかをステップで管理している)
@@ -59,7 +59,7 @@ const Home: NextPage = () => {
 
 	async function post_to_convert(JSONFormedSheets: Array<JSON>, fileNames: string[], sheetNames: string[]) {
 
-		const RequestTime = get_formatted_date(new Date)
+		const RequestTime = getFormattedDate(new Date)
 		// todo: 選択したオプション、エラーメッセージ等がjsonに含まれていないので含める
 		const JSONFormedData = JSONFormedSheets.map(
 			(json_formed_sheet, index) => ({
