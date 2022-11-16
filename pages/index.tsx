@@ -2,11 +2,11 @@ import { Header } from "components/organisms/Header"
 import { MainContent } from "components/organisms/MainContent"
 import { saveAs } from "file-saver"
 import columnBasedFormat from "functions/columnBasedFormat"
-import read_file_list from "functions/read_file_list"
+import getFormattedDate from "functions/getFormattedDate"
 import simple_format from "functions/simple_format"
 import type { NextPage } from "next"
 import React, { useState } from "react"
-import getFormattedDate from "functions/getFormattedDate"
+import readFileList from "functions/readFileList"
 
 // 用途：ここがsmart-senkyo-extensions-webで表示される画面
 // 役割：ファイル、オプション、ステップ(本プロジェクトでは使用者がどの段階まで作業を進めたかをステップで管理している)
@@ -134,7 +134,7 @@ const Home: NextPage = () => {
 			setStepState(-1)
 		}
 
-		await read_file_list(0, inputExcelFiles, fileReader, fileNames, sheetNames, JSONFormedSheets, InputExcelFileLength, after_loop_function, errorHandle)
+		await readFileList(0, inputExcelFiles, fileReader, fileNames, sheetNames, JSONFormedSheets, InputExcelFileLength, after_loop_function, errorHandle)
 	}
 
 	return (
