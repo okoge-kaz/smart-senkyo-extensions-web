@@ -1,12 +1,12 @@
 import { Header } from "components/organisms/Header"
 import { MainContent } from "components/organisms/MainContent"
 import { saveAs } from "file-saver"
-import column_based_format from "functions/column_based_format"
 import get_formatted_date from "functions/get_formatted_date"
 import read_file_list from "functions/read_file_list"
 import simple_format from "functions/simple_format"
 import type { NextPage } from "next"
 import React, { useState } from "react"
+import columnBasedFormat from "functions/columnBasedFormat"
 
 // 用途：ここがsmart-senkyo-extensions-webで表示される画面
 // 役割：ファイル、オプション、ステップ(本プロジェクトでは使用者がどの段階まで作業を進めたかをステップで管理している)
@@ -97,7 +97,7 @@ const Home: NextPage = () => {
 
 			ExportBlobNames[index * 2] = `formatted_${convertedFileName}`
 			const convertedFileData: JSON = response_data[index].file_data
-			column_based_format(index * 2, sheetName, convertedFileData, ExportBlobs, convertedFileExtension)
+			columnBasedFormat(index * 2, sheetName, convertedFileData, ExportBlobs, convertedFileExtension)
 
 			ExportBlobNames[index * 2 + 1] = `not_formatted_${notConvertedFileName}`
 			const notConvertedFileData: JSON = not_converted_data[index].file_data

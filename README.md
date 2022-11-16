@@ -33,6 +33,7 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
-# 参考URL
-- functions/column_based_format.tsxの転置部分
-  - https://qiita.com/kznrluk/items/790f1b154d1b6d4de398 
+# 参考 URL
+
+- functions/columnBasedFormat.tsx の転置部分
+  - https://qiita.com/kznrluk/items/790f1b154d1b6d4de398
