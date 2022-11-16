@@ -1,4 +1,6 @@
 import { columnNames } from "const/columnNames"
+import getExcelWriteOptions from "functions/getExcelWriteOptions"
+import transpose2DStringArray from "functions/transpose2DStringArray"
 import { utils, write, WritingOptions } from "xlsx"
 
 const formatByColumnName = (fileNumber: number, sheetName: string, fileData: JSON, exportBlobs: Blob[], fileExtension: string) => {
@@ -25,32 +27,14 @@ const formatByColumnName = (fileNumber: number, sheetName: string, fileData: JSO
       colBasedData.push(Object.values(fileData[columnName]))
     }
   }
-  // 転置を取る
-  const transposeFunc = (a: string[][]) => a[0].map((_, c) => a.map(r => r[c]))
   let worksheetData:string[][] = [[""]];// 空ファイルを出力するときには転置を取れないため初期化が必要
   if(colBasedData.length!=0){
-    worksheetData = transposeFunc(colBasedData)
+    worksheetData = transpose2DStringArray(colBasedData)
   }
   const exportBook = utils.book_new()
   const newSheet = utils.aoa_to_sheet(worksheetData)
   utils.book_append_sheet(exportBook, newSheet, sheetName)
-  const excelOpt: WritingOptions = ((extension: string) => {
-    switch (extension){
-      case "xls":
-        return {
-          bookType: "xls",
-          bookSST: true,
-          type: "array",
-        };
-      case "xlsx":
-      default:
-        return {
-          bookType: "xlsx",
-          bookSST: true,
-          type: "array",
-        };
-    }
-  })(fileExtension);
+  const excelOpt: WritingOptions = getExcelWriteOptions(fileExtension);
   const exportFile = write(exportBook, excelOpt)
   const exportBlob = new Blob([exportFile], {
     type: "application/octet-stream",

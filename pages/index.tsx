@@ -4,9 +4,9 @@ import { saveAs } from "file-saver"
 import formatByColumnName from "functions/formatByColumnName"
 import getFormattedDate from "functions/getFormattedDate"
 import readFileList from "functions/readFileList"
+import simpleFormat from "functions/simpleFormat"
 import type { NextPage } from "next"
 import React, { useState } from "react"
-import simpleFormat from "functions/simpleFormat"
 
 // 用途：ここがsmart-senkyo-extensions-webで表示される画面
 // 役割：ファイル、オプション、ステップ(本プロジェクトでは使用者がどの段階まで作業を進めたかをステップで管理している)
