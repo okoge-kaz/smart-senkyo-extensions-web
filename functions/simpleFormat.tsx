@@ -19,7 +19,7 @@ const simpleFormat = (fileNumber: number, sheetName: string, fileData: JSON, exp
 
   const colBasedData: string[][] = new Array<Array<string>>(0)
   const fileDataKeys = Object.keys(fileData)
-  for (let attribute_name of fileDataKeys) {
+  for (const attribute_name of fileDataKeys) {
     // todo: ここの警告を消したい
     // @ts-ignore
     colBasedData.push(Object.values(fileData[attribute_name]))

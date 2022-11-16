@@ -20,7 +20,7 @@ const formatByColumnName = (fileNumber: number, sheetName: string, fileData: JSO
 
   const colBasedData: string[][] = new Array<Array<string>>(0)
   const fileDataKeys = Object.keys(fileData)
-  for (let columnName of columnNames) {
+  for (const columnName of columnNames) {
     if (fileDataKeys.includes(columnName)) {
       // todo: ここの警告を消したい
       // @ts-ignore
