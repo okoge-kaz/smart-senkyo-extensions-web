@@ -18,13 +18,13 @@ const getSmartSenkyoFormatBlobFromJson = (sheetName: string, fileData: JSON, fil
 
   const columnBasedData: string[][] = new Array<Array<string>>(0)
   const fileDataKeys = Object.keys(fileData)
-  for (const columnName of SmartSenkyoColumnNames) {
+  SmartSenkyoColumnNames.forEach(columnName => {
     if (fileDataKeys.includes(columnName)) {
       // todo: ここの警告を消したい
       // @ts-ignore
       columnBasedData.push(Object.values(fileData[columnName]))
     }
-  }
+  })
   let worksheetData:string[][] = [[""]];// 空ファイルを出力するときには転置を取れないため初期化が必要
   if(columnBasedData.length!=0){
     worksheetData = transpose2DStringArray(columnBasedData)
