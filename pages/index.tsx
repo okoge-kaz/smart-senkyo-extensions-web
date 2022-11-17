@@ -30,7 +30,7 @@ const Home: NextPage = () => {
 	const [exportBlobState, setExportBlobState] = useState<Blob[]>([]) // ダウンロードしたjsonをファイル化したファイルの管理
 	const [exportBlobNameState, setExportBlobNameState] = useState<string[]>([]) // ダウンロードしたjsonをファイル化したファイルのファイル名管理
 
-	const switchAddressSeparatorOption: React.MouseEventHandler<HTMLButtonElement> = () => { // 住所分割チェックボックス用オプションスイッチ関数
+	const switchAddressSeparatorOption = () => { // 住所分割チェックボックス用オプションスイッチ関数
 		setAddressSeparatorOptionState(!addressSeparatorOptionState)
 	}
 
@@ -117,24 +117,9 @@ const Home: NextPage = () => {
 
 		// ファイルをjsonにしてAPIへ
 		const inputExcelFiles: File[] = Object.values(fileState)
+		const { JSONFormedSheets, fileNames, sheetNames } = await readFileList(inputExcelFiles)
 
-		const InputExcelFileLength: number = inputExcelFiles.length
-		const fileReader = new FileReader()
-
-		const fileNames: string[] = new Array(InputExcelFileLength)
-		const sheetNames: string[] = new Array(InputExcelFileLength)
-		const JSONFormedSheets = new Array(InputExcelFileLength)
-
-
-		const afterLoopHandle = () => {
-			postToConvert(JSONFormedSheets, fileNames, sheetNames)
-		}
-		const errorHandle = () => {
-			window.alert("ファイルの読み込み時に異常が発生しました。")
-			setStepState(-1)
-		}
-
-		await readFileList(0, inputExcelFiles, fileReader, fileNames, sheetNames, JSONFormedSheets, InputExcelFileLength, afterLoopHandle, errorHandle)
+		postToConvert(JSONFormedSheets, fileNames, sheetNames)
 	}
 
 	return (
