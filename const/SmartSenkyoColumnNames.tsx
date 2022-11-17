@@ -1,6 +1,6 @@
 // スマセン形式の列名を左から順に並べた配列
 
-export const columnNames: string[] = [
+export const SmartSenkyoColumnNames: string[] = [
 	"delete",
 	"update",
 	"duplicated",

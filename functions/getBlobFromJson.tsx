@@ -15,16 +15,16 @@ const getBlobFromJson = (sheetName: string, fileData: JSON, fileExtension: strin
     JSONで与えられたデータをスマセン形式の列名順に整え、EXCELファイルとして生成、生成したファイルを返す
   */
 
-  const colBasedData: string[][] = new Array<Array<string>>(0)
+  const columnBasedData: string[][] = new Array<Array<string>>(0)
   const fileDataKeys = Object.keys(fileData)
-  for (const attribute_name of fileDataKeys) {
+  for (const attributeName of fileDataKeys) {
     // todo: ここの警告を消したい
     // @ts-ignore
-    colBasedData.push(Object.values(fileData[attribute_name]))
+    columnBasedData.push(Object.values(fileData[attributeName]))
   }
   let worksheetData:string[][] = [[""]];// 空ファイルを出力するときには転置を取れないため初期化が必要
-  if(colBasedData.length!=0){
-    worksheetData = transpose2DStringArray(colBasedData)
+  if(columnBasedData.length!=0){
+    worksheetData = transpose2DStringArray(columnBasedData)
   }
   const exportBook = utils.book_new()
   const newSheet = utils.aoa_to_sheet(worksheetData)

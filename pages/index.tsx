@@ -24,14 +24,14 @@ type APIResponse = {
 }
 
 const Home: NextPage = () => {
-	const [address_separator_option_state, set_address_separator_option_state] = useState<boolean>(true) // option管理
+	const [addressSeparatorOptionState, setAddressSeparatorOptionState] = useState<boolean>(true) // option管理
 	const [stepState, setStepState] = useState<number>(1) // ステップ管理
 	const [fileState, setFileState] = useState<File[]>([]) // アップロードされたファイル管理
 	const [exportBlobState, setExportBlobState] = useState<Blob[]>([]) // ダウンロードしたjsonをファイル化したファイルの管理
 	const [exportBlobNameState, setExportBlobNameState] = useState<string[]>([]) // ダウンロードしたjsonをファイル化したファイルのファイル名管理
 
-	const switch_address_separator_option: React.MouseEventHandler<HTMLButtonElement> = () => { // 住所分割チェックボックス用オプションスイッチ関数
-		set_address_separator_option_state(!address_separator_option_state)
+	const switchAddressSeparatorOption: React.MouseEventHandler<HTMLButtonElement> = () => { // 住所分割チェックボックス用オプションスイッチ関数
+		setAddressSeparatorOptionState(!addressSeparatorOptionState)
 	}
 
 	const proceedStep = () => { // 次へのボタン用ステップ遷移関数
@@ -57,7 +57,7 @@ const Home: NextPage = () => {
 		setStepState(7)
 	}
 
-	async function post_to_convert(JSONFormedSheets: Array<JSON>, fileNames: string[], sheetNames: string[]) {
+	async function postToConvert(JSONFormedSheets: Array<JSON>, fileNames: string[], sheetNames: string[]) {
 
 		const RequestTime = getFormattedDate()
 		// todo: 選択したオプション、エラーメッセージ等がjsonに含まれていないので含める
@@ -82,25 +82,25 @@ const Home: NextPage = () => {
 		})
 
 		const convertAPI_ResponseJSON = await convertAPI_response.json() as APIResponse// ここで帰ってきたjsonをexcelに直す
-		const file_number: number = convertAPI_ResponseJSON.file_number
-		const response_data: APIResponseFileData[] = convertAPI_ResponseJSON.response_data
-		const not_converted_data: APIResponseFileData[] = convertAPI_ResponseJSON.not_converted_data
+		const fileNumber: number = convertAPI_ResponseJSON.file_number
+		const responseData: APIResponseFileData[] = convertAPI_ResponseJSON.response_data
+		const notConvertedData: APIResponseFileData[] = convertAPI_ResponseJSON.not_converted_data
 
-		const exportBlobs = new Array<Blob>(file_number * 2)
-		const exportBlobNames = new Array<string>(file_number * 2)
+		const exportBlobs = new Array<Blob>(fileNumber * 2)
+		const exportBlobNames = new Array<string>(fileNumber * 2)
 
 		sheetNames.forEach((sheetName, index) => {
-			const convertedFileName: string = response_data[index].file_name
+			const convertedFileName: string = responseData[index].file_name
 			const convertedFileExtension: string = convertedFileName.split('.').pop() ?? ""
-			const notConvertedFileName: string = not_converted_data[index].file_name
+			const notConvertedFileName: string = notConvertedData[index].file_name
 			const notConvertedFileExtension: string = notConvertedFileName.split('.').pop() ?? ""
 
 			exportBlobNames[index * 2] = `formatted_${convertedFileName}`
-			const convertedFileData: JSON = response_data[index].file_data
+			const convertedFileData: JSON = responseData[index].file_data
 			exportBlobs[index * 2] = getSmartSenkyoFormatBlobFromJson(sheetName, convertedFileData, convertedFileExtension)
 
 			exportBlobNames[index * 2 + 1] = `not_formatted_${notConvertedFileName}`
-			const notConvertedFileData: JSON = not_converted_data[index].file_data
+			const notConvertedFileData: JSON = notConvertedData[index].file_data
 			exportBlobs[index * 2 + 1] = getBlobFromJson(sheetName, notConvertedFileData, notConvertedFileExtension)
 		})
 
@@ -126,15 +126,15 @@ const Home: NextPage = () => {
 		const JSONFormedSheets = new Array(InputExcelFileLength)
 
 
-		const after_loop_function = () => {
-			post_to_convert(JSONFormedSheets, fileNames, sheetNames)
+		const afterLoopHandle = () => {
+			postToConvert(JSONFormedSheets, fileNames, sheetNames)
 		}
 		const errorHandle = () => {
-			console.log("ファイルの読み込み時に異常が発生しました。")
+			window.alert("ファイルの読み込み時に異常が発生しました。")
 			setStepState(-1)
 		}
 
-		await readFileList(0, inputExcelFiles, fileReader, fileNames, sheetNames, JSONFormedSheets, InputExcelFileLength, after_loop_function, errorHandle)
+		await readFileList(0, inputExcelFiles, fileReader, fileNames, sheetNames, JSONFormedSheets, InputExcelFileLength, afterLoopHandle, errorHandle)
 	}
 
 	return (
@@ -142,8 +142,8 @@ const Home: NextPage = () => {
 			<Header page_title="自動名簿整形ツール" />
 			<MainContent
 				step_state={stepState}
-				on_address_separator_acted={switch_address_separator_option}
-				address_separator_selected_flag={address_separator_option_state}
+				on_address_separator_acted={switchAddressSeparatorOption}
+				address_separator_selected_flag={addressSeparatorOptionState}
 				proceed_step={proceedStep}
 				back_step={backStep}
 				set_file_state={setFileState}
