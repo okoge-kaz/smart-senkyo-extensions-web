@@ -57,7 +57,7 @@ const Home: NextPage = () => {
 		setStepState(7)
 	}
 
-	async function postToConvert(JSONFormedSheets: Array<JSON>, fileNames: string[], sheetNames: string[]) {
+	async function postToConvert(JSONFormedSheets: JSON[][], fileNames: string[], sheetNames: string[]) {
 
 		const RequestTime = getFormattedDate()
 		// todo: 選択したオプション、エラーメッセージ等がjsonに含まれていないので含める
