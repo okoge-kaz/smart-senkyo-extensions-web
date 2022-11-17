@@ -86,8 +86,8 @@ const Home: NextPage = () => {
 		const response_data: APIResponseFileData[] = convertAPI_ResponseJSON.response_data
 		const not_converted_data: APIResponseFileData[] = convertAPI_ResponseJSON.not_converted_data
 
-		const ExportBlobs = new Array<Blob>(file_number * 2)
-		const ExportBlobNames = new Array<string>(file_number * 2)
+		const exportBlobs = new Array<Blob>(file_number * 2)
+		const exportBlobNames = new Array<string>(file_number * 2)
 
 		sheetNames.forEach((sheetName, index) => {
 			const convertedFileName: string = response_data[index].file_name
@@ -95,17 +95,17 @@ const Home: NextPage = () => {
 			const notConvertedFileName: string = not_converted_data[index].file_name
 			const notConvertedFileExtension: string = notConvertedFileName.split('.').pop() ?? ""
 
-			ExportBlobNames[index * 2] = `formatted_${convertedFileName}`
+			exportBlobNames[index * 2] = `formatted_${convertedFileName}`
 			const convertedFileData: JSON = response_data[index].file_data
-			formatByColumnName(index * 2, sheetName, convertedFileData, ExportBlobs, convertedFileExtension)
+			exportBlobs[index * 2] = formatByColumnName(sheetName, convertedFileData, convertedFileExtension)
 
-			ExportBlobNames[index * 2 + 1] = `not_formatted_${notConvertedFileName}`
+			exportBlobNames[index * 2 + 1] = `not_formatted_${notConvertedFileName}`
 			const notConvertedFileData: JSON = not_converted_data[index].file_data
-			simpleFormat(index * 2 + 1, sheetName, notConvertedFileData, ExportBlobs, notConvertedFileExtension)
+			exportBlobs[index * 2 + 1] = simpleFormat(sheetName, notConvertedFileData, notConvertedFileExtension)
 		})
 
-		setExportBlobState(ExportBlobs)
-		setExportBlobNameState(ExportBlobNames)
+		setExportBlobState(exportBlobs)
+		setExportBlobNameState(exportBlobNames)
 		setStepState(6)
 	}
 

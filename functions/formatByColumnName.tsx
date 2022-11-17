@@ -3,19 +3,17 @@ import getExcelWriteOptions from "functions/getExcelWriteOptions"
 import transpose2DStringArray from "functions/transpose2DStringArray"
 import { utils, write, WritingOptions } from "xlsx"
 
-const formatByColumnName = (fileNumber: number, sheetName: string, fileData: JSON, exportBlobs: Blob[], fileExtension: string) => {
+const formatByColumnName = (sheetName: string, fileData: JSON, fileExtension: string) => {
   /*
   Arguments:
-    fileNumber: int              ファイルナンバー（APIでは1シート1ファイルとしてJSONに処理されるため、総シート数の中で何番目かということになる）
     sheetName: string
     fileData: JSON
-    exportBlobs: Blob[]          スマートセンキョ形式の列名として成形したEXCELファイルの格納先となるBlob[]
     fileExtension: string
   Returns:
-    void
+    exportBlob: Blob             整形済みファイル
 
   Description:
-    JSONで与えられたデータをスマセン形式の列名順に整え、EXCELファイルとして生成、生成したファイルをexportBlobsにファイル名をexportBlob_namesに保存する
+    JSONで与えられたデータをスマセン形式の列名順に整え、EXCELファイルとして生成、生成したファイルを返す
   */
 
   const colBasedData: string[][] = new Array<Array<string>>(0)
@@ -39,7 +37,7 @@ const formatByColumnName = (fileNumber: number, sheetName: string, fileData: JSO
   const exportBlob = new Blob([exportFile], {
     type: "application/octet-stream",
   })
-  exportBlobs[fileNumber] = exportBlob
+  return exportBlob
 }
 
 export default formatByColumnName
