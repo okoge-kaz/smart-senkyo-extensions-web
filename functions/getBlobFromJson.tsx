@@ -2,7 +2,7 @@ import getExcelWriteOptions from "functions/getExcelWriteOptions"
 import transpose2DStringArray from "functions/transpose2DStringArray"
 import { utils, write, WritingOptions } from "xlsx"
 
-const simpleFormat = (sheetName: string, fileData: JSON, fileExtension: string) => {
+const getBlobFromJson = (sheetName: string, fileData: JSON, fileExtension: string) => {
   /*
   Arguments:
     sheetName: string
@@ -38,4 +38,4 @@ const simpleFormat = (sheetName: string, fileData: JSON, fileExtension: string) 
   return exportBlob
 }
 
-export default simpleFormat
+export default getBlobFromJson

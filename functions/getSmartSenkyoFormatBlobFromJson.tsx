@@ -3,7 +3,7 @@ import getExcelWriteOptions from "functions/getExcelWriteOptions"
 import transpose2DStringArray from "functions/transpose2DStringArray"
 import { utils, write, WritingOptions } from "xlsx"
 
-const formatByColumnName = (sheetName: string, fileData: JSON, fileExtension: string) => {
+const getSmartSenkyoFormatBlobFromJson = (sheetName: string, fileData: JSON, fileExtension: string) => {
   /*
   Arguments:
     sheetName: string
@@ -40,4 +40,4 @@ const formatByColumnName = (sheetName: string, fileData: JSON, fileExtension: st
   return exportBlob
 }
 
-export default formatByColumnName
+export default getSmartSenkyoFormatBlobFromJson

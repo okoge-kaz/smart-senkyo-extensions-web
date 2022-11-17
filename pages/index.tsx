@@ -1,10 +1,10 @@
 import { Header } from "components/organisms/Header"
 import { MainContent } from "components/organisms/MainContent"
 import { saveAs } from "file-saver"
-import formatByColumnName from "functions/formatByColumnName"
+import getBlobFromJson from "functions/getBlobFromJson"
 import getFormattedDate from "functions/getFormattedDate"
+import getSmartSenkyoFormatBlobFromJson from "functions/getSmartSenkyoFormatBlobFromJson"
 import readFileList from "functions/readFileList"
-import simpleFormat from "functions/simpleFormat"
 import type { NextPage } from "next"
 import React, { useState } from "react"
 
@@ -97,11 +97,11 @@ const Home: NextPage = () => {
 
 			exportBlobNames[index * 2] = `formatted_${convertedFileName}`
 			const convertedFileData: JSON = response_data[index].file_data
-			exportBlobs[index * 2] = formatByColumnName(sheetName, convertedFileData, convertedFileExtension)
+			exportBlobs[index * 2] = getSmartSenkyoFormatBlobFromJson(sheetName, convertedFileData, convertedFileExtension)
 
 			exportBlobNames[index * 2 + 1] = `not_formatted_${notConvertedFileName}`
 			const notConvertedFileData: JSON = not_converted_data[index].file_data
-			exportBlobs[index * 2 + 1] = simpleFormat(sheetName, notConvertedFileData, notConvertedFileExtension)
+			exportBlobs[index * 2 + 1] = getBlobFromJson(sheetName, notConvertedFileData, notConvertedFileExtension)
 		})
 
 		setExportBlobState(exportBlobs)
