@@ -1,3 +1,4 @@
+import api_request from "api/smart-senkyo-extensions/request"
 import { Header } from "components/organisms/Header"
 import { MainContent } from "components/organisms/MainContent"
 import { saveAs } from "file-saver"
@@ -73,15 +74,8 @@ const Home: NextPage = () => {
 			input_data_type: "json",
 			input_data: JSONFormedData,
 		}
-		const convertAPI_response = await fetch("https://bczm5aw2fkuevavyh7ievzdqje0sxhlg.lambda-url.ap-northeast-1.on.aws/", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json; charset=utf-8",
-			},
-			body: JSON.stringify(RequestJSON),
-		})
 
-		const convertAPI_ResponseJSON = await convertAPI_response.json() as APIResponse// ここで帰ってきたjsonをexcelに直す
+		const convertAPI_ResponseJSON = await api_request(RequestJSON)
 		const fileNumber: number = convertAPI_ResponseJSON.file_number
 		const responseData: APIResponseFileData[] = convertAPI_ResponseJSON.response_data
 		const notConvertedData: APIResponseFileData[] = convertAPI_ResponseJSON.not_converted_data
