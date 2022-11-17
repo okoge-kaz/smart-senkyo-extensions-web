@@ -1,7 +1,7 @@
-const getFormattedDate = (dateData: Date): string => {
+const getFormattedDate = (): string => {
   /*
   Argument:
-    dateData: Date
+    none
   Return:
     formatted_time: string
 
@@ -11,7 +11,7 @@ const getFormattedDate = (dateData: Date): string => {
   Description:
     APIに付属させるリクエスト日時の情報の生成
   */
-
+  const dateData: Date = new Date;
   const year: string = dateData.getFullYear().toString();
   const month: string = (dateData.getMonth() + 1).toString(); //getMonthでは1月が0になる
   const date: string = dateData.getDate().toString();
