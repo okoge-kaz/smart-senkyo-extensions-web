@@ -7,22 +7,11 @@ import getFormattedDate from "functions/getFormattedDate"
 import getSmartSenkyoFormatBlobFromJson from "functions/getSmartSenkyoFormatBlobFromJson"
 import readFileList from "functions/readFileList"
 import type { NextPage } from "next"
-import React, { useState } from "react"
+import { useState } from "react"
 
 // 用途：ここがsmart-senkyo-extensions-webで表示される画面
 // 役割：ファイル、オプション、ステップ(本プロジェクトでは使用者がどの段階まで作業を進めたかをステップで管理している)
 //      excelファイルのjson化及び処理用APIへのリクエスト発行、返答受信、返答のexcel化
-
-type APIResponseFileData = {
-	file_name: string
-	file_data: JSON
-}
-
-type APIResponse = {
-	file_number: number
-	response_data: APIResponseFileData[]
-	not_converted_data: APIResponseFileData[]
-}
 
 const Home: NextPage = () => {
 	const [addressSeparatorOptionState, setAddressSeparatorOptionState] = useState<boolean>(true) // option管理
