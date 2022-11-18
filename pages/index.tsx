@@ -69,6 +69,7 @@ const Home: NextPage = () => {
 				file_data: json_formed_sheet,
 			})
 		)
+
 		// input_dataの整形
 		const RequestJSON = {
 			request_time: RequestTime,
@@ -77,9 +78,8 @@ const Home: NextPage = () => {
 		}
 
 		const convertAPI_ResponseJSON = await apiRequest(RequestJSON)
-		const fileNumber: number = convertAPI_ResponseJSON.file_number
-		const responseData: APIResponseFileData[] = convertAPI_ResponseJSON.response_data
-		const notConvertedData: APIResponseFileData[] = convertAPI_ResponseJSON.not_converted_data
+		const [fileNumber, responseData, notConvertedData]
+			= [convertAPI_ResponseJSON.file_number, convertAPI_ResponseJSON.response_data, convertAPI_ResponseJSON.not_converted_data]
 
 		const exportBlobs = new Array<Blob>(fileNumber * 2)
 		const exportBlobNames = new Array<string>(fileNumber * 2)
@@ -106,7 +106,7 @@ const Home: NextPage = () => {
 
 
 	// convert時に呼ばれる関数
-	const convertFile: React.MouseEventHandler<HTMLButtonElement> = async () => {
+	const convertFile = async () => {
 		// todo: proceedStep()を使いたい
 		setStepState(stepState + 1)
 
