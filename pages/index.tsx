@@ -94,9 +94,8 @@ const Home: NextPage = () => {
 	}
 
 
-	// convert時に呼ばれる関数
 	const convertFile = async () => {
-		// todo: proceedStep()を使いたい
+		// TODO: proceedStep()を使いたい
 		setStepState(stepState + 1)
 
 		// ファイルをjsonにしてAPIへ
