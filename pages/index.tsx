@@ -1,4 +1,4 @@
-import api_request from "api/smart-senkyo-extensions/request"
+import apiRequest from "api/smart-senkyo-extensions/request"
 import { Header } from "components/organisms/Header"
 import { MainContent } from "components/organisms/MainContent"
 import { saveAs } from "file-saver"
@@ -75,7 +75,7 @@ const Home: NextPage = () => {
 			input_data: JSONFormedData,
 		}
 
-		const convertAPI_ResponseJSON = await api_request(RequestJSON)
+		const convertAPI_ResponseJSON = await apiRequest(RequestJSON)
 		const fileNumber: number = convertAPI_ResponseJSON.file_number
 		const responseData: APIResponseFileData[] = convertAPI_ResponseJSON.response_data
 		const notConvertedData: APIResponseFileData[] = convertAPI_ResponseJSON.not_converted_data

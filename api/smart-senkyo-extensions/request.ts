@@ -21,7 +21,7 @@ const postRequest = async (url: string, body: any) => {
   return response.json();
 }
 
-const api_request = async (body: any) => {
+const apiRequest = async (body: any) => {
   // TODO: any type の削除
   const url = "https://bczm5aw2fkuevavyh7ievzdqje0sxhlg.lambda-url.ap-northeast-1.on.aws/"
   const response = await postRequest(url, body) as APIResponse
@@ -29,4 +29,4 @@ const api_request = async (body: any) => {
   return response
 }
 
-export default api_request
+export default apiRequest
