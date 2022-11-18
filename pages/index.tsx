@@ -74,10 +74,8 @@ const Home: NextPage = () => {
 		const exportBlobNames = new Array<string>(fileNumber * 2)
 
 		sheetNames.forEach((sheetName, index) => {
-			const convertedFileName: string = responseData[index].file_name
-			const convertedFileExtension: string = convertedFileName.split('.').pop() ?? ""
-			const notConvertedFileName: string = notConvertedData[index].file_name
-			const notConvertedFileExtension: string = notConvertedFileName.split('.').pop() ?? ""
+			const [convertedFileName, notConvertedFileName] = [responseData[index].file_name, notConvertedData[index].file_name]
+			const [convertedFileExtension, notConvertedFileExtension] = [convertedFileName.split(".").pop() ?? "", notConvertedFileName.split(".").pop() ?? ""]
 
 			exportBlobNames[index * 2] = `formatted_${convertedFileName}`
 			const convertedFileData: JSON = responseData[index].file_data
