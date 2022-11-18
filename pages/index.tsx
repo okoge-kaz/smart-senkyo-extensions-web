@@ -47,7 +47,7 @@ const Home: NextPage = () => {
 		setStepState(7)
 	}
 
-	const postToConvert = async(JSONFormedSheets: JSON[][], fileNames: string[], sheetNames: string[]) => {
+	const postToConvert = async (JSONFormedSheets: JSON[][], fileNames: string[], sheetNames: string[]) => {
 
 		const RequestTime = getFormattedDate()
 
