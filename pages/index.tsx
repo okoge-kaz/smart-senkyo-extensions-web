@@ -61,7 +61,8 @@ const Home: NextPage = () => {
 	async function postToConvert(JSONFormedSheets: JSON[][], fileNames: string[], sheetNames: string[]) {
 
 		const RequestTime = getFormattedDate()
-		// todo: 選択したオプション、エラーメッセージ等がjsonに含まれていないので含める
+
+		// TODO: 選択したオプション、エラーメッセージ等がjsonに含まれていないので含める
 		const JSONFormedData = JSONFormedSheets.map(
 			(json_formed_sheet, index) => ({
 				file_name: fileNames[index],
