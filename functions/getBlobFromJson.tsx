@@ -22,10 +22,10 @@ const getBlobFromJson = (sheetName: string, fileData: JSON, fileExtension: strin
     // @ts-ignore
     columnBasedData.push(Object.values(fileData[attributeName]))
   })
-  let worksheetData:string[][] = [[""]];// 空ファイルを出力するときには転置を取れないため初期化が必要
-  if(columnBasedData.length!=0){
-    worksheetData = transpose2DStringArray(columnBasedData)
-  }
+  const worksheetData: string[][] =
+    columnBasedData.length != 0
+      ? transpose2DStringArray(columnBasedData)
+      : [[""]]
   const exportBook = utils.book_new()
   const newSheet = utils.aoa_to_sheet(worksheetData)
   utils.book_append_sheet(exportBook, newSheet, sheetName)
