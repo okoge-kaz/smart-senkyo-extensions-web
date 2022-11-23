@@ -17,11 +17,13 @@ const getBlobFromJson = (sheetName: string, fileData: JSON, fileExtension: strin
 
   const columnBasedData: string[][] = new Array<Array<string>>(0)
   const fileDataKeys = Object.keys(fileData)
+  
   fileDataKeys.forEach(attributeName => {
     // todo: ここの警告を消したい
     // @ts-ignore
     columnBasedData.push(Object.values(fileData[attributeName]))
   })
+  
   const worksheetData: string[][] =
     columnBasedData.length != 0
       ? transpose2DStringArray(columnBasedData)
