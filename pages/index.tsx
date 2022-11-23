@@ -20,10 +20,6 @@ const Home: NextPage = () => {
 	const [exportBlobState, setExportBlobState] = useState<Blob[]>([]) // ダウンロードしたjsonをファイル化したファイルの管理
 	const [exportBlobNameState, setExportBlobNameState] = useState<string[]>([]) // ダウンロードしたjsonをファイル化したファイルのファイル名管理
 
-	const switchAddressSeparatorOption = () => { // 住所分割チェックボックス用オプションスイッチ関数
-		setAddressSeparatorOptionState(!addressSeparatorOptionState)
-	}
-
 	const proceedStep = () => { // 次へのボタン用ステップ遷移関数
 		if (stepState < 7) {
 			setStepState(stepState + 1)
@@ -31,13 +27,15 @@ const Home: NextPage = () => {
 			setStepState(1)
 		}
 	}
-
 	const backStep = () => { // 戻るボタン用ステップ遷移関数
 		if (1 < stepState) {
 			setStepState(stepState - 1)
 		}
 	}
 
+	const switchAddressSeparatorOption = () => { // 住所分割チェックボックス用オプションスイッチ関数
+		setAddressSeparatorOptionState(!addressSeparatorOptionState)
+	}
 	const downloadConvertedFile = () => { // ダウンロードのステップでメインのボタンに割り当てる関数
 		exportBlobState.forEach((exportBlob, index) => {
 			// todo: exportBlob使わないのならexport_blob_state.forEach()でなく[0,1,2,...]的なリストを使えばいい
@@ -46,7 +44,6 @@ const Home: NextPage = () => {
 		})
 		setStepState(7)
 	}
-
 	const postToConvert = async (JSONFormedSheets: JSON[][], fileNames: string[], sheetNames: string[]) => {
 
 		const RequestTime = getFormattedDate()
@@ -90,8 +87,6 @@ const Home: NextPage = () => {
 		setExportBlobNameState(exportBlobNames)
 		setStepState(6)
 	}
-
-
 	const convertFile = async () => {
 		// TODO: proceedStep()を使いたい
 		setStepState(stepState + 1)
