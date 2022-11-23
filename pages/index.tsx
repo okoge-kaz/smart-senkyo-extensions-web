@@ -67,20 +67,22 @@ const Home: NextPage = () => {
 		const [fileNumber, responseData, notConvertedData]
 			= [convertAPI_ResponseJSON.file_number, convertAPI_ResponseJSON.response_data, convertAPI_ResponseJSON.not_converted_data]
 
-		const exportBlobs = new Array<Blob>(fileNumber * 2)
-		const exportBlobNames = new Array<string>(fileNumber * 2)
+		const exportBlobs = new Array<Blob>()
+		const exportBlobNames = new Array<string>()
 
 		sheetNames.forEach((sheetName, index) => {
 			const [convertedFileName, notConvertedFileName] = [responseData[index].file_name, notConvertedData[index].file_name]
 			const [convertedFileExtension, notConvertedFileExtension] = [convertedFileName.split(".").pop() ?? "", notConvertedFileName.split(".").pop() ?? ""]
 
-			exportBlobNames[index * 2] = `formatted_${convertedFileName}`
+			exportBlobNames.push(`formatted_${convertedFileName}`)
 			const convertedFileData: JSON = responseData[index].file_data
-			exportBlobs[index * 2] = getSmartSenkyoFormatBlobFromJson(sheetName, convertedFileData, convertedFileExtension)
+			const convertedSmartSenkyoFormatBlob = getSmartSenkyoFormatBlobFromJson(sheetName, convertedFileData, convertedFileExtension)
+			exportBlobs.push(convertedSmartSenkyoFormatBlob)
 
-			exportBlobNames[index * 2 + 1] = `not_formatted_${notConvertedFileName}`
+			exportBlobNames.push(`not_formatted_${notConvertedFileName}`)
 			const notConvertedFileData: JSON = notConvertedData[index].file_data
-			exportBlobs[index * 2 + 1] = getBlobFromJson(sheetName, notConvertedFileData, notConvertedFileExtension)
+			const notConvertedSmartSenkyoFormatBlob = getBlobFromJson(sheetName, notConvertedFileData, notConvertedFileExtension)
+			exportBlobs.push(notConvertedSmartSenkyoFormatBlob)
 		})
 
 		setExportBlobState(exportBlobs)
