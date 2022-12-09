@@ -5,8 +5,9 @@ type APIResponseFileData = {
 
 type APIResponse = {
 	file_number: number
-	response_data: APIResponseFileData[]
-	not_converted_data: APIResponseFileData[]
+	politician_data: APIResponseFileData[]
+  party_data: APIResponseFileData[]
+  invalid_data: APIResponseFileData[]
 }
 
 const postRequest = async (url: string, body: any) => {
