@@ -33,14 +33,14 @@ const apiRequest = async (body: any) => {
 }
 
 //本来のリクエスト
-export default apiRequest
+// export default apiRequest
 
-//　ダミーのリクエスト
-// const dummyApiRequest = async (body: any) => {
-//   // TODO: any type の削除
-//   const response = V2formatDummyResponse as APIResponse
+// ダミーのリクエスト
+const dummyApiRequest = async (body: any) => {
+  // TODO: any type の削除
+  const response = V2formatDummyResponse as APIResponse
 
-//   return response
-// }
+  return response
+}
 
-// export default dummyApiRequest
+export default dummyApiRequest
