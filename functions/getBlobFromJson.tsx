@@ -2,7 +2,7 @@ import getExcelWriteOptions from "functions/getExcelWriteOptions"
 import transpose2DStringArray from "functions/transpose2DStringArray"
 import { utils, write, WritingOptions } from "xlsx"
 
-const getBlobFromJson = (sheetName: string, fileData: JSON, fileExtension: string) => {
+const getBlobFromJson = (sheetName: string, fileData: {}, fileExtension: string) => {
   /*
   Arguments:
     sheetName: string

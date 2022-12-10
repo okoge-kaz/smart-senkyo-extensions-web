@@ -81,7 +81,7 @@ const Home: NextPage = () => {
 			exportBlobs.push(convertedSmartSenkyoFormatBlob)
 
 			exportBlobNames.push(`not_formatted_${notConvertedFileName}`)
-			const notConvertedFileData: JSON = notConvertedData[index].file_data
+			const notConvertedFileData: {} = notConvertedData[index].file_data
 			const notConvertedSmartSenkyoFormatBlob = getBlobFromJson(sheetName, notConvertedFileData, notConvertedFileExtension)
 			exportBlobs.push(notConvertedSmartSenkyoFormatBlob)
 		})
