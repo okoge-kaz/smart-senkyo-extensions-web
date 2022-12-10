@@ -28,11 +28,11 @@ const getSmartSenkyoFormatBlobFromJson = (sheetName: string, partyFileData: JSON
       }
     })
 
-    Array(50).forEach((_, index:number) => {
-      if (partyFileDataKeys.includes("tag" + index)){
+    Array(51).fill(null).forEach((_, index:number) => {
+      if (partyFileDataKeys.includes(`tag${index}`)){
         // todo: ここの警告を消したい
         // @ts-ignore
-        columnBasedPartyData.push(Object.values(partyFileData["tag" + index]))
+        columnBasedPartyData.push(Object.values(partyFileData[`tag${index}`]))
       }
     })
   
@@ -55,11 +55,11 @@ const getSmartSenkyoFormatBlobFromJson = (sheetName: string, partyFileData: JSON
       }
     })
 
-    Array(50).forEach((_, index:number) => {
-      if (politicianFileDataKeys.includes("tag" + index)){
+    Array(51).fill(null).forEach((_, index:number) => {
+      if (politicianFileDataKeys.includes(`tag${index}`)){
         // todo: ここの警告を消したい
         // @ts-ignore
-        columnBasedPoliticianData.push(Object.values(politicianFileData["tag" + index]))
+        columnBasedPoliticianData.push(Object.values(politicianFileData[`tag${index}`]))
       }
     })
   

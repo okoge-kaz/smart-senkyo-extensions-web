@@ -64,8 +64,9 @@ const Home: NextPage = () => {
 		}
 
 		const convertAPI_ResponseJSON = await apiRequest(RequestJSON)
-		const [fileNumber, partyData, politicianData, notConvertedData]
-			= [convertAPI_ResponseJSON.file_number, convertAPI_ResponseJSON.party_data, convertAPI_ResponseJSON.politician_data, convertAPI_ResponseJSON.invalid_data]
+		console.log(convertAPI_ResponseJSON)
+		const [partyData, politicianData, notConvertedData]
+			= [convertAPI_ResponseJSON.party_data, convertAPI_ResponseJSON.politician_data, convertAPI_ResponseJSON.invalid_data]
 
 		const exportBlobs = new Array<Blob>()
 		const exportBlobNames = new Array<string>()
