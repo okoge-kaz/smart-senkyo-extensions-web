@@ -64,24 +64,24 @@ const Home: NextPage = () => {
 		}
 
 		const convertAPI_ResponseJSON = await apiRequest(RequestJSON)
-		const [partyData, politicianData, notConvertedData]
+		const [partyDatas, politicianDatas, notConvertedDatas]
 			= [convertAPI_ResponseJSON.party_data, convertAPI_ResponseJSON.politician_data, convertAPI_ResponseJSON.invalid_data]
 
 		const exportBlobs = new Array<Blob>()
 		const exportBlobNames = new Array<string>()
 
-		sheetNames.forEach((sheetName, index) => {
-			const [convertedFileName, notConvertedFileName] = [politicianData[index].file_name, notConvertedData[index].file_name]
+		partyDatas.forEach((partyData, index: number) => {
+			const [convertedFileName, notConvertedFileName] = [partyData.file_name, notConvertedDatas[index].file_name]
 			const [convertedFileExtension, notConvertedFileExtension] = [convertedFileName.split(".").pop() ?? "", notConvertedFileName.split(".").pop() ?? ""]
 
 			exportBlobNames.push(`formatted_${convertedFileName}`)
-			const [partyFileData, politicianFileData] = [politicianData[index].file_data, partyData[index].file_data]
-			const convertedSmartSenkyoFormatBlob = getSmartSenkyoFormatBlobFromJson(sheetName, politicianFileData, partyFileData, convertedFileExtension)
+			const [partyFileData, politicianFileData] = [partyData.file_data, politicianDatas[index].file_data]
+			const convertedSmartSenkyoFormatBlob = getSmartSenkyoFormatBlobFromJson(partyFileData, politicianFileData, convertedFileExtension)
 			exportBlobs.push(convertedSmartSenkyoFormatBlob)
 
 			exportBlobNames.push(`not_formatted_${notConvertedFileName}`)
-			const notConvertedFileData: {} = notConvertedData[index].file_data
-			const notConvertedSmartSenkyoFormatBlob = getBlobFromJson(sheetName, notConvertedFileData, notConvertedFileExtension)
+			const notConvertedFileData: {} = notConvertedDatas[index].file_data
+			const notConvertedSmartSenkyoFormatBlob = getBlobFromJson(sheetNames[index], notConvertedFileData, notConvertedFileExtension)
 			exportBlobs.push(notConvertedSmartSenkyoFormatBlob)
 		})
 
