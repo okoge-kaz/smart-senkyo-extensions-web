@@ -4,7 +4,7 @@ import getExcelWriteOptions from "functions/getExcelWriteOptions"
 import transpose2DStringArray from "functions/transpose2DStringArray"
 import { utils, write, WritingOptions } from "xlsx"
 
-const getSmartSenkyoFormatBlobFromJson = (companyFileData: {}, personalFileData: {}, fileExtension: string) => {
+const getSmartSenkyoFormatBlobFromJson = (companyFileData: JSON, personalFileData: JSON, fileExtension: string) => {
   /*
   Arguments:
     sheetName: string

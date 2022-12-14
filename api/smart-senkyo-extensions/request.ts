@@ -1,16 +1,6 @@
 import { V2formatDummyResponse } from "const/V2formatDummyResponse"
 
-type APIResponseFileData = {
-	file_name: string
-	file_data: {}
-}
-
-type APIResponse = {
-	file_number: number
-	personal_data: APIResponseFileData[]
-  company_data: APIResponseFileData[]
-  invalid_data: APIResponseFileData[]
-}
+import { APIResponse } from "interfaces/APIResponse";
 
 const postRequest = async (url: string, body: any) => {
   // TODO: any type の削除
