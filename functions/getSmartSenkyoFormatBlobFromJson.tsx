@@ -1,10 +1,10 @@
-import { SmartSenkyoPartyColumnNames } from "const/SmartSenkyoPartyColumnNames"
-import { SmartSenkyoPoliticianColumnNames } from "const/SmartSenkyoPoliticianColumnNames"
+import { SmartSenkyoCompanyColumnNames } from "const/SmartSenkyoCompanyColumnNames"
+import { SmartSenkyoPersonalColumnNames } from "const/SmartSenkyoPersonalColumnNames"
 import getExcelWriteOptions from "functions/getExcelWriteOptions"
 import transpose2DStringArray from "functions/transpose2DStringArray"
 import { utils, write, WritingOptions } from "xlsx"
 
-const getSmartSenkyoFormatBlobFromJson = (partyFileData: {}, politicianFileData: {}, fileExtension: string) => {
+const getSmartSenkyoFormatBlobFromJson = (companyFileData: {}, personalFileData: {}, fileExtension: string) => {
   /*
   Arguments:
     sheetName: string
@@ -17,58 +17,58 @@ const getSmartSenkyoFormatBlobFromJson = (partyFileData: {}, politicianFileData:
     JSONで与えられたデータをスマセン形式の列名順に整え、EXCELファイルとして生成、生成したファイルを返す
   */
 
-    const columnBasedPartyData: string[][] = new Array<Array<string>>(0)
-    const partyFileDataKeys = Object.keys(partyFileData)
+    const columnBasedCompanyData: string[][] = new Array<Array<string>>(0)
+    const companyFileDataKeys = Object.keys(companyFileData)
   
-    SmartSenkyoPartyColumnNames.forEach(columnName => {
-      if (partyFileDataKeys.includes(columnName)) {
+    SmartSenkyoCompanyColumnNames.forEach(columnName => {
+      if (companyFileDataKeys.includes(columnName)) {
         // todo: ここの警告を消したい
         // @ts-ignore
-        columnBasedPartyData.push(Object.values(partyFileData[columnName]))
+        columnBasedCompanyData.push(Object.values(companyFileData[columnName]))
       }
     })
 
     Array(51).fill(null).forEach((_, index:number) => {
-      if (partyFileDataKeys.includes(`tag${index}`)){
+      if (companyFileDataKeys.includes(`tag${index}`)){
         // todo: ここの警告を消したい
         // @ts-ignore
-        columnBasedPartyData.push(Object.values(partyFileData[`tag${index}`]))
+        columnBasedCompanyData.push(Object.values(companyFileData[`tag${index}`]))
       }
     })
   
-    const partyWorksheetData:string[][] = 
-    columnBasedPartyData.length != 0 
-        ? transpose2DStringArray(columnBasedPartyData)
+    const companyWorksheetData:string[][] = 
+    columnBasedCompanyData.length != 0 
+        ? transpose2DStringArray(columnBasedCompanyData)
         : [[""]]
     const exportBook = utils.book_new()
-    const newPartySheet = utils.aoa_to_sheet(partyWorksheetData)
-    utils.book_append_sheet(exportBook, newPartySheet, "組織")
+    const newCompanySheet = utils.aoa_to_sheet(companyWorksheetData)
+    utils.book_append_sheet(exportBook, newCompanySheet, "組織")
 
-    const columnBasedPoliticianData: string[][] = new Array<Array<string>>(0)
-    const politicianFileDataKeys = Object.keys(politicianFileData)
+    const columnBasedPersonalData: string[][] = new Array<Array<string>>(0)
+    const personalFileDataKeys = Object.keys(personalFileData)
   
-    SmartSenkyoPoliticianColumnNames.forEach(columnName => {
-      if (politicianFileDataKeys.includes(columnName)) {
+    SmartSenkyoPersonalColumnNames.forEach(columnName => {
+      if (personalFileDataKeys.includes(columnName)) {
         // todo: ここの警告を消したい
         // @ts-ignore
-        columnBasedPoliticianData.push(Object.values(politicianFileData[columnName]))
+        columnBasedPersonalData.push(Object.values(personalFileData[columnName]))
       }
     })
 
     Array(51).fill(null).forEach((_, index:number) => {
-      if (politicianFileDataKeys.includes(`tag${index}`)){
+      if (personalFileDataKeys.includes(`tag${index}`)){
         // todo: ここの警告を消したい
         // @ts-ignore
-        columnBasedPoliticianData.push(Object.values(politicianFileData[`tag${index}`]))
+        columnBasedPersonalData.push(Object.values(personalFileData[`tag${index}`]))
       }
     })
   
-    const politicianWorksheetData:string[][] = 
-    columnBasedPoliticianData.length != 0 
-        ? transpose2DStringArray(columnBasedPoliticianData)
+    const personalWorksheetData:string[][] = 
+    columnBasedPersonalData.length != 0 
+        ? transpose2DStringArray(columnBasedPersonalData)
         : [[""]]
-    const newPoliticianSheet = utils.aoa_to_sheet(politicianWorksheetData)
-    utils.book_append_sheet(exportBook, newPoliticianSheet, "個人")
+    const newPersonalSheet = utils.aoa_to_sheet(personalWorksheetData)
+    utils.book_append_sheet(exportBook, newPersonalSheet, "個人")
     const excelOpt: WritingOptions = getExcelWriteOptions(fileExtension);
 
     const exportFile = write(exportBook, excelOpt)

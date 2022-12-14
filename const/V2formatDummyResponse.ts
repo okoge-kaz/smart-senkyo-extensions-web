@@ -1,6 +1,6 @@
 export const V2formatDummyResponse = {
   "file_number": 1,
-  "politician_data": [
+  "personal_data": [
     {
       "file_name": "test.csv",
       "file_data": {
@@ -327,7 +327,7 @@ export const V2formatDummyResponse = {
       }
     }
   ],
-  "party_data": [
+  "company_data": [
     {
       "file_name": "test.csv",
       "file_data": {

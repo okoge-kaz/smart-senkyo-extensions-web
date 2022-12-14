@@ -1,4 +1,4 @@
-import {V2formatDummyResponse} from "const/V2formatDummyResponse"
+import { V2formatDummyResponse } from "const/V2formatDummyResponse"
 
 type APIResponseFileData = {
 	file_name: string
@@ -7,8 +7,8 @@ type APIResponseFileData = {
 
 type APIResponse = {
 	file_number: number
-	politician_data: APIResponseFileData[]
-  party_data: APIResponseFileData[]
+	personal_data: APIResponseFileData[]
+  company_data: APIResponseFileData[]
   invalid_data: APIResponseFileData[]
 }
 

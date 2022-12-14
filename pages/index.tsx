@@ -64,19 +64,19 @@ const Home: NextPage = () => {
 		}
 
 		const convertAPI_ResponseJSON = await apiRequest(RequestJSON)
-		const [partyDatas, politicianDatas, notConvertedDatas]
-			= [convertAPI_ResponseJSON.party_data, convertAPI_ResponseJSON.politician_data, convertAPI_ResponseJSON.invalid_data]
+		const [companyDatas, personalDatas, notConvertedDatas]
+			= [convertAPI_ResponseJSON.company_data, convertAPI_ResponseJSON.personal_data, convertAPI_ResponseJSON.invalid_data]
 
 		const exportBlobs = new Array<Blob>()
 		const exportBlobNames = new Array<string>()
 
-		partyDatas.forEach((partyData, index: number) => {
-			const [convertedFileName, notConvertedFileName] = [partyData.file_name, notConvertedDatas[index].file_name]
+		companyDatas.forEach((companyData, index: number) => {
+			const [convertedFileName, notConvertedFileName] = [companyData.file_name, notConvertedDatas[index].file_name]
 			const [convertedFileExtension, notConvertedFileExtension] = [convertedFileName.split(".").pop() ?? "", notConvertedFileName.split(".").pop() ?? ""]
 
 			exportBlobNames.push(`formatted_${convertedFileName}`)
-			const [partyFileData, politicianFileData] = [partyData.file_data, politicianDatas[index].file_data]
-			const convertedSmartSenkyoFormatBlob = getSmartSenkyoFormatBlobFromJson(partyFileData, politicianFileData, convertedFileExtension)
+			const [companyFileData, personalFileData] = [companyData.file_data, personalDatas[index].file_data]
+			const convertedSmartSenkyoFormatBlob = getSmartSenkyoFormatBlobFromJson(companyFileData, personalFileData, convertedFileExtension)
 			exportBlobs.push(convertedSmartSenkyoFormatBlob)
 
 			exportBlobNames.push(`not_formatted_${notConvertedFileName}`)
