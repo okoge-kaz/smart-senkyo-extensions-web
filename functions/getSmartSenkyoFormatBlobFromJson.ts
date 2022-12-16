@@ -2,6 +2,7 @@ import { SmartSenkyoCompanyColumnNames } from "const/SmartSenkyoCompanyColumnNam
 import { SmartSenkyoPersonalColumnNames } from "const/SmartSenkyoPersonalColumnNames"
 import getExcelWriteOptions from "functions/getExcelWriteOptions"
 import transpose2DStringArray from "functions/transpose2DStringArray"
+import { NULL } from "sass"
 import { utils, write, WritingOptions } from "xlsx"
 
 const getSmartSenkyoFormatBlobFromJson = (companyFileData: JSON, personalFileData: JSON, fileExtension: string) => {
@@ -17,22 +18,15 @@ const getSmartSenkyoFormatBlobFromJson = (companyFileData: JSON, personalFileDat
     JSONで与えられたデータをスマセン形式の列名順に整え、EXCELファイルとして生成、生成したファイルを返す
   */
 
-    const columnBasedCompanyData: string[][] = new Array<Array<string>>(0)
     const companyFileDataKeys = Object.keys(companyFileData)
-  
-    SmartSenkyoCompanyColumnNames.forEach(columnName => {
-      if (companyFileDataKeys.includes(columnName)) {
+    const columnBasedCompanyData: string[][] = companyFileDataKeys.map(columnName => {
+      if (SmartSenkyoCompanyColumnNames.includes(columnName) 
+          || /tag\d/.test(columnName) || /tag\d\d/.test(columnName)) {
         // todo: ここの警告を消したい
         // @ts-ignore
-        columnBasedCompanyData.push(Object.values(companyFileData[columnName]))
-      }
-    })
-
-    Array(51).fill(null).forEach((_, index:number) => {
-      if (companyFileDataKeys.includes(`tag${index}`)){
-        // todo: ここの警告を消したい
-        // @ts-ignore
-        columnBasedCompanyData.push(Object.values(companyFileData[`tag${index}`]))
+        return Object.values(companyFileData[columnName]);
+      } else {
+        return [""];
       }
     })
   
@@ -44,22 +38,15 @@ const getSmartSenkyoFormatBlobFromJson = (companyFileData: JSON, personalFileDat
     const newCompanySheet = utils.aoa_to_sheet(companyWorksheetData)
     utils.book_append_sheet(exportBook, newCompanySheet, "組織")
 
-    const columnBasedPersonalData: string[][] = new Array<Array<string>>(0)
     const personalFileDataKeys = Object.keys(personalFileData)
-  
-    SmartSenkyoPersonalColumnNames.forEach(columnName => {
-      if (personalFileDataKeys.includes(columnName)) {
+    const columnBasedPersonalData: string[][] = personalFileDataKeys.map(columnName => {
+      if (SmartSenkyoPersonalColumnNames.includes(columnName) 
+          || /tag\d/.test(columnName) || /tag\d\d/.test(columnName)) {
         // todo: ここの警告を消したい
         // @ts-ignore
-        columnBasedPersonalData.push(Object.values(personalFileData[columnName]))
-      }
-    })
-
-    Array(51).fill(null).forEach((_, index:number) => {
-      if (personalFileDataKeys.includes(`tag${index}`)){
-        // todo: ここの警告を消したい
-        // @ts-ignore
-        columnBasedPersonalData.push(Object.values(personalFileData[`tag${index}`]))
+        return Object.values(personalFileData[columnName]);
+      } else {
+        return [""];
       }
     })
   
