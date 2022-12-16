@@ -28,6 +28,18 @@ const readExcelFile = (file: File) => {
 }
 
 const readFileList = async (filesList: File[]) => {
+  /*
+  Arguments:
+    filesList: File[]
+  Returns:
+    JSONFormedSheets: JSON[][]
+    fileNames: string[]
+    sheetNames: string[]
+
+  Description:
+    配列として渡された各ファイルをJSON形式に変形したJSON[][]、ファイル名一覧の配列、一枚目のシート名の配列を返す
+  */
+  
   const excelFileDataList = await Promise.all(
     filesList.map(async (file) => {
       return await readExcelFile(file)

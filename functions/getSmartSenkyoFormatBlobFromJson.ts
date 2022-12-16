@@ -8,8 +8,8 @@ import { utils, write, WritingOptions } from "xlsx"
 const getSmartSenkyoFormatBlobFromJson = (companyFileData: JSON, personalFileData: JSON, fileExtension: string) => {
   /*
   Arguments:
-    sheetName: string
-    fileData: JSON
+    companyFileData: JSON
+    personalFileData: JSON
     fileExtension: string
   Returns:
     exportBlob: Blob             整形済みファイル
