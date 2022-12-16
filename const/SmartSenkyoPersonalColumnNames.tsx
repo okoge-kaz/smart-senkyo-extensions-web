@@ -38,4 +38,5 @@ export const SmartSenkyoPersonalColumnNames: string[] = [
 	"is_member",
 	"date_of_join",
 	"date_of_expiry",
+	// tags　今まで通りtag1から増えていく
 ]
