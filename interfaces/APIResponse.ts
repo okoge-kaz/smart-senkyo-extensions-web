@@ -4,7 +4,6 @@ type APIResponseFileData = {
 }
 
 export type APIResponse = {
-	file_number: number
 	personal_data: APIResponseFileData[]
   company_data: APIResponseFileData[]
   invalid_data: APIResponseFileData[]

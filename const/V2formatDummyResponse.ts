@@ -577,7 +577,6 @@ const invalid_file_data = JSON.parse(`{
 }`)
 
 export const V2formatDummyResponse:APIResponse = {
-  "file_number": 1,
   "personal_data": [
     {
       "file_name": "test.csv",
