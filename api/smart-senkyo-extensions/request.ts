@@ -1,5 +1,3 @@
-import { V2formatDummyResponse } from "const/V2formatDummyResponse"
-
 import { APIResponse } from "interfaces/APIResponse";
 
 const postRequest = async (url: string, body: any) => {
