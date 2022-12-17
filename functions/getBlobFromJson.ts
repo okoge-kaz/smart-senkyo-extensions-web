@@ -2,11 +2,11 @@ import getExcelWriteOptions from "functions/getExcelWriteOptions"
 import transpose2DStringArray from "functions/transpose2DStringArray"
 import { utils, write, WritingOptions } from "xlsx"
 
-const getBlobFromJson = (sheetName: string, fileData: JSON, fileExtension: string) => {
+const getBlobFromJson = (fileData: JSON, sheetName: string, fileExtension: string) => {
   /*
   Arguments:
-    sheetName: string
     fileData: JSON
+    sheetName: string
     fileExtension: stirng
   Returns:
     exportBlob: Blob             整形済みファイル
@@ -15,13 +15,11 @@ const getBlobFromJson = (sheetName: string, fileData: JSON, fileExtension: strin
     JSONで与えられたデータをスマセン形式の列名順に整え、EXCELファイルとして生成、生成したファイルを返す
   */
 
-  const columnBasedData: string[][] = new Array<Array<string>>(0)
   const fileDataKeys = Object.keys(fileData)
-  
-  fileDataKeys.forEach(attributeName => {
+  const columnBasedData: string[][] = fileDataKeys.map(columnName => {
     // todo: ここの警告を消したい
     // @ts-ignore
-    columnBasedData.push(Object.values(fileData[attributeName]))
+    return Object.values(fileData[columnName]);
   })
   
   const worksheetData: string[][] =

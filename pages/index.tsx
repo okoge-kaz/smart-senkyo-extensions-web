@@ -8,6 +8,8 @@ import getSmartSenkyoFormatBlobFromJson from "functions/getSmartSenkyoFormatBlob
 import readFileList from "functions/readFileList"
 import type { NextPage } from "next"
 import { useState } from "react"
+import { SmartSenkyoCompanyColumnNames } from "const/SmartSenkyoCompanyColumnNames"
+import { SmartSenkyoPersonalColumnNames } from "const/SmartSenkyoPersonalColumnNames"
 
 // 用途：ここがsmart-senkyo-extensions-webで表示される画面
 // 役割：ファイル、オプション、ステップ(本プロジェクトでは使用者がどの段階まで作業を進めたかをステップで管理している)
@@ -64,26 +66,30 @@ const Home: NextPage = () => {
 		}
 
 		const convertAPI_ResponseJSON = await apiRequest(RequestJSON)
-		const [fileNumber, responseData, notConvertedData]
-			= [convertAPI_ResponseJSON.file_number, convertAPI_ResponseJSON.response_data, convertAPI_ResponseJSON.not_converted_data]
+		const [companyDatas, personalDatas, notConvertedDatas]
+			= [convertAPI_ResponseJSON.company_data, convertAPI_ResponseJSON.personal_data, convertAPI_ResponseJSON.not_converted_data]
 
-		const exportBlobs = new Array<Blob>()
-		const exportBlobNames = new Array<string>()
+		// exportBlobs, exportBlobNamesは0:組織データ出力ファイル、1:個人データ出力ファイル、2:成形不能データ出力ファイル用データを格納
+		const exportBlobs = new Array<Blob>(3)
+		const exportBlobNames = new Array<string>(3)
 
-		sheetNames.forEach((sheetName, index) => {
-			const [convertedFileName, notConvertedFileName] = [responseData[index].file_name, notConvertedData[index].file_name]
-			const [convertedFileExtension, notConvertedFileExtension] = [convertedFileName.split(".").pop() ?? "", notConvertedFileName.split(".").pop() ?? ""]
+		// v2フォーマットでは組織・個人データ出力ファイル、成形不能データ出力ファイルがそれぞれ一つずつためインデックスが0のものだけを読み取る
+		const [convertedCompanyFileName, convertedPersonalFileName, notConvertedFileName] = [companyDatas.file_name, personalDatas.file_name, notConvertedDatas.file_name]
 
-			exportBlobNames.push(`formatted_${convertedFileName}`)
-			const convertedFileData: JSON = responseData[index].file_data
-			const convertedSmartSenkyoFormatBlob = getSmartSenkyoFormatBlobFromJson(sheetName, convertedFileData, convertedFileExtension)
-			exportBlobs.push(convertedSmartSenkyoFormatBlob)
+		const [convertedCompanyFileExtension, convertedPersonalFileExtension, notConvertedFileExtension] = [convertedCompanyFileName.split(".").pop() ?? "", convertedPersonalFileName.split(".").pop() ?? "", notConvertedFileName.split(".").pop() ?? ""]
+		const [companyFileData, personalFileData, notConvertedFileData] = [companyDatas.file_data, personalDatas.file_data, notConvertedDatas.file_data]
 
-			exportBlobNames.push(`not_formatted_${notConvertedFileName}`)
-			const notConvertedFileData: JSON = notConvertedData[index].file_data
-			const notConvertedSmartSenkyoFormatBlob = getBlobFromJson(sheetName, notConvertedFileData, notConvertedFileExtension)
-			exportBlobs.push(notConvertedSmartSenkyoFormatBlob)
-		})
+		exportBlobNames[0] = convertedCompanyFileName
+		const convertedSmartSenkyoFormatCompanyBlob = getSmartSenkyoFormatBlobFromJson(companyFileData, SmartSenkyoCompanyColumnNames, "組織", convertedCompanyFileExtension)
+		exportBlobs[0] = convertedSmartSenkyoFormatCompanyBlob
+
+		exportBlobNames[1] = convertedPersonalFileName
+		const convertedSmartSenkyoFormatPersonalBlob = getSmartSenkyoFormatBlobFromJson(personalFileData, SmartSenkyoPersonalColumnNames, "個人", convertedPersonalFileExtension)
+		exportBlobs[1] = convertedSmartSenkyoFormatPersonalBlob
+
+		exportBlobNames[2] = notConvertedFileName
+		const notConvertedSmartSenkyoFormatBlob = getBlobFromJson(notConvertedFileData, sheetNames[0], notConvertedFileExtension)
+		exportBlobs[2] = notConvertedSmartSenkyoFormatBlob
 
 		setExportBlobState(exportBlobs)
 		setExportBlobNameState(exportBlobNames)
