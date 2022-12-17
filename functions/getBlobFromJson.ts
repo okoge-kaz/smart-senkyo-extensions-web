@@ -2,11 +2,11 @@ import getExcelWriteOptions from "functions/getExcelWriteOptions"
 import transpose2DStringArray from "functions/transpose2DStringArray"
 import { utils, write, WritingOptions } from "xlsx"
 
-const getBlobFromJson = (sheetName: string, fileData: JSON, fileExtension: string) => {
+const getBlobFromJson = (fileData: JSON, sheetName: string, fileExtension: string) => {
   /*
   Arguments:
-    sheetName: string
     fileData: JSON
+    sheetName: string
     fileExtension: stirng
   Returns:
     exportBlob: Blob             整形済みファイル
